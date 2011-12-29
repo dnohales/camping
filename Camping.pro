@@ -11,8 +11,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        MainWindow.cpp
+        MainWindow.cpp \
+    FrameTents.cpp \
+    FrameDorms.cpp
 
-HEADERS  += MainWindow.h
+HEADERS  += MainWindow.h \
+    FrameTents.h \
+    FrameDorms.h
 
-FORMS    += MainWindow.ui
+FORMS    += MainWindow.ui \
+    FrameTents.ui \
+    FrameDorms.ui
