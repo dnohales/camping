@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/db">
+        <file>template.sql</file>
+    </qresource>
+</RCC>

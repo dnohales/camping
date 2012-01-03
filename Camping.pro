@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 TARGET = Camping
 TEMPLATE = app
@@ -13,12 +13,20 @@ TEMPLATE = app
 SOURCES += main.cpp\
         MainWindow.cpp \
     FrameTents.cpp \
-    FrameDorms.cpp
+    FrameDorms.cpp \
+    CampingApplication.cpp \
+    CampingConfig.cpp
 
 HEADERS  += MainWindow.h \
     FrameTents.h \
-    FrameDorms.h
+    FrameDorms.h \
+    CampingApplication.h \
+    CampingConfig.h \
+    main.h
 
 FORMS    += MainWindow.ui \
     FrameTents.ui \
     FrameDorms.ui
+
+RESOURCES += \
+    default.qrc
