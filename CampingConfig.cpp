@@ -3,6 +3,7 @@
 CampingConfig::CampingConfig(QObject *parent) :
     QObject(parent)
 {
+	this->clear();
 }
 
 void CampingConfig::init()
@@ -19,7 +20,7 @@ void CampingConfig::clear()
 {
 	this->data.clear();
 	
-	this->setDbVersion(CampingApplication::DB_VERSION);
+	this->setDbVersion(App()->dbVersion());
 }
 
 void CampingConfig::save()
@@ -28,7 +29,7 @@ void CampingConfig::save()
 	QSqlQuery query;
 	QSqlQuery recordQuery;
 	
-	db().transaction();
+	Db().transaction();
 	while(i.hasNext()){
 		i.next();
 
@@ -52,7 +53,7 @@ void CampingConfig::save()
 		recordQuery.bindValue(":key", i.key());
 		recordQuery.exec();
 	}
-	db().commit();
+	Db().commit();
 }
 
 int CampingConfig::dbVersion()

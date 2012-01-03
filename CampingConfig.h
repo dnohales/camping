@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QMap>
+#include <QString>
+#include <QVariant>
 
 class CampingConfig : public QObject
 {

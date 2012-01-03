@@ -1,6 +1,6 @@
 #include "CampingApplication.h"
 
-CampingApplication::CampingApplication(QObject *parent) :
-    QApplication(parent)
+CampingConfig *CampingApplication::config() const
 {
+	return this->_config;
 }

@@ -15,14 +15,16 @@ SOURCES += main.cpp\
     FrameTents.cpp \
     FrameDorms.cpp \
     CampingApplication.cpp \
-    CampingConfig.cpp
+    CampingConfig.cpp \
+    CampingException.cpp
 
 HEADERS  += MainWindow.h \
     FrameTents.h \
     FrameDorms.h \
     CampingApplication.h \
     CampingConfig.h \
-    main.h
+    main.h \
+    CampingException.h
 
 FORMS    += MainWindow.ui \
     FrameTents.ui \

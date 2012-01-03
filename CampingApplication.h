@@ -3,22 +3,26 @@
 
 #include <QApplication>
 
+class CampingConfig;
+
 class CampingApplication : public QApplication
 {
     Q_OBJECT
 public:
-	const static int DB_VERSION = 1;
-	const static QString APP_NAME = "Administración Camping";
+	int dbVersion() const { return 1; }
+	QString name() const { return "Administración Camping"; }
 	
     explicit CampingApplication(QObject *parent = 0);
-	bool initConfig();
+	CampingConfig *config() const;
+	void initNewDatabase();
+	void initExistentDatabase(QString filename);
 
 signals:
 
 public slots:
 	
 private:
-	CampingConfig config;
+	CampingConfig *_config;
 };
 
 #endif // CAMPINGAPPLICATION_H

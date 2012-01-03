@@ -9,6 +9,7 @@
 #include "CampingApplication.h"
 #include "CampingConfig.h"
 
-#define db() QSqlDatabase::database
+#define Db() QSqlDatabase::database()
+#define App() (static_cast<CampingApplication *>(QCoreApplication::instance()))
 
 #endif // MAIN_H
