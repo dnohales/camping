@@ -44,7 +44,7 @@ void MainWindow::onOpenFile()
 		QString(),
 		tr("Archivo de camping (*.%1);;Todos los archivos (*)").arg(App()->fileExtension())
 	);
-	if(!filename.isNull()){
+	if(!filename.isEmpty()){
 		try{
 			App()->initExistentDatabase(filename);
 			qDebug() << Db().tables().join(" ");
@@ -70,7 +70,7 @@ void MainWindow::onFileSaveAs()
 void MainWindow::onNewFile()
 {
 	QString filename = this->getCampingSaveFileName();
-	if(!filename.isNull()){
+	if(!filename.isEmpty()){
 		try{
 			App()->initNewDatabase(filename);
 		} catch(CampingException &e){
@@ -90,6 +90,15 @@ QString MainWindow::getCampingSaveFileName()
 	
 	if( !filename.isNull() && !filename.endsWith(App()->fileExtensionWithDot()) ){
 		filename += App()->fileExtensionWithDot();
+	}
+	
+	if( QFile::exists(filename) && QMessageBox::question(
+			this,
+			App()->name(),
+			tr("Ya existe el archivo \"%1\" ¿Desea reemplazarlo?").arg(QFileInfo(filename).completeBaseName()),
+	        QMessageBox::Yes, QMessageBox::No
+	) == QMessageBox::No){
+		filename = "";
 	}
 	
 	return filename;
