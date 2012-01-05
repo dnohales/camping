@@ -1,5 +1,4 @@
 PRAGMA foreign_keys=OFF;
-BEGIN TRANSACTION;
 CREATE TABLE "client" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "location_id" INTEGER NOT NULL,
@@ -43,4 +42,4 @@ CREATE TABLE "config" (
     "value" TEXT NOT NULL
 );
 INSERT INTO config ("id", "key", "value") values ('1', 'db_version', '1');
-COMMIT;
+PRAGMA foreign_keys=ON;

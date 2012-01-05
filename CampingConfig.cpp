@@ -10,7 +10,7 @@ void CampingConfig::init()
 {
 	this->clear();
 	
-	QSqlQuery query("SELECT key, value FROM config");
+	QSqlQuery query("SELECT key, value FROM config", Db());
 	while(query.next()){
 		this->data[query.value(0).toString()] = query.value(1);
 	}
@@ -26,8 +26,8 @@ void CampingConfig::clear()
 void CampingConfig::save()
 {
 	QMapIterator<QString, QVariant> i(this->data);
-	QSqlQuery query;
-	QSqlQuery recordQuery;
+	QSqlQuery query(Db());
+	QSqlQuery recordQuery(Db());
 	
 	Db().transaction();
 	while(i.hasNext()){

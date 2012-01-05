@@ -16,9 +16,15 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 	
+private:
+	QString getCampingSaveFileName();
+	
 public slots:
-	void onSearch(QString query);
 	void onSearchTimeout();
+	void onOpenFile();
+	void onNewFile();
+	void onFileSaveAs();
+	void refreshInitializedState();
 	
 signals:
 	void textSearched(QString query);
@@ -27,7 +33,7 @@ private slots:
 	void on_lineEditSearch_textChanged(QString );
 	
 private:
-	QTimer *m_search_timer;
+	QTimer *_searchTimer;
     Ui::MainWindow *ui;
 };
 
