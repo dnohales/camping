@@ -15,6 +15,9 @@
 #include "CampingApplication.h"
 #include "CampingConfig.h"
 #include "CampingException.h"
+#include "ActiveRecord.h"
+#include "Client.h"
+#include "Location.h"
 
 #define Db() QSqlDatabase::database("main")
 #define App() (static_cast<CampingApplication *>(QCoreApplication::instance()))

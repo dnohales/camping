@@ -11,10 +11,10 @@ CREATE TABLE "client" (
     "address" TEXT,
     "people_num" INTEGER,
     "tent_num" INTEGER,
-    "in_time" INTEGER,
-    "out_time" INTEGER,
-    "create_time" INTEGER,
-    "update_time" INTEGER,
+    "in_time" TEXT,
+    "out_time" TEXT,
+    "create_time" TEXT,
+    "update_time" TEXT,
     FOREIGN KEY (location_id) REFERENCES location(id)
 );
 CREATE TABLE "location" (
@@ -23,8 +23,8 @@ CREATE TABLE "location" (
     "type" INTEGER DEFAULT (0),
     "xpos" INTEGER DEFAULT (0),
     "ypos" INTEGER DEFAULT (0),
-    "create_time" INTEGER,
-    "update_time" INTEGER
+    "create_time" TEXT,
+    "update_time" TEXT
 );
 CREATE TABLE "vehicle" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,8 +32,8 @@ CREATE TABLE "vehicle" (
     "model" TEXT,
     "patent" TEXT,
     "size" TEXT,
-    "create_time" INTEGER,
-    "update_time" INTEGER,
+    "create_time" TEXT,
+    "update_time" TEXT,
     FOREIGN KEY (client_id) REFERENCES client(id)
 );
 CREATE TABLE "config" (

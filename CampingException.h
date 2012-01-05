@@ -6,7 +6,7 @@
 class CampingException
 {
 public:
-    explicit CampingException(QString message = "", int code = 0);
+    CampingException(QString message = "", int code = 0);
 	QString message() const;
 	void setMessage(QString message);
 	int code() const;

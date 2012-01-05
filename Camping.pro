@@ -16,7 +16,10 @@ SOURCES += main.cpp\
     FrameDorms.cpp \
     CampingApplication.cpp \
     CampingConfig.cpp \
-    CampingException.cpp
+    CampingException.cpp \
+    ActiveRecord.cpp \
+    Client.cpp \
+    Location.cpp
 
 HEADERS  += MainWindow.h \
     FrameTents.h \
@@ -24,7 +27,10 @@ HEADERS  += MainWindow.h \
     CampingApplication.h \
     CampingConfig.h \
     main.h \
-    CampingException.h
+    CampingException.h \
+    ActiveRecord.h \
+    Client.h \
+    Location.h
 
 FORMS    += MainWindow.ui \
     FrameTents.ui \
@@ -32,3 +38,6 @@ FORMS    += MainWindow.ui \
 
 RESOURCES += \
     default.qrc
+
+OTHER_FILES += \
+    template.sql
