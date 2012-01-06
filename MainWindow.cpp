@@ -125,6 +125,12 @@ void MainWindow::refreshInitializedState()
 	this->ui->actionGuardar_camping_como->setEnabled(ini);
 	this->ui->frameInitialized->setVisible(ini);
 	this->ui->frameNotInitialized->setHidden(ini);
+	this->ui->frameTents->setVisible(ini);
+	this->ui->frameDorms->setVisible(ini);
+	
+	if(ini){
+		this->showTents();
+	}
 }
 
 void MainWindow::onAbout()
@@ -139,4 +145,22 @@ void MainWindow::onFileOpened(QString filename)
 {
 	App()->config()->setLastFilename(filename);
 	this->setWindowTitle(App()->name() + " [" + QFileInfo(filename).fileName() + "]");
+}
+
+void MainWindow::showTents()
+{
+	this->ui->frameTents->setVisible(true);
+	this->ui->pushButtonTents->setChecked(true);
+	
+	this->ui->frameDorms->setVisible(false);
+	this->ui->pushButtonDorms->setChecked(false);
+}
+
+void MainWindow::showDorms()
+{
+	this->ui->frameTents->setVisible(false);
+	this->ui->pushButtonTents->setChecked(false);
+	
+	this->ui->frameDorms->setVisible(true);
+	this->ui->pushButtonDorms->setChecked(true);
 }

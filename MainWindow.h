@@ -28,6 +28,8 @@ public slots:
 	void onFileSaveAs();
 	void onAbout();
 	void refreshInitializedState();
+	void showTents();
+	void showDorms();
 	
 signals:
 	void textSearched(QString query);
