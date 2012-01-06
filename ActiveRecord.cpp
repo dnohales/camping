@@ -99,6 +99,11 @@ void ActiveRecord::initEmptyRecord()
 	this->setRecord(query.record());
 }
 
+void ActiveRecord::reset()
+{
+	this->setRecord(this->_originalRecord);
+}
+
 void ActiveRecord::setRecord(QSqlRecord record)
 {
 	this->_record = record;
@@ -144,6 +149,11 @@ QVariant ActiveRecord::getFieldValue(QString name)
 void ActiveRecord::setFieldValue(QString name, QVariant value)
 {
 	this->_record.setValue(name, value);
+}
+
+QString ActiveRecord::tr(const char *sourceText, const char *comment, int n)
+{
+	return QObject::tr(sourceText, comment, n);
 }
 
 

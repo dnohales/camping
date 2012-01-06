@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DialogAddClient</class>
- <widget class="QDialog" name="DialogAddClient">
+ <class>DialogClient</class>
+ <widget class="QDialog" name="DialogClient">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -95,7 +95,7 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
+     <item row="2" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>Fecha de salida</string>
@@ -105,28 +105,39 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QDateEdit" name="editDateOut">
-       <property name="displayFormat">
-        <string>dd/MM/yyyy</string>
-       </property>
-       <property name="calendarPopup">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_14">
-       <property name="text">
-        <string>ó cantidad de días</string>
-       </property>
-       <property name="buddy">
-        <cstring>spinDaysIn</cstring>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="1">
-      <widget class="QSpinBox" name="spinDaysIn"/>
+      <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0,0">
+       <item>
+        <widget class="QDateEdit" name="editDateOut">
+         <property name="displayFormat">
+          <string>dd/MM/yyyy</string>
+         </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>ó</string>
+         </property>
+         <property name="buddy">
+          <cstring>spinDaysIn</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="spinDaysIn">
+         <property name="suffix">
+          <string> días</string>
+         </property>
+         <property name="maximum">
+          <number>99999999</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -139,8 +150,11 @@
    </item>
    <item>
     <layout class="QFormLayout" name="formLayout_3">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+     </property>
      <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
+      <widget class="QLabel" name="labelLocation">
        <property name="text">
         <string>Ubicación en el camping</string>
        </property>
@@ -183,6 +197,9 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="spinPeopleNum"/>
+     </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
@@ -192,9 +209,6 @@
         <cstring>spinTentNum</cstring>
        </property>
       </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QSpinBox" name="spinPeopleNum"/>
      </item>
      <item row="2" column="1">
       <widget class="QSpinBox" name="spinTentNum"/>
@@ -329,6 +343,7 @@
   <tabstop>editSurname</tabstop>
   <tabstop>editDateIn</tabstop>
   <tabstop>editDateOut</tabstop>
+  <tabstop>spinDaysIn</tabstop>
   <tabstop>editLocation</tabstop>
   <tabstop>spinPeopleNum</tabstop>
   <tabstop>spinTentNum</tabstop>
@@ -348,7 +363,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>DialogAddClient</receiver>
+   <receiver>DialogClient</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -364,7 +379,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>DialogAddClient</receiver>
+   <receiver>DialogClient</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -380,7 +395,7 @@
   <connection>
    <sender>buttonFindLocation</sender>
    <signal>clicked()</signal>
-   <receiver>DialogAddClient</receiver>
+   <receiver>DialogClient</receiver>
    <slot>searchLocation()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -396,8 +411,8 @@
   <connection>
    <sender>spinDaysIn</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>DialogAddClient</receiver>
-   <slot>updateOutDate()</slot>
+   <receiver>DialogClient</receiver>
+   <slot>updateOutDate(int)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>167</x>
@@ -410,9 +425,25 @@
    </hints>
   </connection>
   <connection>
+   <sender>editDateIn</sender>
+   <signal>dateChanged(QDate)</signal>
+   <receiver>DialogClient</receiver>
+   <slot>updateDaysCount()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>352</x>
+     <y>97</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>321</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>editDateOut</sender>
    <signal>dateChanged(QDate)</signal>
-   <receiver>DialogAddClient</receiver>
+   <receiver>DialogClient</receiver>
    <slot>updateDaysCount()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -426,25 +457,26 @@
    </hints>
   </connection>
   <connection>
-   <sender>editDateIn</sender>
-   <signal>dateChanged(QDate)</signal>
-   <receiver>DialogAddClient</receiver>
-   <slot>updateDaysCount()</slot>
+   <sender>buttonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
+   <receiver>DialogClient</receiver>
+   <slot>onButtonBoxClicked(QAbstractButton*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>352</x>
-     <y>97</y>
+     <x>266</x>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
-     <x>321</x>
-     <y>188</y>
+     <x>266</x>
+     <y>293</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
   <slot>searchLocation()</slot>
-  <slot>updateOutDate()</slot>
+  <slot>updateOutDate(int)</slot>
   <slot>updateDaysCount()</slot>
+  <slot>onButtonBoxClicked(QAbstractButton*)</slot>
  </slots>
 </ui>

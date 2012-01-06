@@ -1,6 +1,7 @@
 #include "main.h"
 #include "common.h"
 #include "MainWindow.h"
+#include "DialogClient.h"
 #include "ui_MainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -16,6 +17,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 	this->connect(this->_searchTimer, SIGNAL(timeout()), SLOT(onSearchTimeout()));
 	this->connect(App(), SIGNAL(initializedChanged()), SLOT(refreshInitializedState()));
+	this->connect(this, SIGNAL(fileOpened(QString)), SLOT(onFileOpened(QString)));
+	
+	if(!App()->config()->lastFilename().isEmpty()){
+		try{
+			App()->initExistentDatabase(App()->config()->lastFilename());
+			emit fileOpened(App()->config()->lastFilename());
+		} catch(...){}
+	}
 	
 	this->refreshInitializedState();
 }
@@ -48,7 +57,7 @@ void MainWindow::onOpenFile()
 	if(!filename.isEmpty()){
 		try{
 			App()->initExistentDatabase(filename);
-			qDebug() << Db().tables().join(" ");
+			emit fileOpened(filename);
 		} catch(CampingException &e){
 			QMessageBox::critical(this, App()->name(), tr("No se puede abrir \"%1\": %2.").arg(filename, e.message()) );
 		}
@@ -62,6 +71,7 @@ void MainWindow::onFileSaveAs()
 		try{
 			QFile::copy(Db().databaseName(), filename);
 			App()->initExistentDatabase(filename);
+			emit fileOpened(filename);
 		} catch(CampingException &e){
 			QMessageBox::critical(this, App()->name(), tr("No se pudo recargar la base de datos \"%1\": %2.").arg(filename, e.message()) );
 		}
@@ -74,6 +84,7 @@ void MainWindow::onNewFile()
 	if(!filename.isEmpty()){
 		try{
 			App()->initNewDatabase(filename);
+			emit fileOpened(filename);
 		} catch(CampingException &e){
 			QMessageBox::critical(this, App()->name(), tr("No se puede crear la base de datos en \"%1\": %2.").arg(filename, e.message()) );
 		}
@@ -114,4 +125,18 @@ void MainWindow::refreshInitializedState()
 	this->ui->actionGuardar_camping_como->setEnabled(ini);
 	this->ui->frameInitialized->setVisible(ini);
 	this->ui->frameNotInitialized->setHidden(ini);
+}
+
+void MainWindow::onAbout()
+{
+	Client c(false);
+	DialogClient dialog(&c);
+	
+	dialog.exec();
+}
+
+void MainWindow::onFileOpened(QString filename)
+{
+	App()->config()->setLastFilename(filename);
+	this->setWindowTitle(App()->name() + " [" + QFileInfo(filename).fileName() + "]");
 }

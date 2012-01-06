@@ -482,8 +482,8 @@ de camping nuevo</string>
    <slot>onNewFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>197</y>
+     <x>424</x>
+     <y>245</y>
     </hint>
     <hint type="destinationlabel">
      <x>293</x>
@@ -498,12 +498,28 @@ de camping nuevo</string>
    <slot>onOpenFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>146</x>
-     <y>197</y>
+     <x>254</x>
+     <y>245</y>
     </hint>
     <hint type="destinationlabel">
      <x>126</x>
      <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAcerca_de</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onAbout()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>272</x>
+     <y>225</y>
     </hint>
    </hints>
   </connection>
@@ -512,5 +528,6 @@ de camping nuevo</string>
   <slot>onOpenFile()</slot>
   <slot>onNewFile()</slot>
   <slot>onFileSaveAs()</slot>
+  <slot>onAbout()</slot>
  </slots>
 </ui>

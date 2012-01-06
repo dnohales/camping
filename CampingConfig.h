@@ -15,11 +15,13 @@ public:
 	void clear();
 	void save();
 	int dbVersion();
+	QString lastFilename();
 	
 signals:
 
 public slots:
 	void setDbVersion(int version);
+	void setLastFilename(QString filename);
 	
 private:
 	QMap<QString, QVariant> data;

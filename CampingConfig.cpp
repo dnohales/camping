@@ -1,5 +1,6 @@
 #include "main.h"
 #include "common.h"
+#include <QSettings>
 
 CampingConfig::CampingConfig(QObject *parent) :
     QObject(parent)
@@ -65,5 +66,17 @@ int CampingConfig::dbVersion()
 void CampingConfig::setDbVersion(int version)
 {
 	this->data["db_version"] = QVariant(version);
+}
+
+QString CampingConfig::lastFilename()
+{
+	QSettings s;
+	return s.value("LastFilename").toString();
+}
+
+void CampingConfig::setLastFilename(QString filename)
+{
+	QSettings s;
+	s.setValue("LastFilename", filename);
 }
 

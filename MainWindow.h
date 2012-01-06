@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include "FrameTents.h"
+#include "FrameDorms.h"
 
 namespace Ui {
     class MainWindow;
@@ -24,16 +26,24 @@ public slots:
 	void onOpenFile();
 	void onNewFile();
 	void onFileSaveAs();
+	void onAbout();
 	void refreshInitializedState();
 	
 signals:
 	void textSearched(QString query);
+	void fileOpened(QString filename);
 
 private slots:
 	void on_lineEditSearch_textChanged(QString );
+	void onFileOpened(QString filename);
+	
+private:
+	void openExistentFile(QString filename);
 	
 private:
 	QTimer *_searchTimer;
+	FrameTents *frameTents;
+	FrameDorms *frameDorms;
     Ui::MainWindow *ui;
 };
 

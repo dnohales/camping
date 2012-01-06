@@ -2,7 +2,7 @@
 #include "common.h"
 #include "MainWindow.h"
 
-#define TEST 1
+#define TEST 0
 
 int test();
 
@@ -25,9 +25,10 @@ int main(int argc, char *argv[])
 int test()
 {
 	App()->initExistentDatabase("jaja.camp");
-	LocationCollection loc = Location().findAll();
+	//LocationCollection loc = Location().findAll();
+	qDebug() << Location().findAllByType(Location::TENT).at(0).getName();
 	
-	qDebug() << loc.at(0).getName();
+	//qDebug() << loc.at(0).getName();
 	/*try{
 		loc.setName("Carpa 1");
 		loc.save();

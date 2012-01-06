@@ -2,6 +2,7 @@
 #define CLIENT_H
 
 #include "ActiveRecord.h"
+#include "Location.h"
 #include <QList>
 
 class Client;
@@ -16,14 +17,22 @@ class Client : public ActiveRecord
 	
 public:
 	QString tableName();
+	void validate();
 	
-	ACTIVE_RECORD_FIELD(getName, setName, QString, "name")
-	ACTIVE_RECORD_FIELD(getSurame, setSurame, QString, "surname")
-	ACTIVE_RECORD_FIELD(getEmail, setEmail, QString, "email")
-	ACTIVE_RECORD_FIELD(getTel, setTel, QString, "tel")
-	ACTIVE_RECORD_FIELD(getCel, setCel, QString, "cel")
-	ACTIVE_RECORD_FIELD(getDni, setDni, QString, "dni")
-	ACTIVE_RECORD_FIELD(getAdress, setAddress, QString, "address")
+	QString getFullName();
+	Location getLocation();
+	void setLocation(const Location &loc);
+	
+	ACTIVE_RECORD_FIELD_STRING(getName, setName, "name")
+	ACTIVE_RECORD_FIELD_STRING(getSurame, setSurame, "surname")
+	ACTIVE_RECORD_FIELD(getDateIn, setDateIn, QDate, "in_time")
+	ACTIVE_RECORD_FIELD(getDateOut, setDateOut, QDate, "out_time")
+	ACTIVE_RECORD_FIELD(getLocationId, setLocationId, uint, "location_id")
+	ACTIVE_RECORD_FIELD_STRING(getEmail, setEmail, "email")
+	ACTIVE_RECORD_FIELD_STRING(getTel, setTel, "tel")
+	ACTIVE_RECORD_FIELD_STRING(getCel, setCel, "cel")
+	ACTIVE_RECORD_FIELD_STRING(getDni, setDni, "dni")
+	ACTIVE_RECORD_FIELD_STRING(getAdress, setAddress, "address")
 	ACTIVE_RECORD_FIELD(getPeopleNum, setPeopleNum, int, "people_num")
 	ACTIVE_RECORD_FIELD(getTentNum, setTentNum, int, "tent_num")
 	

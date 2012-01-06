@@ -15,6 +15,10 @@
 	type getter() const { return this->record().value(field).value<type>(); } \
 	void setter(type value){ this->setFieldValue(field, QVariant(value)); }
 
+#define ACTIVE_RECORD_FIELD_STRING(getter, setter, field) \
+	QString getter() const { return this->record().value(field).value<QString>(); } \
+	void setter(QString value){ this->setFieldValue(field, QVariant(value.simplified())); }
+
 #define ACTIVE_RECORD(className, collectionName) \
 public: \
 	className (QSqlRecord record) : ActiveRecord(record) {this->setRecord(record);} \
@@ -33,11 +37,15 @@ public: \
 	} \
 	className find(SqlCriteria criteria = SqlCriteria()){ \
 		criteria.setTable(this->tableName()); \
-		return this->queryToSingle( Db().exec(criteria.buildSelectQuery()) ); \
+		QSqlQuery query(criteria.buildSelectQuery()); \
+		query.exec(); \
+		return this->queryToSingle(query); \
 	} \
 	collectionName findAll(SqlCriteria criteria = SqlCriteria()){ \
 		criteria.setTable(this->tableName()); \
-		return this->queryToCollection( Db().exec(criteria.buildSelectQuery()) ); \
+		QSqlQuery query(criteria.buildSelectQuery()); \
+		query.exec(); \
+		return this->queryToCollection(query); \
 	} \
 	className findById(uint id){ \
 		return this->find(SqlCriteria().addCondition(QString("id = ") + QString::number(id))); \
@@ -61,12 +69,15 @@ public:
 	
 	QSqlRecord record() const;
 	void save(bool validate = true);
+	void reset();
 	bool isModified() const;
 	bool isNew() const;
 	bool isTemplate() const;
 	virtual void validate();
 	bool isValid();
 	virtual QString tableName() = 0;
+	
+	static QString tr(const char *sourceText, const char *comment = 0, int n = -1);
 	
 	ACTIVE_RECORD_FIELD(getId, setId, uint, "id")
 	ACTIVE_RECORD_FIELD(getCreateTime, setCreateTime, QDateTime, "create_time")

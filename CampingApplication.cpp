@@ -7,6 +7,9 @@ CampingApplication::CampingApplication(int &argc, char **argv, int version) :
 {
 	QSqlDatabase::addDatabase("QSQLITE");
 	this->_initialized = false;
+	
+	this->setApplicationName("CampingAdmin");
+	this->setOrganizationName("DamianNohales");
 }
 
 CampingConfig *CampingApplication::config()
@@ -68,7 +71,7 @@ void CampingApplication::initExistentDatabase(QString filename)
 {
 	QFile databaseFile(filename);
 	if(!databaseFile.exists()){
-		throw CampingException(tr("El archivo no existe o está protegido contra escritura"));
+		throw CampingException(tr("El archivo no existe."));
 	}
 	
 	QSqlDatabase newDatabase = QSqlDatabase::addDatabase("QSQLITE", "new");
