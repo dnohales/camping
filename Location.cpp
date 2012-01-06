@@ -40,7 +40,7 @@ void Location::validate()
 		throw ActiveRecordException( tr("Ya existe la ubicación") );
 	}
 	
-	if(this->getType() != Location::TENT && this->getType() != Location::DORMI){
+	if(this->getType() != Location::TENT && this->getType() != Location::DORM){
 		throw ActiveRecordException( tr("El tipo de ubicación no es válido (%1)").arg(QString::number(this->getType())) );
 	}
 }

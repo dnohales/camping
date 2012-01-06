@@ -22,7 +22,7 @@ DialogClient::DialogClient(Client *_client, Location::Type _type, QWidget *paren
 		this->setWindowTitle(tr("Editando a %1").arg(client->getFullName()));
 	}
 	
-	if(this->type == Location::DORMI){
+	if(this->type == Location::DORM){
 		this->ui->labelLocation->setText(tr("Número de dormi"));
 	}
 	

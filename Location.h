@@ -31,7 +31,7 @@ class Location : public ActiveRecord
 	
 	enum Type {
 		TENT = 0,
-		DORMI = 1
+		DORM = 1
 	};
 	
 public:
