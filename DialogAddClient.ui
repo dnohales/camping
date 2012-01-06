@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogAddClient</class>
+ <widget class="QDialog" name="DialogAddClient">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>533</width>
+    <height>587</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Nombre</string>
+       </property>
+       <property name="buddy">
+        <cstring>editName</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="editName"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Apellido</string>
+       </property>
+       <property name="buddy">
+        <cstring>editSurname</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="editSurname"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout_2">
+     <property name="horizontalSpacing">
+      <number>6</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>6</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Fecha de entrada</string>
+       </property>
+       <property name="buddy">
+        <cstring>editDateIn</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QDateEdit" name="editDateIn">
+       <property name="wrapping">
+        <bool>false</bool>
+       </property>
+       <property name="frame">
+        <bool>true</bool>
+       </property>
+       <property name="date">
+        <date>
+         <year>2000</year>
+         <month>1</month>
+         <day>2</day>
+        </date>
+       </property>
+       <property name="displayFormat">
+        <string>dd/MM/yyyy</string>
+       </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Fecha de salida</string>
+       </property>
+       <property name="buddy">
+        <cstring>editDateOut</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QDateEdit" name="editDateOut">
+       <property name="displayFormat">
+        <string>dd/MM/yyyy</string>
+       </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_14">
+       <property name="text">
+        <string>ó cantidad de días</string>
+       </property>
+       <property name="buddy">
+        <cstring>spinDaysIn</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QSpinBox" name="spinDaysIn"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout_3">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Ubicación en el camping</string>
+       </property>
+       <property name="buddy">
+        <cstring>editLocation</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLineEdit" name="editLocation"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonFindLocation">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="default.qrc">
+           <normaloff>:/imgs/search.svg</normaloff>:/imgs/search.svg</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Número de personas</string>
+       </property>
+       <property name="buddy">
+        <cstring>spinPeopleNum</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Número de carpas</string>
+       </property>
+       <property name="buddy">
+        <cstring>spinTentNum</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="spinPeopleNum"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QSpinBox" name="spinTentNum"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout_4">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Dirección</string>
+       </property>
+       <property name="buddy">
+        <cstring>editAddress</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="editAddress"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>Teléfono</string>
+       </property>
+       <property name="buddy">
+        <cstring>editTel</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="editTel"/>
+     </item>
+     <item row="4" column="3">
+      <widget class="QLineEdit" name="editCel"/>
+     </item>
+     <item row="4" column="2">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Ceular</string>
+       </property>
+       <property name="buddy">
+        <cstring>editCel</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="3">
+      <widget class="QLineEdit" name="editEmail"/>
+     </item>
+     <item row="3" column="2">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>E-Mail</string>
+       </property>
+       <property name="buddy">
+        <cstring>editEmail</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>DNI</string>
+       </property>
+       <property name="buddy">
+        <cstring>editDni</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="editDni">
+       <property name="inputMask">
+        <string>09.999.999; </string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_13">
+     <property name="text">
+      <string>Vehículos</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableView" name="tableVehicles"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_5">
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::Reset</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>editName</tabstop>
+  <tabstop>editSurname</tabstop>
+  <tabstop>editDateIn</tabstop>
+  <tabstop>editDateOut</tabstop>
+  <tabstop>editLocation</tabstop>
+  <tabstop>spinPeopleNum</tabstop>
+  <tabstop>spinTentNum</tabstop>
+  <tabstop>editAddress</tabstop>
+  <tabstop>editDni</tabstop>
+  <tabstop>editEmail</tabstop>
+  <tabstop>editTel</tabstop>
+  <tabstop>editCel</tabstop>
+  <tabstop>tableVehicles</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>buttonFindLocation</tabstop>
+ </tabstops>
+ <resources>
+  <include location="default.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>DialogAddClient</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>257</x>
+     <y>577</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>586</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>DialogAddClient</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>325</x>
+     <y>577</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>358</x>
+     <y>586</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonFindLocation</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogAddClient</receiver>
+   <slot>searchLocation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>505</x>
+     <y>213</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>443</x>
+     <y>221</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinDaysIn</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>DialogAddClient</receiver>
+   <slot>updateOutDate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>167</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>138</x>
+     <y>187</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editDateOut</sender>
+   <signal>dateChanged(QDate)</signal>
+   <receiver>DialogAddClient</receiver>
+   <slot>updateDaysCount()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>477</x>
+     <y>135</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>464</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editDateIn</sender>
+   <signal>dateChanged(QDate)</signal>
+   <receiver>DialogAddClient</receiver>
+   <slot>updateDaysCount()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>352</x>
+     <y>97</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>321</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>searchLocation()</slot>
+  <slot>updateOutDate()</slot>
+  <slot>updateDaysCount()</slot>
+ </slots>
+</ui>

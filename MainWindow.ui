@@ -99,8 +99,8 @@
 de camping</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>../../../../usr/share/icons/Humanity/actions/24/document-open.svg</normaloff>../../../../usr/share/icons/Humanity/actions/24/document-open.svg</iconset>
+            <iconset resource="default.qrc">
+             <normaloff>:/imgs/open.svg</normaloff>:/imgs/open.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -123,8 +123,8 @@ de camping</string>
 de camping nuevo</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>../../../../usr/share/icons/Humanity/actions/24/filenew.svg</normaloff>../../../../usr/share/icons/Humanity/actions/24/filenew.svg</iconset>
+            <iconset resource="default.qrc">
+             <normaloff>:/imgs/new.svg</normaloff>:/imgs/new.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -407,7 +407,9 @@ de camping nuevo</string>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="default.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionGuardar_camping_como</sender>

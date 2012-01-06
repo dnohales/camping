@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     Client.cpp \
     Location.cpp \
     SqlCriteria.cpp \
-    Vehicle.cpp
+    Vehicle.cpp \
+    DialogAddClient.cpp
 
 HEADERS  += MainWindow.h \
     FrameTents.h \
@@ -35,14 +36,19 @@ HEADERS  += MainWindow.h \
     Location.h \
     SqlCriteria.h \
     common.h \
-    Vehicle.h
+    Vehicle.h \
+    DialogAddClient.h
 
 FORMS    += MainWindow.ui \
     FrameTents.ui \
-    FrameDorms.ui
+    FrameDorms.ui \
+    DialogAddClient.ui
 
 RESOURCES += \
     default.qrc
 
 OTHER_FILES += \
-    template.sql
+    template.sql \
+    search.svg \
+    open.svg \
+    new.svg
