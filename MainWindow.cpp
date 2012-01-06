@@ -1,4 +1,5 @@
 #include "main.h"
+#include "common.h"
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 

@@ -1,6 +1,10 @@
-#include <QTextCodec>
-#include "CampingApplication.h"
+#include "main.h"
+#include "common.h"
 #include "MainWindow.h"
+
+#define TEST 1
+
+int test();
 
 int main(int argc, char *argv[])
 {
@@ -8,8 +12,28 @@ int main(int argc, char *argv[])
 	
 	QTextCodec::setCodecForTr( QTextCodec::codecForName("utf8") );
 	
-    MainWindow w;
-    w.show();
+	if(!TEST){
+		MainWindow w;
+		w.show();
+	
+		return a.exec();
+	} else{
+		return test();
+	}
+}
 
-    return a.exec();
+int test()
+{
+	App()->initExistentDatabase("jaja.camp");
+	LocationCollection loc = Location().findAll();
+	
+	qDebug() << loc.at(0).getName();
+	/*try{
+		loc.setName("Carpa 1");
+		loc.save();
+	} catch(ActiveRecordException &e){
+		qDebug() << e.message();
+	}*/
+	
+	return 0;
 }

@@ -2,19 +2,46 @@
 #define MODEL_H
 
 #include <QObject>
+#include <QDebug>
 #include <QSqlRecord>
 #include <QDateTime>
 #include <QVariant>
+#include <QSqlQuery>
 #include "CampingException.h"
+#include "SqlCriteria.h"
+#include "main.h"
 
 #define ACTIVE_RECORD_FIELD(getter, setter, type, field) \
 	type getter() const { return this->record().value(field).value<type>(); } \
 	void setter(type value){ this->setFieldValue(field, QVariant(value)); }
 
 #define ACTIVE_RECORD(className, collectionName) \
-	public: \
-	className (QSqlRecord record, QObject *parent = 0) : ActiveRecord(record, parent) {} \
-	className (bool isTemplate = true, QObject *parent = 0) : ActiveRecord(isTemplate, parent){this->initEmptyRecord();} \
+public: \
+	className (QSqlRecord record) : ActiveRecord(record) {this->setRecord(record);} \
+	className (bool isTemplate = true) : ActiveRecord(isTemplate){this->initEmptyRecord();} \
+	className queryToSingle(QSqlQuery query){ \
+		query.next(); \
+		className object(query.record()); \
+		return object; \
+	} \
+	collectionName queryToCollection(QSqlQuery query){ \
+		collectionName c; \
+		while(query.next()){ \
+			c.append(className(query.record())); \
+		} \
+		return c; \
+	} \
+	className find(SqlCriteria criteria = SqlCriteria()){ \
+		criteria.setTable(this->tableName()); \
+		return this->queryToSingle( Db().exec(criteria.buildSelectQuery()) ); \
+	} \
+	collectionName findAll(SqlCriteria criteria = SqlCriteria()){ \
+		criteria.setTable(this->tableName()); \
+		return this->queryToCollection( Db().exec(criteria.buildSelectQuery()) ); \
+	} \
+	className findById(uint id){ \
+		return this->find(SqlCriteria().addCondition(QString("id = ") + QString::number(id))); \
+	}
 	
 
 class ActiveRecordException : public CampingException
@@ -26,12 +53,11 @@ public:
 /**
  * Una asquerosa implementación del patrón Active record.
  */
-class ActiveRecord : public QObject
+class ActiveRecord
 {
-    Q_OBJECT
 public:
-    ActiveRecord(QSqlRecord record, QObject *parent = 0);
-	explicit ActiveRecord(bool isTemplate = true, QObject *parent = 0);
+    ActiveRecord(QSqlRecord record);
+	explicit ActiveRecord(bool isTemplate = true);
 	
 	QSqlRecord record() const;
 	void save(bool validate = true);

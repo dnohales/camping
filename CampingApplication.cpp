@@ -1,4 +1,5 @@
 #include "main.h"
+#include "common.h"
 #include "CampingApplication.h"
 
 CampingApplication::CampingApplication(int &argc, char **argv, int version) : 

@@ -19,7 +19,9 @@ SOURCES += main.cpp\
     CampingException.cpp \
     ActiveRecord.cpp \
     Client.cpp \
-    Location.cpp
+    Location.cpp \
+    SqlCriteria.cpp \
+    Vehicle.cpp
 
 HEADERS  += MainWindow.h \
     FrameTents.h \
@@ -30,7 +32,10 @@ HEADERS  += MainWindow.h \
     CampingException.h \
     ActiveRecord.h \
     Client.h \
-    Location.h
+    Location.h \
+    SqlCriteria.h \
+    common.h \
+    Vehicle.h
 
 FORMS    += MainWindow.ui \
     FrameTents.ui \

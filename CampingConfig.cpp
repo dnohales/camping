@@ -1,4 +1,5 @@
 #include "main.h"
+#include "common.h"
 
 CampingConfig::CampingConfig(QObject *parent) :
     QObject(parent)

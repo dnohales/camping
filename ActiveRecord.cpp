@@ -1,14 +1,12 @@
 #include "main.h"
+#include "common.h"
 #include "ActiveRecord.h"
 
-ActiveRecord::ActiveRecord(QSqlRecord record, QObject *parent) :
-    QObject(parent)
+ActiveRecord::ActiveRecord(QSqlRecord )
 {
-	this->setRecord(record);
 }
 
-ActiveRecord::ActiveRecord(bool isTemplate, QObject *parent) :
-    QObject(parent)
+ActiveRecord::ActiveRecord(bool isTemplate)
 {
 	this->_isTemplate = isTemplate;
 }
@@ -25,7 +23,7 @@ void ActiveRecord::save(bool validate)
 	uint lastId;
 	
 	if(this->isTemplate()){
-		throw ActiveRecordException(tr("Una ActiveRecord plantilla es solo para fabricar otros ActiveRecord's."));
+		throw ActiveRecordException(QObject::tr("Una ActiveRecord plantilla es solo para fabricar otros ActiveRecord's."));
 	}
 	
 	if(validate){
@@ -72,10 +70,10 @@ void ActiveRecord::save(bool validate)
 		}
 	}
 	query.exec();
-	qDebug() << tr("Salvando ActiveRecord: Consulta SQL: ") + query.executedQuery();
+	qDebug() << QObject::tr("Salvando ActiveRecord: Consulta SQL: ") + query.executedQuery();
 	
 	if(query.lastError().isValid()){
-		throw ActiveRecordException(tr("Ocurrió un error al guardar el registro: %1.").arg(query.lastError().text()));
+		throw ActiveRecordException(QObject::tr("Ocurrió un error al guardar el registro: %1.").arg(query.lastError().text()));
 	} else{
 		if(!this->isNew()){
 			lastId = this->getId();
