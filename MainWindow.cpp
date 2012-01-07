@@ -15,13 +15,16 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->_searchTimer->setSingleShot(true);
 	this->_searchTimer->setInterval(300);
 	
+	this->ui->frameTents->setMainParent(this);
+	this->ui->frameDorms->setMainParent(this);
+	
 	this->connect(this->_searchTimer, SIGNAL(timeout()), SLOT(onSearchTimeout()));
 	this->connect(App(), SIGNAL(initializedChanged()), SLOT(refreshInitializedState()));
 	this->connect(this, SIGNAL(fileOpened(QString)), SLOT(onFileOpened(QString)));
 	this->connect(this, SIGNAL(textSearched(QString)), SLOT(refreshData()));
-	
-	this->ui->frameTents->setMainParent(this);
-	this->ui->frameDorms->setMainParent(this);
+	this->connect(ui->frameTents, SIGNAL(refreshed()), SLOT(refreshData()));
+	this->connect(ui->frameDorms, SIGNAL(refreshed()), SLOT(refreshData()));
+	this->connect(this, SIGNAL(textSearched(QString)), SLOT(requestRefresh()));
 	
 	if(!App()->config()->lastFilename().isEmpty()){
 		try{
@@ -139,7 +142,6 @@ void MainWindow::refreshInitializedState()
 	
 	if(ini){
 		this->showTents();
-		this->refreshData();
 	}
 }
 
@@ -164,6 +166,10 @@ void MainWindow::showTents()
 	
 	this->ui->frameDorms->setVisible(false);
 	this->ui->pushButtonDorms->setChecked(false);
+	
+	if(!this->ui->frameTents->isRefreshed()){
+		this->ui->frameTents->refreshData();
+	}
 }
 
 void MainWindow::showDorms()
@@ -173,11 +179,25 @@ void MainWindow::showDorms()
 	
 	this->ui->frameDorms->setVisible(true);
 	this->ui->pushButtonDorms->setChecked(true);
+	
+	if(!this->ui->frameDorms->isRefreshed()){
+		this->ui->frameDorms->refreshData();
+	}
 }
 
 void MainWindow::refreshData()
-{
-	this->ui->frameTents->refreshData();
-	this->ui->frameDorms->refreshData();
+{	
+	if(this->ui->frameTents->isVisible() && !this->ui->frameDorms->isRefreshed()){
+		this->ui->frameTents->refreshData();
+	}
+	
+	if(this->ui->frameDorms->isVisible() && !this->ui->frameDorms->isRefreshed()){
+		this->ui->frameDorms->refreshData();
+	}
 }
 
+void MainWindow::requestRefresh()
+{
+	this->ui->frameTents->requestRefresh();
+	this->ui->frameDorms->requestRefresh();
+}

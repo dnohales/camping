@@ -15,11 +15,20 @@ public:
 	MainWindow *mainParent();
 	
 	SqlCriteria baseCriteria();
+	bool isRefreshed();
+	
+protected:
+	void setRefreshed(bool r);
 	
 public slots:
 	virtual void refreshData();
+	void requestRefresh();
 
+signals:
+	void refreshed();
+	
 private:
+	bool _refreshed;
 	MainWindow *_parent;
 
 };

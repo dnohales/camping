@@ -212,7 +212,7 @@
   </connection>
   <connection>
    <sender>checkBoxDorms</sender>
-   <signal>stateChanged(int)</signal>
+   <signal>clicked()</signal>
    <receiver>FrameTents</receiver>
    <slot>requestRefresh()</slot>
    <hints>

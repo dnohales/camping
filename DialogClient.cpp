@@ -29,6 +29,10 @@ DialogClient::DialogClient(Client *_client, Location::Type _type, QWidget *paren
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	this->ui->editLocation->setCompleter(completer);
 	
+	ui->vehicles->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Modelo")));
+	ui->vehicles->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Patente")));
+	ui->vehicles->setHorizontalHeaderItem(2, new QTableWidgetItem(tr("Tamaño")));
+	
 	this->refreshWidgets();
 }
 
@@ -88,16 +92,12 @@ void DialogClient::refreshWidgets()
 		this->ui->spinDaysIn->setValue(1);
 	}
 	
+	while(ui->vehicles->rowCount() > 0){
+		ui->vehicles->removeRow(0);
+	}
+	
 	if(!client->isNew()){
 		VehicleCollection vlist = client->getVehicles();
-		
-		while(ui->vehicles->rowCount() > 0){
-			ui->vehicles->removeRow(0);
-		}
-		
-		ui->vehicles->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Modelo")));
-		ui->vehicles->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Patente")));
-		ui->vehicles->setHorizontalHeaderItem(2, new QTableWidgetItem(tr("Tamaño")));
 		
 		for(int i=0; i < vlist.count(); i++){
 			Vehicle v(vlist.at(i));

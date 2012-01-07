@@ -4,6 +4,7 @@
 MainFrame::MainFrame(QWidget *parent) :
     QFrame(parent)
 {
+	this->setRefreshed(false);
 }
 
 void MainFrame::setMainParent(MainWindow *m)
@@ -18,6 +19,13 @@ MainWindow * MainFrame::mainParent()
 
 void MainFrame::refreshData()
 {
+	this->setRefreshed(true);
+}
+
+void MainFrame::requestRefresh()
+{
+	this->setRefreshed(false);
+	emit refreshed();
 }
 
 SqlCriteria MainFrame::baseCriteria()
@@ -31,4 +39,14 @@ SqlCriteria MainFrame::baseCriteria()
 	}
 	
 	return criteria;
+}
+
+bool MainFrame::isRefreshed()
+{
+	return this->_refreshed;
+}
+
+void MainFrame::setRefreshed(bool r)
+{
+	this->_refreshed = r;
 }

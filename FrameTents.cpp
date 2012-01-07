@@ -2,6 +2,7 @@
 #include "ui_FrameTents.h"
 #include "DialogClient.h"
 #include "Client.h"
+#include "main.h"
 #include <QDebug>
 #include <QMessageBox>
 
@@ -10,8 +11,7 @@ FrameTents::FrameTents(QWidget *parent) :
     ui(new Ui::FrameTents)
 {
     ui->setupUi(this);
-	
-	this->connect(this, SIGNAL(refreshed()), SLOT(refreshData()));
+
 	this->ui->list->addAction(this->ui->actionListEdit);
 	this->ui->list->addAction(this->ui->actionListPrint);
 	this->ui->list->addAction(this->ui->actionListDelete);
@@ -25,18 +25,20 @@ FrameTents::~FrameTents()
 void FrameTents::onAddClicked()
 {
 	Client c(false);
-	DialogClient dialog(&c);
+	DialogClient dialog(&c, Location::TENT);
 	dialog.exec();
 }
 
 void FrameTents::refreshData()
-{
+{	
 	SqlCriteria criteria = this->baseCriteria();
 	criteria.setOrder("out_time DESC");
-	criteria.setSelect("client.*, location.type AS _location_type");
-	criteria.setJoin("JOIN location ON client.location_id = location.id");
-	criteria.addCondition("_location_type = :loctype");
-	criteria.bindValue(":loctype", Location::TENT);
+	if( !this->ui->checkBoxDorms->isChecked() ){
+		criteria.setSelect("client.*, location.type AS _location_type");
+		criteria.setJoin("JOIN location ON client.location_id = location.id");
+		criteria.addCondition("_location_type = :loctype");
+		criteria.bindValue(":loctype", Location::TENT);
+	}
 	
 	ClientCollection col;
 	col = Client().findAll(criteria);
@@ -51,6 +53,7 @@ void FrameTents::refreshData()
 		   (this->ui->comboClientStatus->currentIndex() == 1 && c.isHousing()) ||
 		   (this->ui->comboClientStatus->currentIndex() == 2 && !c.isHousing()))
 		){
+			QString tooltip;
 			QTreeWidgetItem *item = new QTreeWidgetItem(this->ui->list);
 			
 			item->setText(0, c.getFullName());
@@ -58,6 +61,14 @@ void FrameTents::refreshData()
 			item->setText(2, c.getDateOut().toString("dd/MM/yyyy") + " (" + QString::number(c.getHousingDays()) + tr(" días)"));
 			item->setText(3, l.getName());
 			item->setText(4, QString::number(c.getPeopleNum()) + "/" + QString::number(c.getTentNum()));
+			
+			tooltip = tr("<b>")+c.getFullName()+tr("</b><br /><br />")
+			        + tr("<b>DNI: </b>")+c.getDni()+tr("<br />")
+			        + tr("<b>Teléfono: </b>")+c.getTel()+tr("<br />")
+			        + tr("<b>Celular: </b>")+c.getCel()+tr("<br />")
+			        + tr("<b>E-Mail: </b>")+c.getEmail()+tr("<br />")
+			        + tr("<b>Dirección: </b>")+c.getAdress();
+			item->setToolTip(0, tooltip);
 			
 			item->setData(0, Qt::UserRole, c.getId());
 			
@@ -73,6 +84,8 @@ void FrameTents::refreshData()
 	}
 	
 	this->ui->list->header()->resizeSections(QHeaderView::ResizeToContents);
+	
+	MainFrame::refreshData();
 }
 
 void FrameTents::on_actionListEdit_triggered()
@@ -100,7 +113,7 @@ void FrameTents::on_actionListDelete_triggered()
 		            QMessageBox::Yes, QMessageBox::No)
 		    == QMessageBox::Yes ){
 			c.deleteRecord();
-			emit refreshed();
+			this->requestRefresh();
 		}
 	}
 }
@@ -110,6 +123,6 @@ void FrameTents::on_list_itemActivated(QTreeWidgetItem* item, int column)
     Client c( Client().findById(item->data(0, Qt::UserRole).toInt()) );
 	DialogClient dialog(&c, Location::TENT);
 	if( dialog.exec() == DialogClient::Accepted ){
-		emit refreshed();
+		this->requestRefresh();
 	}
 }

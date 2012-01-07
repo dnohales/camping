@@ -31,6 +31,7 @@ public slots:
 	void showTents();
 	void showDorms();
 	void refreshData();
+	void requestRefresh();
 	
 signals:
 	void textSearched(QString query);

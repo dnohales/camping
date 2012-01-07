@@ -60,7 +60,7 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="buttonAdd">
         <property name="text">
          <string>Añadir reservación</string>
         </property>
@@ -156,12 +156,32 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableView" name="tableView"/>
+    <widget class="QTableWidget" name="table"/>
    </item>
   </layout>
  </widget>
  <resources>
   <include location="default.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>comboMonth</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>FrameDorms</receiver>
+   <slot>requestRefresh()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>340</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>requestRefresh()</slot>
+ </slots>
 </ui>

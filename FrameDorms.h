@@ -15,7 +15,13 @@ class FrameDorms : public MainFrame
 public:
     explicit FrameDorms(QWidget *parent = 0);
     ~FrameDorms();
+	
+public slots:
+	void refreshData();
 
+private slots:
+	void on_buttonAdd_clicked();
+	
 private:
     Ui::FrameDorms *ui;
 };
