@@ -12,6 +12,7 @@ public:
 	
 	SqlCriteria & addCondition(QString condition, QString separator = "AND");
 	QSqlQuery buildSelectQuery();
+	QString buildSelectQueryAsString();
 	
 	SqlCriteria bindValue(const QString &placeholder, const QVariant &val);
 	

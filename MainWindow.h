@@ -3,8 +3,6 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include "FrameTents.h"
-#include "FrameDorms.h"
 
 namespace Ui {
     class MainWindow;
@@ -18,6 +16,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 	
+	QString searchQuery();
+	
 private:
 	QString getCampingSaveFileName();
 	
@@ -30,6 +30,7 @@ public slots:
 	void refreshInitializedState();
 	void showTents();
 	void showDorms();
+	void refreshData();
 	
 signals:
 	void textSearched(QString query);
@@ -44,8 +45,6 @@ private:
 	
 private:
 	QTimer *_searchTimer;
-	FrameTents *frameTents;
-	FrameDorms *frameDorms;
     Ui::MainWindow *ui;
 };
 

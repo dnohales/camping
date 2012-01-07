@@ -2,7 +2,7 @@
 #include "ui_FrameDorms.h"
 
 FrameDorms::FrameDorms(QWidget *parent) :
-    QFrame(parent),
+    MainFrame(parent),
     ui(new Ui::FrameDorms)
 {
     ui->setupUi(this);

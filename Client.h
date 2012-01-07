@@ -4,6 +4,7 @@
 #include "ActiveRecord.h"
 #include "Location.h"
 #include <QList>
+#include <QAbstractListModel>
 
 class Client;
 
@@ -19,9 +20,11 @@ public:
 	QString tableName();
 	void validate();
 	
-	QString getFullName();
-	Location getLocation();
+	QString getFullName() const;
+	Location getLocation() const;
 	void setLocation(const Location &loc);
+	int getHousingDays() const;
+	bool isHousing() const;
 	
 	ACTIVE_RECORD_FIELD_STRING(getName, setName, "name")
 	ACTIVE_RECORD_FIELD_STRING(getSurame, setSurame, "surname")
@@ -38,6 +41,24 @@ public:
 	
 protected:
 	void init();
+};
+
+class ClientModel : public QAbstractListModel
+{
+     Q_OBJECT
+
+public:
+	ClientModel(const ClientCollection &col, QObject *parent = 0)
+	 : QAbstractListModel(parent), collection(col) {}
+	
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	int columnCount(const QModelIndex &parent) const;
+	QVariant data(const QModelIndex &index, int role) const;
+	QVariant headerData(int section, Qt::Orientation orientation,
+	                         int role = Qt::DisplayRole) const;
+	
+private:
+	ClientCollection collection;
 };
 
 #endif // CLIENT_H

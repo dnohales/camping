@@ -2,12 +2,13 @@
 #define FRAMEDORMS_H
 
 #include <QFrame>
+#include "MainFrame.h"
 
 namespace Ui {
     class FrameDorms;
 }
 
-class FrameDorms : public QFrame
+class FrameDorms : public MainFrame
 {
     Q_OBJECT
 

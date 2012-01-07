@@ -17,7 +17,7 @@ SqlCriteria & SqlCriteria::addCondition(QString condition, QString separator)
 	return *this;
 }
 
-QSqlQuery SqlCriteria::buildSelectQuery()
+QString SqlCriteria::buildSelectQueryAsString()
 {
 	QString q = "SELECT * FROM " + this->table();
 	if(!this->where().isEmpty()){
@@ -35,13 +35,19 @@ QSqlQuery SqlCriteria::buildSelectQuery()
 		}
 	}
 	
+	return q;
+}
+
+QSqlQuery SqlCriteria::buildSelectQuery()
+{	
 	QSqlQuery query(Db());
 	QMapIterator<QString, QVariant> i(_binds);
-	query.prepare(q);
+	query.prepare(this->buildSelectQueryAsString());
 	while(i.hasNext()){
 		i.next();
 		query.bindValue(i.key(), i.value());
 	}
+	
 	return query;
 }
 

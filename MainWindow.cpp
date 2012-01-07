@@ -13,11 +13,15 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 	this->_searchTimer = new QTimer();
 	this->_searchTimer->setSingleShot(true);
-	this->_searchTimer->setInterval(500);
+	this->_searchTimer->setInterval(300);
 	
 	this->connect(this->_searchTimer, SIGNAL(timeout()), SLOT(onSearchTimeout()));
 	this->connect(App(), SIGNAL(initializedChanged()), SLOT(refreshInitializedState()));
 	this->connect(this, SIGNAL(fileOpened(QString)), SLOT(onFileOpened(QString)));
+	this->connect(this, SIGNAL(textSearched(QString)), SLOT(refreshData()));
+	
+	this->ui->frameTents->setMainParent(this);
+	this->ui->frameDorms->setMainParent(this);
 	
 	if(!App()->config()->lastFilename().isEmpty()){
 		try{
@@ -44,6 +48,11 @@ void MainWindow::on_lineEditSearch_textChanged(QString )
 void MainWindow::onSearchTimeout()
 {
 	emit textSearched(this->ui->lineEditSearch->text());
+}
+
+QString MainWindow::searchQuery()
+{
+	return this->ui->lineEditSearch->text().simplified();
 }
 
 void MainWindow::onOpenFile()
@@ -130,6 +139,7 @@ void MainWindow::refreshInitializedState()
 	
 	if(ini){
 		this->showTents();
+		this->refreshData();
 	}
 }
 
@@ -164,3 +174,10 @@ void MainWindow::showDorms()
 	this->ui->frameDorms->setVisible(true);
 	this->ui->pushButtonDorms->setChecked(true);
 }
+
+void MainWindow::refreshData()
+{
+	this->ui->frameTents->refreshData();
+	this->ui->frameDorms->refreshData();
+}
+

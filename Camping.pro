@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     Location.cpp \
     SqlCriteria.cpp \
     Vehicle.cpp \
-    DialogClient.cpp
+    DialogClient.cpp \
+    MainFrame.cpp
 
 HEADERS  += MainWindow.h \
     FrameTents.h \
@@ -37,7 +38,8 @@ HEADERS  += MainWindow.h \
     SqlCriteria.h \
     common.h \
     Vehicle.h \
-    DialogClient.h
+    DialogClient.h \
+    MainFrame.h
 
 FORMS    += MainWindow.ui \
     FrameTents.ui \

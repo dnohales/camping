@@ -2,19 +2,24 @@
 #define FRAMETENTS_H
 
 #include <QFrame>
+#include "MainFrame.h"
 
 namespace Ui {
     class FrameTents;
 }
 
-class FrameTents : public QFrame
+class FrameTents : public MainFrame
 {
     Q_OBJECT
 
 public:
-    explicit FrameTents(QWidget *parent = 0);
+    explicit FrameTents(QWidget *parent);
     ~FrameTents();
 
+public slots:
+	void onAddClicked();
+	void refreshData();
+	
 private:
     Ui::FrameTents *ui;
 };

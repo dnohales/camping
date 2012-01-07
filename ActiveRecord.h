@@ -7,6 +7,7 @@
 #include <QDateTime>
 #include <QVariant>
 #include <QSqlQuery>
+#include <QSqlError>
 #include "CampingException.h"
 #include "SqlCriteria.h"
 #include "main.h"
@@ -24,11 +25,13 @@ public: \
 	className (QSqlRecord record) : ActiveRecord(record) {this->setRecord(record);} \
 	className (bool isTemplate = true) : ActiveRecord(isTemplate){this->initEmptyRecord();} \
 	className queryToSingle(QSqlQuery query){ \
+		qDebug() << "[Finding ActiveRecord single]" << query.executedQuery(); \
 		query.next(); \
 		className object(query.record()); \
 		return object; \
 	} \
 	collectionName queryToCollection(QSqlQuery query){ \
+		qDebug() << "[Finding ActiveRecord collection]" << query.executedQuery(); \
 		collectionName c; \
 		while(query.next()){ \
 			c.append(className(query.record())); \
