@@ -8,21 +8,8 @@ class Location;
 
 class LocationCollection : public QList<Location>
 {
-};
-
-class LocationModel : public QAbstractListModel
-{
-     Q_OBJECT
-
 public:
-	LocationModel(const LocationCollection &col, QObject *parent = 0)
-	 : QAbstractListModel(parent), collection(col) {}
-	
-	int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	QVariant data(const QModelIndex &index, int role) const;
-	
-private:
-	LocationCollection collection;
+	QStringList toNameList();
 };
 
 class Location : public ActiveRecord

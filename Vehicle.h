@@ -17,9 +17,10 @@ class Vehicle : public ActiveRecord
 public:
     QString tableName();
 	
-	ACTIVE_RECORD_FIELD(getModel, setModel, QString, "model")
-	ACTIVE_RECORD_FIELD(getPatent, setPatent, QString, "patent")
-	ACTIVE_RECORD_FIELD(getSize, setSize, QString, "size")
+	ACTIVE_RECORD_FIELD(getClientId, setClientId, int, "client_id")
+	ACTIVE_RECORD_FIELD_STRING(getModel, setModel, "model")
+	ACTIVE_RECORD_FIELD_STRING(getPatent, setPatent, "patent")
+	ACTIVE_RECORD_FIELD_STRING(getSize, setSize, "size")
 };
 
 #endif // VEHICLE_H

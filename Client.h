@@ -3,6 +3,7 @@
 
 #include "ActiveRecord.h"
 #include "Location.h"
+#include "Vehicle.h"
 #include <QList>
 #include <QAbstractListModel>
 
@@ -25,12 +26,13 @@ public:
 	void setLocation(const Location &loc);
 	int getHousingDays() const;
 	bool isHousing() const;
+	VehicleCollection getVehicles();
 	
 	ACTIVE_RECORD_FIELD_STRING(getName, setName, "name")
 	ACTIVE_RECORD_FIELD_STRING(getSurame, setSurame, "surname")
 	ACTIVE_RECORD_FIELD(getDateIn, setDateIn, QDate, "in_time")
 	ACTIVE_RECORD_FIELD(getDateOut, setDateOut, QDate, "out_time")
-	ACTIVE_RECORD_FIELD(getLocationId, setLocationId, uint, "location_id")
+	ACTIVE_RECORD_FIELD(getLocationId, setLocationId, int, "location_id")
 	ACTIVE_RECORD_FIELD_STRING(getEmail, setEmail, "email")
 	ACTIVE_RECORD_FIELD_STRING(getTel, setTel, "tel")
 	ACTIVE_RECORD_FIELD_STRING(getCel, setCel, "cel")

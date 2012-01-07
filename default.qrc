@@ -9,5 +9,6 @@
         <file>add.svg</file>
         <file>green-arrow.svg</file>
         <file>red-arrow.svg</file>
+        <file>delete.svg</file>
     </qresource>
 </RCC>

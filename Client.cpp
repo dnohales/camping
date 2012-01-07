@@ -51,6 +51,11 @@ bool Client::isHousing() const
 	return this->getDateOut() > QDate::currentDate();
 }
 
+VehicleCollection Client::getVehicles()
+{
+	return Vehicle().findAll(SqlCriteria().addCondition("client_id = "+QString::number(this->getId())));
+}
+
 int ClientModel::rowCount(const QModelIndex &) const
 {
 	return collection.count();
@@ -108,6 +113,7 @@ QVariant ClientModel::headerData(int section, Qt::Orientation orientation, int r
 		}
 	}
 }
+
 
 
 

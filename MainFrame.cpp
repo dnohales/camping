@@ -26,7 +26,7 @@ SqlCriteria MainFrame::baseCriteria()
 	
 	if(!this->mainParent()->searchQuery().isEmpty()){
 		QString query = QString("%")+this->mainParent()->searchQuery()+QString("%");
-		criteria.addCondition("name LIKE :query OR surname LIKE :query OR (name||' '||surname) LIKE :query");
+		criteria.addCondition("client.name LIKE :query OR client.surname LIKE :query OR (client.name||' '||client.surname) LIKE :query");
 		criteria.bindValue(":query", query);
 	}
 	

@@ -1,4 +1,5 @@
 #include "Location.h"
+#include <QStringList>
 
 QString Location::tableName()
 {
@@ -55,22 +56,16 @@ void Location::setType(Location::Type value)
 	this->setFieldValue("type", (Location::Type)value);
 }
 
-int LocationModel::rowCount(const QModelIndex &) const
+QStringList LocationCollection::toNameList()
 {
-	return collection.count();
+	QStringList list;
+	
+	for(int i=0; i < this->count(); i++){
+		list.append(this->at(i).getName());
+	}
+	
+	return list;
 }
 
-QVariant LocationModel::data(const QModelIndex &index, int role) const
-{
-	/*if (!index.isValid())
-		return QVariant();
-	
-	if (index.row() >= collection.size())
-		return QVariant();*/
-	
-	//if (role == Qt::DisplayRole)
-		return collection.at(index.row()).getName();
-	//else
-		//return QVariant();
-}
+
 

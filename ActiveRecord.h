@@ -25,13 +25,13 @@ public: \
 	className (QSqlRecord record) : ActiveRecord(record) {this->setRecord(record);} \
 	className (bool isTemplate = true) : ActiveRecord(isTemplate){this->initEmptyRecord();} \
 	className queryToSingle(QSqlQuery query){ \
-		qDebug() << "[Finding ActiveRecord single]" << query.executedQuery(); \
+		printQueryDebug(1, query); \
 		query.next(); \
 		className object(query.record()); \
 		return object; \
 	} \
 	collectionName queryToCollection(QSqlQuery query){ \
-		qDebug() << "[Finding ActiveRecord collection]" << query.executedQuery(); \
+		printQueryDebug(2, query); \
 		collectionName c; \
 		while(query.next()){ \
 			c.append(className(query.record())); \
@@ -50,7 +50,7 @@ public: \
 		query.exec(); \
 		return this->queryToCollection(query); \
 	} \
-	className findById(uint id){ \
+	className findById(int id){ \
 		return this->find(SqlCriteria().addCondition(QString("id = ") + QString::number(id))); \
 	}
 	
@@ -79,10 +79,12 @@ public:
 	virtual void validate();
 	bool isValid();
 	virtual QString tableName() = 0;
+	void deleteById(int id);
+	void deleteRecord();
 	
 	static QString tr(const char *sourceText, const char *comment = 0, int n = -1);
 	
-	ACTIVE_RECORD_FIELD(getId, setId, uint, "id")
+	ACTIVE_RECORD_FIELD(getId, setId, int, "id")
 	ACTIVE_RECORD_FIELD(getCreateTime, setCreateTime, QDateTime, "create_time")
 	ACTIVE_RECORD_FIELD(getUpdateTime, setUpdateTime, QDateTime, "update_time")
 	
@@ -92,6 +94,8 @@ protected:
 	void setRecord(QSqlRecord record);
 	QVariant getFieldValue(QString name);
 	void setFieldValue(QString name, QVariant value);
+	void printQueryDebug(int type, QSqlQuery &query);
+	QStringList validFieldsList();
 	
 private:
 	QSqlRecord _record;

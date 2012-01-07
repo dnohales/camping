@@ -10,7 +10,6 @@ DialogClient::DialogClient(Client *_client, Location::Type _type, QWidget *paren
     ui(new Ui::DialogClient)
 {
     ui->setupUi(this);
-	this->refreshWidgets();
 	
 	this->ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Aceptar"));
 	this->ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancelar"));
@@ -26,9 +25,11 @@ DialogClient::DialogClient(Client *_client, Location::Type _type, QWidget *paren
 		this->ui->labelLocation->setText(tr("Número de dormi"));
 	}
 	
-	QCompleter *completer = new QCompleter(new LocationModel(Location().findAllByType(this->type)));
+	QCompleter *completer = new QCompleter(Location().findAllByType(this->type).toNameList());
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	this->ui->editLocation->setCompleter(completer);
+	
+	this->refreshWidgets();
 }
 
 DialogClient::~DialogClient()
@@ -86,6 +87,28 @@ void DialogClient::refreshWidgets()
 		this->ui->editDateIn->setDate(QDate::currentDate());
 		this->ui->spinDaysIn->setValue(1);
 	}
+	
+	if(!client->isNew()){
+		VehicleCollection vlist = client->getVehicles();
+		
+		while(ui->vehicles->rowCount() > 0){
+			ui->vehicles->removeRow(0);
+		}
+		
+		ui->vehicles->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Modelo")));
+		ui->vehicles->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Patente")));
+		ui->vehicles->setHorizontalHeaderItem(2, new QTableWidgetItem(tr("Tamaño")));
+		
+		for(int i=0; i < vlist.count(); i++){
+			Vehicle v(vlist.at(i));
+			
+			ui->vehicles->insertRow(i);
+			ui->vehicles->setItem(i, 0, new QTableWidgetItem(v.getModel()));
+			ui->vehicles->setItem(i, 1, new QTableWidgetItem(v.getPatent()));
+			ui->vehicles->setItem(i, 2, new QTableWidgetItem(v.getSize()));
+			ui->vehicles->item(i, 0)->setData(Qt::UserRole, v.getId());
+		}
+	}
 }
 
 void DialogClient::onButtonBoxClicked(QAbstractButton *button)
@@ -102,7 +125,8 @@ void DialogClient::onButtonBoxClicked(QAbstractButton *button)
 
 void DialogClient::accept()
 {
-	try{		
+	try{
+		Db().transaction();
 		client->setName( this->ui->editName->text() );
 		client->setSurame( this->ui->editSurname->text() );
 		
@@ -127,11 +151,34 @@ void DialogClient::accept()
 			loc.save();
 		}
 		client->setLocation(loc);
-		
 		client->save();
+		
+		for(int i=0; i < ui->vehicles->rowCount(); i++){
+			int id = ui->vehicles->item(i, 0)->data(Qt::UserRole).toInt();
+			if((id == 0 && !this->isVehicleRowEmpty(i)) || id > 0){
+				Vehicle newV(false);
+				if(id > 0){
+					newV = Vehicle().findById(id);
+				} else{
+					newV.setClientId(client->getId());
+				}
+				newV.setModel( ui->vehicles->item(i, 0)->text() );
+				newV.setPatent( ui->vehicles->item(i, 1)->text() );
+				newV.setSize( ui->vehicles->item(i, 2)->text() );
+				
+				if(newV.isModified()){
+					newV.save();
+				}
+			} else if(id < 0){
+				Vehicle().deleteById(-id);
+			}
+		}
+		
+		Db().commit();
 		QDialog::accept();
 	} catch(ActiveRecordException &e){
 		QMessageBox::critical(this, tr("Error"), e.message());
+		Db().rollback();
 	}
 }
 
@@ -146,5 +193,51 @@ void DialogClient::reset()
 		this->client->reset();
 		this->refreshWidgets();
 		this->ui->editName->setFocus();
+	}
+}
+
+bool DialogClient::isVehicleRowEmpty(int row)
+{
+	for(int i = 0; i < ui->vehicles->columnCount(); i++){
+		if(!ui->vehicles->item(row, i)->text().trimmed().isEmpty()){
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+void DialogClient::on_buttonVehicleAdd_clicked()
+{
+	int lastRowItem = ui->vehicles->rowCount();
+    
+	ui->vehicles->insertRow(lastRowItem);
+	for(int j = 0; j < ui->vehicles->columnCount(); j++){
+		ui->vehicles->setItem(lastRowItem, j, new QTableWidgetItem(""));
+		ui->vehicles->item(lastRowItem, j)->setForeground(QBrush(Qt::darkGreen));
+	}
+	
+	ui->vehicles->item(lastRowItem, 0)->setData(Qt::UserRole, 0);
+}
+
+void DialogClient::on_buttonVehicleDelete_clicked()
+{
+	QTableWidget *v = ui->vehicles;
+	QFont delFont;
+	delFont.setStrikeOut(true);
+	
+	for(int i = v->rowCount()-1; i >= 0; i--){
+		if( v->item(i, 0)->isSelected() ){
+			int id = v->item(i, 0)->data(Qt::UserRole).toInt();
+			
+			if(id == 0){
+				v->removeRow(i);
+			} else {
+				v->item(i, 0)->setData(Qt::UserRole, -id);
+				for(int j = 0; j < v->columnCount(); j++){
+					v->item(i, j)->setFont(id > 0? delFont:QFont());
+				}
+			}
+		}
 	}
 }

@@ -68,6 +68,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="checkBoxDorms">
+        <property name="text">
+         <string>Mostrar dormis</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -114,6 +121,9 @@
    </item>
    <item>
     <widget class="QTreeWidget" name="list">
+     <property name="contextMenuPolicy">
+      <enum>Qt::ActionsContextMenu</enum>
+     </property>
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
@@ -148,6 +158,21 @@
     </widget>
    </item>
   </layout>
+  <action name="actionListEdit">
+   <property name="text">
+    <string>Editar</string>
+   </property>
+  </action>
+  <action name="actionListPrint">
+   <property name="text">
+    <string>Imprimir comprobante</string>
+   </property>
+  </action>
+  <action name="actionListDelete">
+   <property name="text">
+    <string>Borrar</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="default.qrc"/>
@@ -173,7 +198,7 @@
    <sender>comboClientStatus</sender>
    <signal>currentIndexChanged(int)</signal>
    <receiver>FrameTents</receiver>
-   <slot>refreshData()</slot>
+   <slot>requestRefresh()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>465</x>
@@ -185,9 +210,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>checkBoxDorms</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>FrameTents</receiver>
+   <slot>requestRefresh()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>200</x>
+     <y>19</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>261</x>
+     <y>211</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onAddClicked()</slot>
   <slot>refreshData()</slot>
+  <slot>requestRefresh()</slot>
  </slots>
 </ui>

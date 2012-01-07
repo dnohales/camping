@@ -5,6 +5,7 @@
 
 SqlCriteria::SqlCriteria()
 {
+	this->setSelect("*");
 }
 
 SqlCriteria & SqlCriteria::addCondition(QString condition, QString separator)
@@ -19,7 +20,10 @@ SqlCriteria & SqlCriteria::addCondition(QString condition, QString separator)
 
 QString SqlCriteria::buildSelectQueryAsString()
 {
-	QString q = "SELECT * FROM " + this->table();
+	QString q = "SELECT "+this->select()+" FROM " + this->table();
+	if(!this->join().isEmpty()){
+		q += " " + this->join();
+	}
 	if(!this->where().isEmpty()){
 		q += " WHERE " + this->where();
 	}
@@ -30,7 +34,7 @@ QString SqlCriteria::buildSelectQueryAsString()
 	
 	if(!this->limit().isEmpty()){
 		q += " LIMIT " + this->limit();
-		if(!this->order().isEmpty()){
+		if(!this->from().isEmpty()){
 			q += ", " + this->from();
 		}
 	}

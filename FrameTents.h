@@ -2,6 +2,7 @@
 #define FRAMETENTS_H
 
 #include <QFrame>
+#include <QTreeWidget>
 #include "MainFrame.h"
 
 namespace Ui {
@@ -19,6 +20,13 @@ public:
 public slots:
 	void onAddClicked();
 	void refreshData();
+	
+private slots:
+	void on_actionListEdit_triggered();
+	void on_actionListPrint_triggered();
+	void on_actionListDelete_triggered();
+	
+	void on_list_itemActivated(QTreeWidgetItem* item, int column);
 	
 private:
     Ui::FrameTents *ui;

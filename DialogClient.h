@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QDate>
 #include <QPushButton>
+#include <QStandardItemModel>
 #include "Client.h"
 #include "Location.h"
 #include "Vehicle.h"
@@ -20,6 +21,8 @@ public:
     explicit DialogClient(Client *_client, Location::Type _type = Location::TENT, QWidget *parent = 0);
     ~DialogClient();
 	
+	bool isVehicleRowEmpty(int row);
+	
 public slots:
 	void updateOutDate(int days);
 	void updateDaysCount();
@@ -30,6 +33,8 @@ public slots:
 private slots:
 	void onButtonBoxClicked(QAbstractButton*);
 	void refreshWidgets();
+	void on_buttonVehicleAdd_clicked();
+	void on_buttonVehicleDelete_clicked();
 	
 private:
 	Client *client;

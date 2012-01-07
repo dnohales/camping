@@ -16,11 +16,27 @@ QSqlRecord ActiveRecord::record() const
 	return this->_record;
 }
 
+QStringList ActiveRecord::validFieldsList()
+{
+	QSqlRecord record = this->record();
+	QStringList list;
+	
+	for(int i = 0; i < record.count(); i++){
+		QString fieldName = this->record().fieldName(i);
+		if(fieldName != "id" && fieldName[0] != '_'){
+			list.append(fieldName);
+		}
+	}
+	
+	return list;
+}
+
 void ActiveRecord::save(bool validate)
 {	
 	QString q("");
 	QSqlQuery query(Db());
-	uint lastId;
+	int lastId;
+	QStringList fields(validFieldsList());
 	
 	if(this->isTemplate()){
 		throw ActiveRecordException(QObject::tr("Una ActiveRecord plantilla es solo para fabricar otros ActiveRecord's."));
@@ -36,41 +52,36 @@ void ActiveRecord::save(bool validate)
 		this->setCreateTime(QDateTime::currentDateTime());
 		q += QString("INSERT INTO %1 (").arg(this->tableName());
 		
-		for(int i = 0; i < this->record().count(); i++){
-			if(this->record().fieldName(i) != "id"){
-				q += QString("%1, ").arg(this->record().fieldName(i));
-			}
+		for(int i = 0; i < fields.count(); i++){
+			q += QString("%1, ").arg(fields[i]);
 		}
 		q.truncate(q.length() - 2);
 		
 		q += ") VALUES (";
-		for(int i = 0; i < this->record().count(); i++){
-			if(this->record().fieldName(i) != "id"){
-				q += QString(":%1, ").arg(this->record().fieldName(i));
-			}
+		for(int i = 0; i < fields.count(); i++){
+			q += QString(":%1, ").arg(fields[i]);
 		}
 		q.truncate(q.length() - 2);
 		q += ")";
 	} else{
 		q += QString("UPDATE %1 SET ").arg(this->tableName());
 		
-		for(int i = 0; i < this->record().count(); i++){
-			if(this->record().fieldName(i) != "id"){
-				q += QString("%1 = :%1, ").arg(this->record().fieldName(i));
-			}
+		for(int i = 0; i < fields.count(); i++){
+			q += QString("%1 = :%1, ").arg(fields[i]);
 		}
 		q.truncate(q.length() - 2);
-		q += " WHERE id = "+this->getId();
+		q += " WHERE id = :id";
 	}
 	
 	query.prepare(q);
-	for(int i = 0; i < this->record().count(); i++){
-		if(this->record().fieldName(i) != "id"){
-			query.bindValue(QString(":")+this->record().fieldName(i), this->record().value(i));
-		}
+	for(int i = 0; i < fields.count(); i++){
+		query.bindValue(QString(":")+fields[i], this->record().value(fields[i]));
+	}
+	if(!this->isNew()){
+		query.bindValue(":id", this->getId());
 	}
 	query.exec();
-	qDebug() << QObject::tr("Salvando ActiveRecord: Consulta SQL: ") + query.executedQuery();
+	printQueryDebug(4, query);
 	
 	if(query.lastError().isValid()){
 		throw ActiveRecordException(QObject::tr("Ocurrió un error al guardar el registro: %1.").arg(query.lastError().text()));
@@ -78,7 +89,7 @@ void ActiveRecord::save(bool validate)
 		if(!this->isNew()){
 			lastId = this->getId();
 		} else{
-			lastId = query.lastInsertId().toUInt();
+			lastId = query.lastInsertId().toInt();
 		}
 		query.clear();
 		query.prepare(QString("SELECT * FROM %1 WHERE id = :id").arg(this->tableName()));
@@ -154,6 +165,56 @@ void ActiveRecord::setFieldValue(QString name, QVariant value)
 QString ActiveRecord::tr(const char *sourceText, const char *comment, int n)
 {
 	return QObject::tr(sourceText, comment, n);
+}
+
+
+void ActiveRecord::deleteById(int id)
+{
+	QSqlQuery query = Db().exec("DELETE FROM "+this->tableName()+" WHERE id = "+QString::number(id));
+	printQueryDebug(3, query);
+}
+
+void ActiveRecord::deleteRecord()
+{
+	this->deleteById(this->getId());
+}
+
+void ActiveRecord::printQueryDebug(int type, QSqlQuery &query)
+{
+	QString msg;
+	QMapIterator<QString, QVariant> i(query.boundValues());
+	
+	switch(type){
+	case 1:
+		qDebug() << "[AR: Finding single]" << query.lastQuery();
+		break;
+	case 2:
+		qDebug() << "[AR: Finding collection]" << query.lastQuery();
+		break;
+	case 3:
+		qDebug() << "[AR: Delete]" << query.lastQuery();
+		break;
+	case 4:
+		qDebug() << "[AR: Update]" << query.lastQuery();
+		break;
+	default:
+		qDebug() << "[AR: Other]" << query.lastQuery();
+		break;
+	}
+	
+	msg = "";
+	while(i.hasNext()){
+		i.next();
+		msg += i.key() + " => " + i.value().toString() + "\n          ";
+	}
+	
+	if(!msg.isEmpty()){
+		qDebug("%s %s", "  [BINDS]", qPrintable(msg.trimmed()));
+	}
+	
+	if(query.lastError().isValid()){
+		qDebug() << "  [ERROR]" << query.lastError().text();
+	}
 }
 
 
