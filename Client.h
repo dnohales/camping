@@ -12,6 +12,10 @@ class Client;
 class ClientCollection : public QList<Client>
 {
 public:
+	/**
+	 * Devuelve una lista de IDs de los clientes en esta colección que están ocupando
+	 * la ubicación "loc" y serán huéspedes en la fecha "date".
+	 */
 	QList<int> findByLocationAndDate(const Location &loc, const QDate &date);
 };
 
@@ -29,6 +33,7 @@ public:
 	int getHousingDays() const;
 	bool isHousing() const;
 	VehicleCollection getVehicles();
+	ClientCollection getConflictingClients();
 	
 	ACTIVE_RECORD_FIELD_STRING(getName, setName, "name")
 	ACTIVE_RECORD_FIELD_STRING(getSurame, setSurame, "surname")
@@ -45,24 +50,6 @@ public:
 	
 protected:
 	void init();
-};
-
-class ClientModel : public QAbstractListModel
-{
-     Q_OBJECT
-
-public:
-	ClientModel(const ClientCollection &col, QObject *parent = 0)
-	 : QAbstractListModel(parent), collection(col) {}
-	
-	int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	int columnCount(const QModelIndex &parent) const;
-	QVariant data(const QModelIndex &index, int role) const;
-	QVariant headerData(int section, Qt::Orientation orientation,
-	                         int role = Qt::DisplayRole) const;
-	
-private:
-	ClientCollection collection;
 };
 
 #endif // CLIENT_H

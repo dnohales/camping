@@ -33,6 +33,8 @@ DialogClient::DialogClient(Client *_client, Location::Type _type, QWidget *paren
 	ui->vehicles->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Patente")));
 	ui->vehicles->setHorizontalHeaderItem(2, new QTableWidgetItem(tr("Tamaño")));
 	
+	ui->labelLocationNote->hide();
+	
 	this->refreshWidgets();
 }
 
@@ -118,6 +120,9 @@ void DialogClient::onButtonBoxClicked(QAbstractButton *button)
 
 void DialogClient::accept()
 {
+	ClientCollection conflicts;
+	QString conflictMsg;
+	
 	try{
 		Db().transaction();
 		client->setName( this->ui->editName->text() );
@@ -144,6 +149,27 @@ void DialogClient::accept()
 			loc.save();
 		}
 		client->setLocation(loc);
+		
+		conflicts = client->getConflictingClients();
+		if(conflicts.count() > 0){
+			conflictMsg = tr("Ya hay clientes ocupando la ubicación <b>%1</b> entre las fechas estipuladas, los clientes son:<br /><br />").arg(loc.getName());
+			for(int i = 0; i < conflicts.count(); i++){
+				Client conflictClient(conflicts.at(i));
+				conflictMsg += tr("<b>%1</b>: del %2 al %3<br />").arg(
+					conflictClient.getFullName(),
+					conflictClient.getDateIn().toString("d 'de' MMMM"),
+					conflictClient.getDateOut().toString("d 'de' MMMM")
+				);
+			}
+			conflictMsg += tr("<br />¿Desea continuar de todas formas?");
+			QMessageBox conflictDialog(QMessageBox::Question, tr("Conflictos entre clientes"), conflictMsg, QMessageBox::Yes|QMessageBox::No);
+			conflictDialog.setTextFormat(Qt::RichText);
+			if( conflictDialog.exec() == QMessageBox::No ){
+				Db().rollback();
+				return;
+			}
+		}
+		
 		client->save();
 		
 		for(int i=0; i < ui->vehicles->rowCount(); i++){
@@ -232,5 +258,14 @@ void DialogClient::on_buttonVehicleDelete_clicked()
 				}
 			}
 		}
+	}
+}
+
+void DialogClient::on_editLocation_editingFinished()
+{
+    if(Location().findByNameType(ui->editLocation->text(), this->type).isNew()){
+		ui->labelLocationNote->show();
+	} else{
+		ui->labelLocationNote->hide();
 	}
 }

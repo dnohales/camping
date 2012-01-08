@@ -70,6 +70,7 @@ void FrameDorms::refreshData()
 	dateini = ui->comboMonth->itemData(ui->comboMonth->currentIndex()).toDate();
 	dateend = ui->comboMonth->itemData(ui->comboMonth->currentIndex()).toDate().addMonths(1).addDays(-1);
 	
+	//Se busca los clientes que están entre un mes y otro y ocupan dormis
 	SqlCriteria criteria;
 	criteria.setOrder("in_time");
 	criteria.setSelect("client.*, location.type AS _location_type");
@@ -89,9 +90,11 @@ void FrameDorms::refreshData()
 	ui->table->setColumnCount(dormis.count());
 	
 	for(int i = 0; i < dormis.count(); i++){
+		//El encabezado tiene como dato de item el ID del dormi.
 		ui->table->setHorizontalHeaderItem(i, new QTableWidgetItem(dormis.at(i).getName()));
 		ui->table->horizontalHeaderItem(i)->setData(Qt::UserRole, dormis.at(i).getId());
 		
+		//Se llenan los datos de un dormi
 		for(int day = 0; day < dateend.day(); day++){
 			QDate dateToCheck(dateini.addDays(day));
 			QList<int> indexList = clist.findByLocationAndDate(dormis.at(i), dateToCheck);
@@ -99,6 +102,9 @@ void FrameDorms::refreshData()
 			QString itemText;
 			QString itemData;
 			
+			//El dato del item puede ser:
+			//   0: Está vacío.
+			//   <Lista de IDs separados por coma>: Dichos clientes ocupan ese dormi, ese día.
 			if(indexList.count() == 0){
 				item->setBackgroundColor(qRgb(200,255,200));
 				item->setText("");

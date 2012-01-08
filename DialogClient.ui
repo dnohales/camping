@@ -153,6 +153,9 @@
      <property name="fieldGrowthPolicy">
       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
      </property>
+     <property name="verticalSpacing">
+      <number>6</number>
+     </property>
      <item row="0" column="0">
       <widget class="QLabel" name="labelLocation">
        <property name="text">
@@ -187,7 +190,7 @@
        </item>
       </layout>
      </item>
-     <item row="1" column="0">
+     <item row="2" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
         <string>Número de personas</string>
@@ -197,10 +200,10 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item row="2" column="1">
       <widget class="QSpinBox" name="spinPeopleNum"/>
      </item>
-     <item row="2" column="0">
+     <item row="3" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
         <string>Número de carpas</string>
@@ -210,8 +213,34 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QSpinBox" name="spinTentNum"/>
+     <item row="3" column="1">
+      <widget class="QSpinBox" name="spinTentNum">
+       <property name="font">
+        <font>
+         <italic>false</italic>
+        </font>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="labelLocationNote">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 128, 128);
+font: oblique 9pt;</string>
+       </property>
+       <property name="lineWidth">
+        <number>1</number>
+       </property>
+       <property name="text">
+        <string>La ubicación no existe en el sistema, se creará.</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::AutoText</enum>
+       </property>
+       <property name="margin">
+        <number>0</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

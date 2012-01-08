@@ -16,8 +16,8 @@ void Location::init()
 Location Location::findByNameType(QString name, Location::Type type)
 {
 	return this->find(SqlCriteria()
-	                  .addCondition("name = :name AND type = :type")
-	                  .bindValue(":name", name)
+	                  .addCondition("name LIKE :name AND type = :type")
+	                  .bindValue(":name", name.simplified())
 	                  .bindValue(":type", type)
 	                 );
 }

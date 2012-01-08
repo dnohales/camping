@@ -84,6 +84,12 @@ void FrameTents::refreshData()
 			} else{
 				item->setData(0, Qt::DecorationRole, QIcon(":/imgs/green-arrow.svg"));
 			}
+			
+			if(l.getType() == Location::TENT){
+				item->setData(3, Qt::DecorationRole, QIcon(":/imgs/tent.png"));
+			} else{
+				item->setData(3, Qt::DecorationRole, QIcon(":/imgs/dorm.png"));
+			}
 		}
 	}
 	
@@ -122,10 +128,10 @@ void FrameTents::on_actionListDelete_triggered()
 	}
 }
 
-void FrameTents::on_list_itemActivated(QTreeWidgetItem* item, int column)
+void FrameTents::on_list_itemActivated(QTreeWidgetItem* item, int /*column*/)
 {
     Client c( Client().findById(item->data(0, Qt::UserRole).toInt()) );
-	DialogClient dialog(&c, Location::TENT);
+	DialogClient dialog(&c, c.getLocation().getType());
 	dialog.exec();
 	if( dialog.result() == DialogClient::Accepted ){
 		this->requestRefresh();

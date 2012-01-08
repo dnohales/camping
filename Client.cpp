@@ -58,62 +58,18 @@ VehicleCollection Client::getVehicles()
 	return Vehicle().findAll(SqlCriteria().addCondition("client_id = "+QString::number(this->getId())));
 }
 
-int ClientModel::rowCount(const QModelIndex &) const
+ClientCollection Client::getConflictingClients()
 {
-	return collection.count();
-}
-
-int ClientModel::columnCount(const QModelIndex &) const
-{
-	return 5;
-}
-
-QVariant ClientModel::data(const QModelIndex &index, int role) const
-{
-	if (!index.isValid())
-		 return QVariant();
-
-	 if (index.row() >= collection.size())
-		 return QVariant();
-
-	 if (role == Qt::DisplayRole){
-		 Client c(collection.at(index.row()));
-		 switch(index.column()){
-		 case 0:
-			 return c.getFullName();
-		 case 1:
-			 return c.getDateIn().toString("dd/MM/yyyy");
-		 case 2:
-			 return c.getDateOut().toString("dd/MM/yyyy");
-		 case 3:
-			 return c.getLocation().getName();
-		 case 4:
-			 return QString::number(c.getPeopleNum()) + "/" + QString::number(c.getTentNum());
-		 }
-	 }
-	 else
-		 return QVariant();
-}
-
-QVariant ClientModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	if (role != Qt::DisplayRole)
-		 return QVariant();
-
-	if (orientation == Qt::Horizontal){
-		switch(section){
-		case 0:
-			return tr("Nombre");
-		case 1:
-			return tr("Fecha de entrada");
-		case 2:
-			return tr("Fecha de salida");
-		case 3:
-			return tr("Ubicación");
-		case 4:
-			return tr("Cantidad personas/carpas");		
-		}
-	}
+	SqlCriteria criteria;
+	criteria.addCondition("id != :id AND location_id = :location_id AND (in_time BETWEEN :di1 AND :do OR (in_time <= :di2 AND out_time > :di3))");
+	criteria.bindValue(":id", this->getId());
+	criteria.bindValue(":location_id", this->getLocationId());
+	criteria.bindValue(":di1", this->getDateIn());
+	criteria.bindValue(":do", this->getDateOut().addDays(-1));
+	criteria.bindValue(":di2", this->getDateIn());
+	criteria.bindValue(":di3", this->getDateIn());
+	
+	return Client().findAll(criteria);
 }
 
 QList<int> ClientCollection::findByLocationAndDate(const Location &loc, const QDate &date)
@@ -129,7 +85,4 @@ QList<int> ClientCollection::findByLocationAndDate(const Location &loc, const QD
 	
 	return indexList;
 }
-
-
-
 

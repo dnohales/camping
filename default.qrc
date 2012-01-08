@@ -10,5 +10,7 @@
         <file>green-arrow.svg</file>
         <file>red-arrow.svg</file>
         <file>delete.svg</file>
+        <file>dorm.png</file>
+        <file>tent.png</file>
     </qresource>
 </RCC>

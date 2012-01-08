@@ -36,6 +36,8 @@ private slots:
 	void on_buttonVehicleAdd_clicked();
 	void on_buttonVehicleDelete_clicked();
 	
+	void on_editLocation_editingFinished();
+	
 private:
 	Client *client;
 	Location::Type type;
