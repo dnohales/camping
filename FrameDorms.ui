@@ -93,70 +93,28 @@
       <item>
        <widget class="QComboBox" name="comboMonth">
         <property name="currentIndex">
-         <number>0</number>
+         <number>-1</number>
         </property>
-        <item>
-         <property name="text">
-          <string>Noviembre</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Diciembre</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Enero</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Febrero</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Marzo</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Abril</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Junio</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Julio</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Agosto</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Septiembre</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Octubre</string>
-         </property>
-        </item>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="table"/>
+    <widget class="QTableWidget" name="table">
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <attribute name="verticalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+    </widget>
    </item>
   </layout>
  </widget>

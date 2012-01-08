@@ -11,6 +11,8 @@ class Client;
 
 class ClientCollection : public QList<Client>
 {
+public:
+	QList<int> findByLocationAndDate(const Location &loc, const QDate &date);
 };
 
 class Client : public ActiveRecord

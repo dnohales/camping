@@ -27,6 +27,10 @@ void FrameTents::onAddClicked()
 	Client c(false);
 	DialogClient dialog(&c, Location::TENT);
 	dialog.exec();
+	
+	if(dialog.result() == DialogClient::Accepted){
+		this->requestRefresh();
+	}
 }
 
 void FrameTents::refreshData()
@@ -49,9 +53,9 @@ void FrameTents::refreshData()
 	while(i.hasNext()){
 		Client c = i.next();
 		Location l = c.getLocation();
-		if( l.getType() == Location::TENT && (this->ui->comboClientStatus->currentIndex() == 0 ||
+		if( this->ui->comboClientStatus->currentIndex() == 0 ||
 		   (this->ui->comboClientStatus->currentIndex() == 1 && c.isHousing()) ||
-		   (this->ui->comboClientStatus->currentIndex() == 2 && !c.isHousing()))
+		   (this->ui->comboClientStatus->currentIndex() == 2 && !c.isHousing())
 		){
 			QString tooltip;
 			QTreeWidgetItem *item = new QTreeWidgetItem(this->ui->list);
@@ -122,7 +126,8 @@ void FrameTents::on_list_itemActivated(QTreeWidgetItem* item, int column)
 {
     Client c( Client().findById(item->data(0, Qt::UserRole).toInt()) );
 	DialogClient dialog(&c, Location::TENT);
-	if( dialog.exec() == DialogClient::Accepted ){
+	dialog.exec();
+	if( dialog.result() == DialogClient::Accepted ){
 		this->requestRefresh();
 	}
 }

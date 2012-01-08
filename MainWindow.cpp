@@ -21,9 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->connect(this->_searchTimer, SIGNAL(timeout()), SLOT(onSearchTimeout()));
 	this->connect(App(), SIGNAL(initializedChanged()), SLOT(refreshInitializedState()));
 	this->connect(this, SIGNAL(fileOpened(QString)), SLOT(onFileOpened(QString)));
-	this->connect(this, SIGNAL(textSearched(QString)), SLOT(refreshData()));
-	this->connect(ui->frameTents, SIGNAL(refreshed()), SLOT(refreshData()));
-	this->connect(ui->frameDorms, SIGNAL(refreshed()), SLOT(refreshData()));
+	this->connect(this, SIGNAL(textSearched(QString)), SLOT(requestRefresh()));
+	this->connect(ui->frameTents, SIGNAL(refreshed()), SLOT(requestRefresh()));
+	this->connect(ui->frameDorms, SIGNAL(refreshed()), SLOT(requestRefresh()));
 	this->connect(this, SIGNAL(textSearched(QString)), SLOT(requestRefresh()));
 	
 	if(!App()->config()->lastFilename().isEmpty()){
@@ -185,19 +185,14 @@ void MainWindow::showDorms()
 	}
 }
 
-void MainWindow::refreshData()
-{	
-	if(this->ui->frameTents->isVisible() && !this->ui->frameDorms->isRefreshed()){
-		this->ui->frameTents->refreshData();
-	}
-	
-	if(this->ui->frameDorms->isVisible() && !this->ui->frameDorms->isRefreshed()){
-		this->ui->frameDorms->refreshData();
-	}
-}
-
 void MainWindow::requestRefresh()
 {
 	this->ui->frameTents->requestRefresh();
 	this->ui->frameDorms->requestRefresh();
+	
+	if(this->ui->frameTents->isVisible()){
+		this->ui->frameTents->refreshData();
+	} else{
+		this->ui->frameDorms->refreshData();
+	}
 }

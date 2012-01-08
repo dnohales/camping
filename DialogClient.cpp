@@ -87,14 +87,7 @@ void DialogClient::refreshWidgets()
 	this->ui->editTel->setText(client->getTel());
 	this->ui->editCel->setText(client->getCel());
 	
-	if(client->isNew()){
-		this->ui->editDateIn->setDate(QDate::currentDate());
-		this->ui->spinDaysIn->setValue(1);
-	}
-	
-	while(ui->vehicles->rowCount() > 0){
-		ui->vehicles->removeRow(0);
-	}
+	ui->vehicles->setRowCount(0);
 	
 	if(!client->isNew()){
 		VehicleCollection vlist = client->getVehicles();

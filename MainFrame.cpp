@@ -24,8 +24,10 @@ void MainFrame::refreshData()
 
 void MainFrame::requestRefresh()
 {
-	this->setRefreshed(false);
-	emit refreshed();
+	if(this->isRefreshed() == true){
+		this->setRefreshed(false);
+		emit refreshed();
+	}
 }
 
 SqlCriteria MainFrame::baseCriteria()

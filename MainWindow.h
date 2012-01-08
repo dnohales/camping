@@ -30,7 +30,6 @@ public slots:
 	void refreshInitializedState();
 	void showTents();
 	void showDorms();
-	void refreshData();
 	void requestRefresh();
 	
 signals:

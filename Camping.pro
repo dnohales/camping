@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     SqlCriteria.cpp \
     Vehicle.cpp \
     DialogClient.cpp \
-    MainFrame.cpp
+    MainFrame.cpp \
+    DialogClientSelector.cpp
 
 HEADERS  += MainWindow.h \
     FrameTents.h \
@@ -39,12 +40,14 @@ HEADERS  += MainWindow.h \
     common.h \
     Vehicle.h \
     DialogClient.h \
-    MainFrame.h
+    MainFrame.h \
+    DialogClientSelector.h
 
 FORMS    += MainWindow.ui \
     FrameTents.ui \
     FrameDorms.ui \
-    DialogClient.ui
+    DialogClient.ui \
+    DialogClientSelector.ui
 
 RESOURCES += \
     default.qrc

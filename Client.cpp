@@ -8,6 +8,8 @@ QString Client::tableName()
 void Client::init()
 {
 	if(this->isNew()){
+		this->setDateIn(QDate::currentDate());
+		this->setDateOut(QDate::currentDate().addDays(1));
 		this->setPeopleNum(0);
 		this->setTentNum(0);
 	}
@@ -112,6 +114,20 @@ QVariant ClientModel::headerData(int section, Qt::Orientation orientation, int r
 			return tr("Cantidad personas/carpas");		
 		}
 	}
+}
+
+QList<int> ClientCollection::findByLocationAndDate(const Location &loc, const QDate &date)
+{
+	QList<int> indexList;
+	
+	for(int i = 0; i < this->count(); i++){
+		Client c(this->at(i));
+		if(c.getLocationId() == loc.getId() && c.getDateIn() <= date && c.getDateOut() > date){
+			indexList.append(i);
+		}
+	}
+	
+	return indexList;
 }
 
 

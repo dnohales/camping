@@ -3,6 +3,7 @@
 
 #include <QFrame>
 #include "MainFrame.h"
+#include <QTableWidget>
 
 namespace Ui {
     class FrameDorms;
@@ -16,13 +17,22 @@ public:
     explicit FrameDorms(QWidget *parent = 0);
     ~FrameDorms();
 	
+	void refreshComboMonths();
+	
 public slots:
 	void refreshData();
 
 private slots:
+	void onMenuCreate();
+	void onMenuEdit();
+	void onMenuPrint();
+	void onMenuDelete();
 	void on_buttonAdd_clicked();
+	void on_table_itemActivated(QTableWidgetItem* item);
+	void on_table_customContextMenuRequested(QPoint pos);
 	
 private:
+	QTableWidgetItem *selectedItem;
     Ui::FrameDorms *ui;
 };
 
