@@ -13,4 +13,8 @@
         <file>dorm.png</file>
         <file>tent.png</file>
     </qresource>
+    <qresource prefix="/html">
+        <file alias="client-collection.html">ClientCollectionDefault.html</file>
+        <file alias="receipt.html">ReceiptDefault.html</file>
+    </qresource>
 </RCC>

@@ -5,6 +5,8 @@
 #include "main.h"
 #include <QDebug>
 #include <QMessageBox>
+#include <QPrintDialog>
+#include <QtWebKit/QWebView>
 
 FrameTents::FrameTents(QWidget *parent) :
     MainFrame(parent),
@@ -25,12 +27,7 @@ FrameTents::~FrameTents()
 void FrameTents::onAddClicked()
 {
 	Client c(false);
-	DialogClient dialog(&c, Location::TENT);
-	dialog.exec();
-	
-	if(dialog.result() == DialogClient::Accepted){
-		this->requestRefresh();
-	}
+	this->doCreateClient(c, Location::TENT);
 }
 
 void FrameTents::refreshData()
@@ -44,14 +41,12 @@ void FrameTents::refreshData()
 		criteria.bindValue(":loctype", Location::TENT);
 	}
 	
-	ClientCollection col;
-	col = Client().findAll(criteria);
-	QListIterator<Client> i(col);
+	_currentList = Client().findAll(criteria);
 	
 	this->ui->list->clear();
 	
-	while(i.hasNext()){
-		Client c = i.next();
+	for(int i = 0; i < _currentList.count(); i++){
+		Client c(_currentList.at(i));
 		Location l = c.getLocation();
 		if( this->ui->comboClientStatus->currentIndex() == 0 ||
 		   (this->ui->comboClientStatus->currentIndex() == 1 && c.isHousing()) ||
@@ -108,7 +103,11 @@ void FrameTents::on_actionListEdit_triggered()
 
 void FrameTents::on_actionListPrint_triggered()
 {
-    
+	QList<QTreeWidgetItem *> sel = this->ui->list->selectedItems();
+	if(sel.count() > 0){
+		Client c(Client().findById(sel.at(0)->data(0, Qt::UserRole).toInt()));
+		this->doPrintReceipt(c);
+	}
 }
 
 void FrameTents::on_actionListDelete_triggered()
@@ -116,24 +115,17 @@ void FrameTents::on_actionListDelete_triggered()
 	QList<QTreeWidgetItem *> sel = this->ui->list->selectedItems();
 	if(sel.count() > 0){
 		Client c(Client().findById(sel.at(0)->data(0, Qt::UserRole).toInt()));
-		if(QMessageBox::question(
-		            this,
-		            tr("Borrando cliente"),
-		            tr("¿Estás seguro que quieres borrar a %1?").arg(c.getFullName()),
-		            QMessageBox::Yes, QMessageBox::No)
-		    == QMessageBox::Yes ){
-			c.deleteRecord();
-			this->requestRefresh();
-		}
+		this->doDeleteClient(c);
 	}
 }
 
 void FrameTents::on_list_itemActivated(QTreeWidgetItem* item, int /*column*/)
 {
     Client c( Client().findById(item->data(0, Qt::UserRole).toInt()) );
-	DialogClient dialog(&c, c.getLocation().getType());
-	dialog.exec();
-	if( dialog.result() == DialogClient::Accepted ){
-		this->requestRefresh();
-	}
+	this->doEditClient(c);
+}
+
+ClientCollection FrameTents::currentList()
+{
+	return _currentList;
 }

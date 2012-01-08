@@ -1,5 +1,9 @@
 #include "MainFrame.h"
+#include "main.h"
+#include "CampingApplication.h"
 #include <QDebug>
+#include <QMessageBox>
+#include "DialogClient.h"
 
 MainFrame::MainFrame(QWidget *parent) :
     QFrame(parent)
@@ -52,3 +56,40 @@ void MainFrame::setRefreshed(bool r)
 {
 	this->_refreshed = r;
 }
+
+void MainFrame::doCreateClient(Client &c, Location::Type type)
+{
+	DialogClient dialog(&c, type);
+	dialog.exec();
+	if(dialog.result() == DialogClient::Accepted){
+		this->requestRefresh();
+	}
+}
+
+void MainFrame::doEditClient(Client &c)
+{
+	DialogClient dialog(&c, c.getLocation().getType());
+	dialog.exec();
+	if(dialog.result() == DialogClient::Accepted){
+		this->requestRefresh();
+	}
+}
+
+void MainFrame::doPrintReceipt(Client &c)
+{
+	App()->printHtml(c.getReceiptHtml(), this);
+}
+
+void MainFrame::doDeleteClient(Client &c)
+{
+	if(QMessageBox::question(
+	            this,
+	            tr("Borrando cliente"),
+	            tr("¿Estás seguro que quieres borrar a %1?").arg(c.getFullName()),
+	            QMessageBox::Yes, QMessageBox::No)
+	    == QMessageBox::Yes ){
+		c.deleteRecord();
+		this->requestRefresh();
+	}
+}
+

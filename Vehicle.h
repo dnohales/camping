@@ -8,6 +8,8 @@ class Vehicle;
 
 class VehicleCollection : public QList<Vehicle>
 {
+public:
+	QString toHtml();
 };
 
 class Vehicle : public ActiveRecord

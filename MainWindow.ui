@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="default.qrc">
+    <normaloff>:/imgs/tent.png</normaloff>:/imgs/tent.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0,0">
     <property name="spacing">
@@ -325,8 +329,7 @@ de camping nuevo</string>
     <addaction name="actionCarpas_y_dormis"/>
     <addaction name="actionEditar_plantilla_para_el_recibo_del_cliente"/>
     <addaction name="separator"/>
-    <addaction name="actionLista_de_hu_spedes"/>
-    <addaction name="actionLista_de_vencidos"/>
+    <addaction name="actionPrintClients"/>
    </widget>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
@@ -383,34 +386,27 @@ de camping nuevo</string>
     <string>Configurar carpas y dormis...</string>
    </property>
   </action>
-  <action name="actionVer_carpas">
-   <property name="text">
-    <string>Ver carpas</string>
-   </property>
-  </action>
-  <action name="actionVer_dormis">
-   <property name="text">
-    <string>Ver dormis</string>
-   </property>
-  </action>
   <action name="actionEditar_plantilla_para_el_recibo_del_cliente">
    <property name="text">
     <string>Editar plantilla para el recibo del cliente</string>
    </property>
   </action>
-  <action name="actionLista_de_hu_spedes">
+  <action name="actionPrintClients">
    <property name="text">
-    <string>Imprimir lista de huéspedes...</string>
-   </property>
-  </action>
-  <action name="actionLista_de_vencidos">
-   <property name="text">
-    <string>Imprimir lista de vencidos...</string>
+    <string>Imprimir lista actual...</string>
    </property>
   </action>
   <action name="actionAcerca_de_Qt">
    <property name="text">
     <string>Acerca de Qt...</string>
+   </property>
+  </action>
+  <action name="actionPrinterConfig">
+   <property name="text">
+    <string>Configuración de la impresora</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
    </property>
   </action>
  </widget>
@@ -526,22 +522,6 @@ de camping nuevo</string>
     <hint type="destinationlabel">
      <x>126</x>
      <y>135</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionAcerca_de</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>onAbout()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>272</x>
-     <y>225</y>
     </hint>
    </hints>
   </connection>

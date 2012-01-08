@@ -56,6 +56,15 @@ void Location::setType(Location::Type value)
 	this->setFieldValue("type", (Location::Type)value);
 }
 
+QString Location::getReadableName()
+{
+	if(this->getType() == Location::DORM){
+		return "Dormi Nº " + this->getName();
+	} else{
+		return this->getName();
+	}
+}
+
 QStringList LocationCollection::toNameList()
 {
 	QStringList list;
@@ -66,6 +75,3 @@ QStringList LocationCollection::toNameList()
 	
 	return list;
 }
-
-
-

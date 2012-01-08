@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include <QSqlDatabase>
+#include <QPrinter>
 #include "CampingConfig.h"
 
 class CampingConfig;
@@ -18,6 +19,8 @@ public:
 	
     CampingApplication(int &argc, char **argv, int = QT_VERSION);
 	CampingConfig *config();
+	QPrinter *printer();
+	void printHtml(QString html, QWidget *parent = 0);
 	void initNewDatabase(QString filename);
 	void initExistentDatabase(QString filename);
 	void checkDatabase(QSqlDatabase &db);
@@ -32,6 +35,7 @@ signals:
 public slots:
 	
 private:
+	QPrinter _printer;
 	CampingConfig _config;
 	bool _initialized;
 };

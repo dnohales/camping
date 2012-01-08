@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
     CampingApplication a(argc, argv);
 	
 	QTextCodec::setCodecForTr( QTextCodec::codecForName("utf8") );
+	QTextCodec::setCodecForCStrings( QTextCodec::codecForName("utf8") );
 	
 	if(!TEST){
 		MainWindow w;
@@ -26,7 +27,7 @@ int test()
 {
 	App()->initExistentDatabase("jaja.camp");
 	//LocationCollection loc = Location().findAll();
-	qDebug() << Location().findAllByType(Location::TENT).at(0).getName();
+	//qDebug() << Location().findAllByType(Location::TENT).at(0).getName();
 	
 	//qDebug() << loc.at(0).getName();
 	/*try{

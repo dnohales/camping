@@ -40,6 +40,7 @@ private slots:
 	void onFileOpened(QString filename);
 	void on_actionAcerca_de_triggered();
 	void on_actionAcerca_de_Qt_triggered();
+	void on_actionPrintClients_triggered();
 	
 private:
 	void openExistentFile(QString filename);

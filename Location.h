@@ -30,6 +30,7 @@ public:
 	ACTIVE_RECORD_FIELD_STRING(getName, setName, "name")
 	Location::Type getType();
 	void setType(Location::Type value);
+	QString getReadableName();
 	
 protected:
 	void init();

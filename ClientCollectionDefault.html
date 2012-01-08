@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Lista de clientes</title>
+<style type="text/css">
+	table {
+		width:100%;
+	}
+	table.datatable {
+		font-size:10pt;
+		border-spacing:0px;
+		border-style:solid;
+		border-width:1px;
+		margin-top:5px;
+		table-layout: fixed;
+	}
+	table.datatable td {
+		border-style:solid;
+		border-width:1px 0px 0px 1px;
+		text-align:center;
+		border-spacing:0;
+		padding: 3px;
+	}
+	table.datatable td:last-child {
+		border-right-width: 1px;
+	}
+	
+	table.datatable tr:last-child td {
+		border-bottom-width: 1px;
+	}
+	
+	table.datatable th {
+		border:thin solid;
+		border-width:1px;
+		padding:5px 0px;
+	}
+	h1,h3 {
+		margin:0 0 2px;
+	}
+	h1 {
+		font-size:14pt;
+	}
+	h2{
+		font-size:12pt;
+		text-align:center;
+	}
+	.footer {
+		font-size: 8pt;
+	}
+</style>
+</head>
+<body>
+
+<h1>Camping Aguas Verdes</h1>
+	<table>
+		<tr><td>Yate Fortuna esquina Belgrano<br />Aguas Verdes, Partido de la Costa, Argentina</td>
+		<td style="text-align:right">(02257) 465-685<br />www.alojar.com.ar</td></tr>
+	</table>
+<hr />
+<h2>{titulo}</h2>
+
+{clientes}
+<hr />
+<p class="footer">{pie_de_pagina}</p>
+</body>
+</html>

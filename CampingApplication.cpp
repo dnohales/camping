@@ -1,6 +1,8 @@
 #include "main.h"
 #include "common.h"
 #include "CampingApplication.h"
+#include <QPrintDialog>
+#include <QtWebKit/QWebView>
 
 CampingApplication::CampingApplication(int &argc, char **argv, int version) : 
     QApplication(argc, argv, version)
@@ -15,6 +17,11 @@ CampingApplication::CampingApplication(int &argc, char **argv, int version) :
 CampingConfig *CampingApplication::config()
 {
 	return &this->_config;
+}
+
+QPrinter * CampingApplication::printer()
+{
+	return &this->_printer;
 }
 
 bool CampingApplication::isInitialized() const
@@ -127,5 +134,16 @@ void CampingApplication::execMulti(QSqlDatabase &db, QString &query)
 		}
 	}
 	db.commit();
+}
+
+void CampingApplication::printHtml(QString html, QWidget *parent)
+{
+	QPrintDialog dialog(this->printer(), parent);
+	dialog.exec();
+	
+	QWebView webview(parent);
+	webview.setHtml(html);
+	
+	webview.print(this->printer());
 }
 

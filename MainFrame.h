@@ -4,6 +4,7 @@
 #include <QFrame>
 #include "SqlCriteria.h"
 #include "MainWindow.h"
+#include "Client.h"
 
 class MainFrame : public QFrame
 {
@@ -16,6 +17,11 @@ public:
 	
 	SqlCriteria baseCriteria();
 	bool isRefreshed();
+	
+	void doCreateClient(Client &c, Location::Type type);
+	void doEditClient(Client &c);
+	void doPrintReceipt(Client &c);
+	void doDeleteClient(Client &c);
 	
 protected:
 	void setRefreshed(bool r);

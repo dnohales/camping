@@ -130,17 +130,6 @@ void FrameDorms::refreshData()
 	MainFrame::refreshData();
 }
 
-void FrameDorms::on_buttonAdd_clicked()
-{
-	Client c(false);
-	DialogClient dialog(&c, Location::DORM);
-	dialog.exec();
-	
-	if(dialog.result() == DialogClient::Accepted){
-		this->requestRefresh();
-	}
-}
-
 void FrameDorms::on_table_itemActivated(QTableWidgetItem* item)
 {
     QString id = item->data(Qt::UserRole).toString();
@@ -196,6 +185,12 @@ void FrameDorms::on_table_customContextMenuRequested(QPoint pos)
 	}
 }
 
+void FrameDorms::on_buttonAdd_clicked()
+{
+	Client c(false);
+	this->doCreateClient(c, Location::DORM);
+}
+
 void FrameDorms::onMenuCreate()
 {
 	QDate date( ui->comboMonth->itemData(ui->comboMonth->currentIndex(), Qt::UserRole).toDate().addDays(selectedItem->row())  );
@@ -204,11 +199,7 @@ void FrameDorms::onMenuCreate()
 	c.setDateIn(date);
 	c.setDateOut(date.addDays(1));
 	
-	DialogClient dialog(&c, Location::DORM);
-	dialog.exec();
-	if(dialog.result() == DialogClientSelector::Accepted){
-		this->requestRefresh();
-	}
+	this->doCreateClient(c, Location::DORM);
 }
 
 void FrameDorms::onMenuEdit()
@@ -217,16 +208,18 @@ void FrameDorms::onMenuEdit()
 	selectorDialog.exec();
 	if(selectorDialog.result() == DialogClientSelector::Accepted){
 		Client c( Client().findById(selectorDialog.selectedId()) );
-		DialogClient dialog(&c, Location::DORM);
-		dialog.exec();
-		if(dialog.result() == DialogClientSelector::Accepted){
-			this->requestRefresh();
-		}
+		this->doEditClient(c);
 	}
 }
 
 void FrameDorms::onMenuPrint()
 {
+	DialogClientSelector selectorDialog( selectedItem->data(Qt::UserRole).toString() );
+	selectorDialog.exec();
+	if(selectorDialog.result() == DialogClientSelector::Accepted){
+		Client c( Client().findById(selectorDialog.selectedId()) );
+		this->doPrintReceipt(c);
+	}
 }
 
 void FrameDorms::onMenuDelete()
@@ -235,14 +228,6 @@ void FrameDorms::onMenuDelete()
 	selectorDialog.exec();
 	if(selectorDialog.result() == DialogClientSelector::Accepted){
 		Client c( Client().findById(selectorDialog.selectedId()) );
-		if(QMessageBox::question(
-		            this,
-		            tr("Borrando cliente"),
-		            tr("¿Estás seguro que quieres borrar a %1?").arg(c.getFullName()),
-		            QMessageBox::Yes, QMessageBox::No)
-		    == QMessageBox::Yes ){
-			c.deleteRecord();
-			this->requestRefresh();
-		}
+		this->doDeleteClient(c);
 	}
 }

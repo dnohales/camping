@@ -16,6 +16,7 @@ class FrameTents : public MainFrame
 public:
     explicit FrameTents(QWidget *parent);
     ~FrameTents();
+	ClientCollection currentList();
 
 public slots:
 	void onAddClicked();
@@ -28,6 +29,7 @@ private slots:
 	void on_list_itemActivated(QTreeWidgetItem* item, int column);
 	
 private:
+	ClientCollection _currentList;
     Ui::FrameTents *ui;
 };
 

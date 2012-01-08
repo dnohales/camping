@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql webkit
 
 TARGET = Camping
 TEMPLATE = app
@@ -24,7 +24,9 @@ SOURCES += main.cpp\
     Vehicle.cpp \
     DialogClient.cpp \
     MainFrame.cpp \
-    DialogClientSelector.cpp
+    DialogClientSelector.cpp \
+    DialogAbout.cpp \
+    DialogPrintClients.cpp
 
 HEADERS  += MainWindow.h \
     FrameTents.h \
@@ -41,13 +43,17 @@ HEADERS  += MainWindow.h \
     Vehicle.h \
     DialogClient.h \
     MainFrame.h \
-    DialogClientSelector.h
+    DialogClientSelector.h \
+    DialogAbout.h \
+    DialogPrintClients.h
 
 FORMS    += MainWindow.ui \
     FrameTents.ui \
     FrameDorms.ui \
     DialogClient.ui \
-    DialogClientSelector.ui
+    DialogClientSelector.ui \
+    DialogAbout.ui \
+    DialogPrintClients.ui
 
 RESOURCES += \
     default.qrc
@@ -56,4 +62,10 @@ OTHER_FILES += \
     template.sql \
     search.svg \
     open.svg \
-    new.svg
+    new.svg \
+    tent.png \
+    red-arrow.svg \
+    green-arrow.svg \
+    dorm.png \
+    ReceiptDefault.html \
+    ClientCollectionDefault.html

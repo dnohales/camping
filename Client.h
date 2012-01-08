@@ -17,6 +17,7 @@ public:
 	 * la ubicación "loc" y serán huéspedes en la fecha "date".
 	 */
 	QList<int> findByLocationAndDate(const Location &loc, const QDate &date);
+	QString toHtmlDocument(QString title = "Lista de clientes");
 };
 
 class Client : public ActiveRecord
@@ -34,6 +35,7 @@ public:
 	bool isHousing() const;
 	VehicleCollection getVehicles();
 	ClientCollection getConflictingClients();
+	QString getReceiptHtml();
 	
 	ACTIVE_RECORD_FIELD_STRING(getName, setName, "name")
 	ACTIVE_RECORD_FIELD_STRING(getSurame, setSurame, "surname")

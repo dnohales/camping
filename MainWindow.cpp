@@ -2,7 +2,12 @@
 #include "common.h"
 #include "MainWindow.h"
 #include "DialogClient.h"
+#include "DialogAbout.h"
 #include "ui_MainWindow.h"
+#include <QPrintDialog>
+#include <QPageSetupDialog>
+#include <QPrinter>
+#include <QPrintPreviewDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -158,6 +163,8 @@ void MainWindow::showTents()
 	this->ui->frameDorms->setVisible(false);
 	this->ui->pushButtonDorms->setChecked(false);
 	
+	this->ui->actionPrintClients->setEnabled(true);
+	
 	if(!this->ui->frameTents->isRefreshed()){
 		this->ui->frameTents->refreshData();
 	}
@@ -170,6 +177,8 @@ void MainWindow::showDorms()
 	
 	this->ui->frameDorms->setVisible(true);
 	this->ui->pushButtonDorms->setChecked(true);
+	
+	this->ui->actionPrintClients->setEnabled(false);
 	
 	if(!this->ui->frameDorms->isRefreshed()){
 		this->ui->frameDorms->refreshData();
@@ -190,10 +199,16 @@ void MainWindow::requestRefresh()
 
 void MainWindow::on_actionAcerca_de_triggered()
 {
-    
+    DialogAbout dialog(this);
+	dialog.exec();
 }
 
 void MainWindow::on_actionAcerca_de_Qt_triggered()
 {
     CampingApplication::aboutQt();
+}
+
+void MainWindow::on_actionPrintClients_triggered()
+{
+    App()->printHtml(ui->frameTents->currentList().toHtmlDocument("Algo"), this);
 }
