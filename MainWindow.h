@@ -20,25 +20,26 @@ public:
 	
 private:
 	QString getCampingSaveFileName();
+
+signals:
+	void textSearched(QString query);
+	void fileOpened(QString filename);
 	
 public slots:
-	void onSearchTimeout();
-	void onOpenFile();
-	void onNewFile();
-	void onFileSaveAs();
-	void onAbout();
 	void refreshInitializedState();
 	void showTents();
 	void showDorms();
 	void requestRefresh();
 	
-signals:
-	void textSearched(QString query);
-	void fileOpened(QString filename);
-
 private slots:
+	void onSearchTimeout();
+	void onOpenFile();
+	void onNewFile();
+	void onFileSaveAs();
 	void on_lineEditSearch_textChanged(QString );
 	void onFileOpened(QString filename);
+	void on_actionAcerca_de_triggered();
+	void on_actionAcerca_de_Qt_triggered();
 	
 private:
 	void openExistentFile(QString filename);

@@ -325,13 +325,6 @@ de camping nuevo</string>
     <addaction name="actionCarpas_y_dormis"/>
     <addaction name="actionEditar_plantilla_para_el_recibo_del_cliente"/>
     <addaction name="separator"/>
-    <addaction name="actionVer_carpas"/>
-    <addaction name="actionVer_dormis"/>
-   </widget>
-   <widget class="QMenu" name="menuReportes">
-    <property name="title">
-     <string>Reportes</string>
-    </property>
     <addaction name="actionLista_de_hu_spedes"/>
     <addaction name="actionLista_de_vencidos"/>
    </widget>
@@ -343,10 +336,10 @@ de camping nuevo</string>
     <addaction name="actionPedir_soporte"/>
     <addaction name="separator"/>
     <addaction name="actionAcerca_de"/>
+    <addaction name="actionAcerca_de_Qt"/>
    </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuCamping"/>
-   <addaction name="menuReportes"/>
    <addaction name="menuAyuda"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -407,12 +400,17 @@ de camping nuevo</string>
   </action>
   <action name="actionLista_de_hu_spedes">
    <property name="text">
-    <string>Lista de huéspedes</string>
+    <string>Imprimir lista de huéspedes...</string>
    </property>
   </action>
   <action name="actionLista_de_vencidos">
    <property name="text">
-    <string>Lista de vencidos</string>
+    <string>Imprimir lista de vencidos...</string>
+   </property>
+  </action>
+  <action name="actionAcerca_de_Qt">
+   <property name="text">
+    <string>Acerca de Qt...</string>
    </property>
   </action>
  </widget>

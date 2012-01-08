@@ -133,7 +133,6 @@ void MainWindow::refreshInitializedState()
 	bool ini = App()->isInitialized();
 	
 	this->ui->menuCamping->setEnabled(ini);
-	this->ui->menuReportes->setEnabled(ini);
 	this->ui->actionGuardar_camping_como->setEnabled(ini);
 	this->ui->frameInitialized->setVisible(ini);
 	this->ui->frameNotInitialized->setHidden(ini);
@@ -143,14 +142,6 @@ void MainWindow::refreshInitializedState()
 	if(ini){
 		this->showTents();
 	}
-}
-
-void MainWindow::onAbout()
-{
-	Client c(false);
-	DialogClient dialog(&c);
-	
-	dialog.exec();
 }
 
 void MainWindow::onFileOpened(QString filename)
@@ -195,4 +186,14 @@ void MainWindow::requestRefresh()
 	} else{
 		this->ui->frameDorms->refreshData();
 	}
+}
+
+void MainWindow::on_actionAcerca_de_triggered()
+{
+    
+}
+
+void MainWindow::on_actionAcerca_de_Qt_triggered()
+{
+    CampingApplication::aboutQt();
 }
