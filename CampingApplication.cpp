@@ -141,9 +141,11 @@ void CampingApplication::printHtml(QString html, QWidget *parent)
 	QPrintDialog dialog(this->printer(), parent);
 	dialog.exec();
 	
-	QWebView webview(parent);
-	webview.setHtml(html);
-	
-	webview.print(this->printer());
+	if(dialog.result() == QPrintDialog::Accepted){
+		QWebView webview(parent);
+		webview.setHtml(html);
+		
+		webview.print(this->printer());
+	}
 }
 

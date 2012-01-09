@@ -167,6 +167,7 @@ void MainWindow::onFileOpened(QString filename)
 {
 	App()->config()->setLastFilename(filename);
 	this->setWindowTitle(App()->name() + " [" + QFileInfo(filename).fileName() + "]");
+	this->requestRefresh();
 }
 
 void MainWindow::showTents()
