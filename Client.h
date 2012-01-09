@@ -16,8 +16,9 @@ public:
 	 * Devuelve una lista de IDs de los clientes en esta colección que están ocupando
 	 * la ubicación "loc" y serán huéspedes en la fecha "date".
 	 */
-	QList<int> findByLocationAndDate(const Location &loc, const QDate &date);
-	QString toHtmlDocument(QString title = "Lista de clientes");
+	QList<int> findByLocationAndDate(const Location &loc, const QDate &date) const;
+	QString toHtmlDocument(QString title = "Lista de clientes") const;
+	ClientCollection filterByDates(const QDate &dateini, const QDate &dateend) const;
 };
 
 class Client : public ActiveRecord
@@ -33,9 +34,9 @@ public:
 	void setLocation(const Location &loc);
 	int getHousingDays() const;
 	bool isHousing() const;
-	VehicleCollection getVehicles();
-	ClientCollection getConflictingClients();
-	QString getReceiptHtml();
+	VehicleCollection getVehicles() const;
+	ClientCollection getConflictingClients() const;
+	QString getReceiptHtml() const;
 	
 	ACTIVE_RECORD_FIELD_STRING(getName, setName, "name")
 	ACTIVE_RECORD_FIELD_STRING(getSurame, setSurame, "surname")

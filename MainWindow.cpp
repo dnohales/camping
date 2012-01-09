@@ -3,11 +3,13 @@
 #include "MainWindow.h"
 #include "DialogClient.h"
 #include "DialogAbout.h"
+#include "DialogPrintClients.h"
 #include "ui_MainWindow.h"
 #include <QPrintDialog>
 #include <QPageSetupDialog>
 #include <QPrinter>
 #include <QPrintPreviewDialog>
+#include <QSettings>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -38,11 +40,23 @@ MainWindow::MainWindow(QWidget *parent) :
 		} catch(...){}
 	}
 	
+	QSettings settings;
+	if(settings.value("Window/Maximized").toBool()){
+		this->showMaximized();
+	} else{
+		this->resize(settings.value("Window/Width").toInt(), settings.value("Window/Height").toInt());
+	}
+	
 	this->refreshInitializedState();
 }
 
 MainWindow::~MainWindow()
 {
+	QSettings settings;
+	settings.setValue("Window/Width", this->width());
+	settings.setValue("Window/Height", this->height());
+	settings.setValue("Window/Maximized", this->isMaximized());
+	
 	delete this->_searchTimer;
     delete ui;
 }
@@ -210,5 +224,6 @@ void MainWindow::on_actionAcerca_de_Qt_triggered()
 
 void MainWindow::on_actionPrintClients_triggered()
 {
-    App()->printHtml(ui->frameTents->currentList().toHtmlDocument("Algo"), this);
+    DialogPrintClients dialog(ui->frameTents->currentList(), this);
+	dialog.exec();
 }

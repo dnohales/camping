@@ -55,12 +55,12 @@ bool Client::isHousing() const
 	return this->getDateOut() > QDate::currentDate();
 }
 
-VehicleCollection Client::getVehicles()
+VehicleCollection Client::getVehicles() const
 {
 	return Vehicle().findAll(SqlCriteria().addCondition("client_id = "+QString::number(this->getId())));
 }
 
-ClientCollection Client::getConflictingClients()
+ClientCollection Client::getConflictingClients() const
 {
 	SqlCriteria criteria;
 	criteria.addCondition("id != :id AND location_id = :location_id AND (in_time BETWEEN :di1 AND :do OR (in_time <= :di2 AND out_time > :di3))");
@@ -74,7 +74,7 @@ ClientCollection Client::getConflictingClients()
 	return Client().findAll(criteria);
 }
 
-QList<int> ClientCollection::findByLocationAndDate(const Location &loc, const QDate &date)
+QList<int> ClientCollection::findByLocationAndDate(const Location &loc, const QDate &date) const
 {
 	QList<int> indexList;
 	
@@ -88,7 +88,7 @@ QList<int> ClientCollection::findByLocationAndDate(const Location &loc, const QD
 	return indexList;
 }
 
-QString Client::getReceiptHtml()
+QString Client::getReceiptHtml() const
 {
 	QFile htmlFile(":/html/receipt.html");
 	htmlFile.open(QFile::ReadOnly);
@@ -109,7 +109,7 @@ QString Client::getReceiptHtml()
 	return html;
 }
 
-QString ClientCollection::toHtmlDocument(QString title)
+QString ClientCollection::toHtmlDocument(QString title) const
 {
 	QFile htmlFile(":/html/client-collection.html");
 	htmlFile.open(QFile::ReadOnly);
@@ -152,4 +152,21 @@ QString ClientCollection::toHtmlDocument(QString title)
 	
 	return html;
 }
+
+ClientCollection ClientCollection::filterByDates(const QDate &dateini, const QDate &dateend) const
+{
+	ClientCollection col;
+	
+	for(int i = 0; i < this->count(); i++){
+		Client c(this->at(i));
+		
+		if( (c.getDateIn() >= dateini && c.getDateIn() <= dateend) ||
+		    (c.getDateOut() >= dateini && c.getDateOut() <= dateend) ){
+			col.append(c);
+		}
+	}
+	
+	return col;
+}
+
 

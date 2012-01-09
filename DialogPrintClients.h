@@ -2,6 +2,7 @@
 #define DIALOGPRINTCLIENTS_H
 
 #include <QDialog>
+#include "Client.h"
 
 namespace Ui {
     class DialogPrintClients;
@@ -12,10 +13,18 @@ class DialogPrintClients : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogPrintClients(QWidget *parent = 0);
+    explicit DialogPrintClients(const ClientCollection &list, QWidget *parent = 0);
     ~DialogPrintClients();
+	const ClientCollection *currentList() const;
+	
+public slots:
+	void updateFilteredList();
+	void updateInfo();
+	void accept();
 
 private:
+	const ClientCollection originalList;
+	ClientCollection filteredList;
     Ui::DialogPrintClients *ui;
 };
 
