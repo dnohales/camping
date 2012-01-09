@@ -127,6 +127,9 @@ void FrameDorms::refreshData()
 		}
 		ui->table->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
 		ui->table->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+	} else{
+		ui->table->setRowCount(0);
+		ui->table->setColumnCount(0);
 	}
 	
 	MainFrame::refreshData();
