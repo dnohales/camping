@@ -86,46 +86,48 @@ void FrameDorms::refreshData()
 	ClientCollection clist = Client().findAll(criteria);
 	LocationCollection dormis = Location().findAllByType(Location::DORM);
 	
-	ui->table->setRowCount(dateend.day());
-	ui->table->setColumnCount(dormis.count());
-	
-	for(int i = 0; i < dormis.count(); i++){
-		//El encabezado tiene como dato de item el ID del dormi.
-		ui->table->setHorizontalHeaderItem(i, new QTableWidgetItem(dormis.at(i).getName()));
-		ui->table->horizontalHeaderItem(i)->setData(Qt::UserRole, dormis.at(i).getId());
+	if(clist.count() > 0){
+		ui->table->setRowCount(dateend.day());
+		ui->table->setColumnCount(dormis.count());
 		
-		//Se llenan los datos de un dormi
-		for(int day = 0; day < dateend.day(); day++){
-			QDate dateToCheck(dateini.addDays(day));
-			QList<int> indexList = clist.findByLocationAndDate(dormis.at(i), dateToCheck);
-			QTableWidgetItem *item = new QTableWidgetItem();
-			QString itemText;
-			QString itemData;
+		for(int i = 0; i < dormis.count(); i++){
+			//El encabezado tiene como dato de item el ID del dormi.
+			ui->table->setHorizontalHeaderItem(i, new QTableWidgetItem(dormis.at(i).getName()));
+			ui->table->horizontalHeaderItem(i)->setData(Qt::UserRole, dormis.at(i).getId());
 			
-			//El dato del item puede ser:
-			//   0: Está vacío.
-			//   <Lista de IDs separados por coma>: Dichos clientes ocupan ese dormi, ese día.
-			if(indexList.count() == 0){
-				item->setBackgroundColor(qRgb(200,255,200));
-				item->setText("");
-				item->setData(Qt::UserRole, "0");
-			} else{
-				item->setBackgroundColor(qRgb(255,200,200));
-				itemText = "";
-				itemData = "";
-				for(int k = 0; k < indexList.count(); k++){
-					itemText += clist.at(indexList[k]).getFullName() + "\n";
-					itemData += QString::number(clist.at(indexList[k]).getId()) + ",";
+			//Se llenan los datos de un dormi
+			for(int day = 0; day < dateend.day(); day++){
+				QDate dateToCheck(dateini.addDays(day));
+				QList<int> indexList = clist.findByLocationAndDate(dormis.at(i), dateToCheck);
+				QTableWidgetItem *item = new QTableWidgetItem();
+				QString itemText;
+				QString itemData;
+				
+				//El dato del item puede ser:
+				//   0: Está vacío.
+				//   <Lista de IDs separados por coma>: Dichos clientes ocupan ese dormi, ese día.
+				if(indexList.count() == 0){
+					item->setBackgroundColor(qRgb(200,255,200));
+					item->setText("");
+					item->setData(Qt::UserRole, "0");
+				} else{
+					item->setBackgroundColor(qRgb(255,200,200));
+					itemText = "";
+					itemData = "";
+					for(int k = 0; k < indexList.count(); k++){
+						itemText += clist.at(indexList[k]).getFullName() + "\n";
+						itemData += QString::number(clist.at(indexList[k]).getId()) + ",";
+					}
+					itemData.truncate(itemData.length() - 1);
+					item->setText(itemText.trimmed());
+					item->setData(Qt::UserRole, itemData);
 				}
-				itemData.truncate(itemData.length() - 1);
-				item->setText(itemText.trimmed());
-				item->setData(Qt::UserRole, itemData);
+				ui->table->setItem(day, i, item);
 			}
-			ui->table->setItem(day, i, item);
 		}
+		ui->table->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
+		ui->table->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 	}
-	ui->table->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
-	ui->table->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 	
 	MainFrame::refreshData();
 }
