@@ -90,10 +90,7 @@ QList<int> ClientCollection::findByLocationAndDate(const Location &loc, const QD
 
 QString Client::getReceiptHtml() const
 {
-	QFile htmlFile(":/html/receipt.html");
-	htmlFile.open(QFile::ReadOnly);
-	QString html(htmlFile.readAll());
-	htmlFile.close();
+	QString html(App()->config()->receiptTemplate());
 	
 	html.replace("{nombre}", this->getName(), Qt::CaseInsensitive)
 	    .replace("{apellido}", this->getSurame(), Qt::CaseInsensitive)

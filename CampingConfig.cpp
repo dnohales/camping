@@ -28,27 +28,16 @@ void CampingConfig::clear()
 void CampingConfig::save()
 {
 	QMapIterator<QString, QVariant> i(this->data);
-	QSqlQuery query(Db());
 	QSqlQuery recordQuery(Db());
 	
 	Db().transaction();
+	Db().exec("DELETE FROM config");
+	
 	while(i.hasNext()){
 		i.next();
 
-		query.prepare("SELECT * FROM config WHERE key = :key");
-		query.bindValue(":key", i.key());
-		query.exec();
-		
 		QString queryStr;
-		if(query.size() > 0){
-			queryStr = "UPDATE";
-		} else{
-			queryStr = "INSERT INTO";
-		}
-		queryStr += " config SET value = :value";
-		if(query.size() > 0){
-			queryStr += " WHERE key = :key";
-		}
+		queryStr = "INSERT INTO config(key, value) VALUES (:key, :value)";
 		
 		recordQuery.prepare(queryStr);
 		recordQuery.bindValue(":value", i.value());
@@ -56,6 +45,8 @@ void CampingConfig::save()
 		recordQuery.exec();
 	}
 	Db().commit();
+	
+	this->init();
 }
 
 int CampingConfig::dbVersion()
@@ -78,5 +69,26 @@ void CampingConfig::setLastFilename(QString filename)
 {
 	QSettings s;
 	s.setValue("LastFilename", filename);
+}
+
+QString CampingConfig::receiptTemplate()
+{
+	if(data.contains("custom_receipt") && !data["custom_receipt"].toString().isEmpty()){
+		return data["custom_receipt"].toString();
+	} else{
+		QFile htmlFile(":/html/receipt.html");
+		htmlFile.open(QFile::ReadOnly);
+		return htmlFile.readAll();
+	}
+}
+
+void CampingConfig::setCustomReceipt(QString receipt)
+{
+	this->data["custom_receipt"] = QVariant(receipt);
+}
+
+void CampingConfig::restoreReceipt()
+{
+	this->data["custom_receipt"] = QVariant();
 }
 

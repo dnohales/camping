@@ -16,12 +16,15 @@ public:
 	void save();
 	int dbVersion();
 	QString lastFilename();
+	QString receiptTemplate();
 	
 signals:
 
 public slots:
 	void setDbVersion(int version);
 	void setLastFilename(QString filename);
+	void setCustomReceipt(QString receipt);
+	void restoreReceipt();
 	
 private:
 	QMap<QString, QVariant> data;
