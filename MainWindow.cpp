@@ -26,9 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->ui->frameDorms->setMainParent(this);
 	
 	this->connect(this->_searchTimer, SIGNAL(timeout()), SLOT(onSearchTimeout()));
-	this->connect(App(), SIGNAL(initializedChanged()), SLOT(refreshInitializedState()));
 	this->connect(this, SIGNAL(fileOpened(QString)), SLOT(onFileOpened(QString)));
-	this->connect(this, SIGNAL(textSearched(QString)), SLOT(requestRefresh()));
 	this->connect(ui->frameTents, SIGNAL(refreshed()), SLOT(requestRefresh()));
 	this->connect(ui->frameDorms, SIGNAL(refreshed()), SLOT(requestRefresh()));
 	this->connect(this, SIGNAL(textSearched(QString)), SLOT(requestRefresh()));
@@ -205,9 +203,9 @@ void MainWindow::requestRefresh()
 	this->ui->frameTents->requestRefresh();
 	this->ui->frameDorms->requestRefresh();
 	
-	if(this->ui->frameTents->isVisible()){
+	if(this->ui->frameTents->isVisible() && !this->ui->frameTents->isRefreshed()){
 		this->ui->frameTents->refreshData();
-	} else{
+	} else if(this->ui->frameDorms->isVisible() && !this->ui->frameDorms->isRefreshed()){
 		this->ui->frameDorms->refreshData();
 	}
 }

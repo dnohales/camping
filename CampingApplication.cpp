@@ -32,7 +32,6 @@ bool CampingApplication::isInitialized() const
 void CampingApplication::setInitialized(bool ini)
 {
 	this->_initialized = ini;
-	emit initializedChanged();
 }
 
 void CampingApplication::initNewDatabase(QString filename)

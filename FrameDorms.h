@@ -17,10 +17,11 @@ public:
     explicit FrameDorms(QWidget *parent = 0);
     ~FrameDorms();
 	
-	void refreshComboMonths();
-	
 public slots:
 	void refreshData();
+	
+private:
+	void refreshComboMonths();
 
 private slots:
 	void onMenuCreate();

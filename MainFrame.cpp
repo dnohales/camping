@@ -44,7 +44,6 @@ SqlCriteria MainFrame::baseCriteria(Location::Type findType)
 	}
 	
 	criteria.setSelect("client.*");
-	criteria.setOrder("out_time DESC");
 	
 	if(findType != Location::ALL || !query.isEmpty()){
 		criteria.setSelect(criteria.select()+",location.type AS _location_type, location.name AS _location_name");
