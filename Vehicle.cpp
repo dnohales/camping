@@ -5,7 +5,7 @@ QString Vehicle::tableName()
 	return "vehicle";
 }
 
-QString VehicleCollection::toHtml()
+QString VehicleCollection::toHtml() const
 {
 	QString html;
 	
@@ -14,4 +14,15 @@ QString VehicleCollection::toHtml()
 	}
 	
 	return html;
+}
+
+QString VehicleCollection::toString() const
+{
+	QString result;
+	
+	for(int i = 0; i < this->count(); i++){
+		result += this->at(i).getModel() + " (" + this->at(i).getPatent() + ")\n";
+	}
+	
+	return result.trimmed();
 }

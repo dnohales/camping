@@ -34,14 +34,38 @@ void MainFrame::requestRefresh()
 	}
 }
 
-SqlCriteria MainFrame::baseCriteria()
+SqlCriteria MainFrame::baseCriteria(Location::Type findType)
 {
 	SqlCriteria criteria;
+	QString query;
 	
 	if(!this->mainParent()->searchQuery().isEmpty()){
-		QString query = QString("%")+this->mainParent()->searchQuery()+QString("%");
-		criteria.addCondition("client.name LIKE :query OR client.surname LIKE :query OR (client.name||' '||client.surname) LIKE :query");
-		criteria.bindValue(":query", query);
+		query = "%"+this->mainParent()->searchQuery()+"%";
+	}
+	
+	criteria.setSelect("client.*");
+	criteria.setOrder("out_time DESC");
+	
+	if(findType != Location::ALL || !query.isEmpty()){
+		criteria.setSelect(criteria.select()+",location.type AS _location_type, location.name AS _location_name");
+		criteria.setJoin("JOIN location ON client.location_id = location.id");
+		if(findType != Location::ALL){
+			criteria.addCondition("_location_type = :loctype");
+			criteria.bindValue(":loctype", findType);
+		}
+	}
+	
+	if(!query.isEmpty()){
+		criteria.setSelect(criteria.select()+",vehicle.patent AS _vehicle_patent, vehicle.model AS _vehicle_model");
+		criteria.setJoin(criteria.join()+" LEFT OUTER JOIN vehicle ON vehicle.client_id = client.id");
+		criteria.setGroup("client.id");
+		criteria.addCondition("client.name LIKE :query1 OR client.surname LIKE :query2 OR (client.name||' '||client.surname) LIKE :query3 OR _vehicle_patent LIKE :query4 OR _vehicle_model LIKE :query5 OR _location_name LIKE :query6");
+		criteria.bindValue(":query1", query);
+		criteria.bindValue(":query2", query);
+		criteria.bindValue(":query3", query);
+		criteria.bindValue(":query4", query);
+		criteria.bindValue(":query5", query);
+		criteria.bindValue(":query6", query);
 	}
 	
 	return criteria;

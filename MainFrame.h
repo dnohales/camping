@@ -15,7 +15,7 @@ public:
 	void setMainParent(MainWindow *m);
 	MainWindow *mainParent();
 	
-	SqlCriteria baseCriteria();
+	SqlCriteria baseCriteria(Location::Type findType = Location::ALL);
 	bool isRefreshed();
 	
 	void doCreateClient(Client &c, Location::Type type);

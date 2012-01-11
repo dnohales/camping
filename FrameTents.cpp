@@ -31,16 +31,8 @@ void FrameTents::onAddClicked()
 }
 
 void FrameTents::refreshData()
-{	
-	SqlCriteria criteria = this->baseCriteria();
-	criteria.setOrder("out_time DESC");
-	if( !this->ui->checkBoxDorms->isChecked() ){
-		criteria.setSelect("client.*, location.type AS _location_type");
-		criteria.setJoin("JOIN location ON client.location_id = location.id");
-		criteria.addCondition("_location_type = :loctype");
-		criteria.bindValue(":loctype", Location::TENT);
-	}
-	
+{
+	SqlCriteria criteria = this->baseCriteria(this->ui->checkBoxDorms->isChecked()? Location::ALL : Location::TENT);
 	_currentList = Client().findAll(criteria);
 	
 	this->ui->list->clear();
@@ -60,6 +52,7 @@ void FrameTents::refreshData()
 			item->setText(2, c.getDateOut().toString("dd/MM/yyyy") + " (" + QString::number(c.getHousingDays()) + tr(" días)"));
 			item->setText(3, l.getName());
 			item->setText(4, QString::number(c.getPeopleNum()) + "/" + QString::number(c.getTentNum()));
+			item->setText(5, c.getVehicles().toString());
 			
 			tooltip = tr("<b>")+c.getFullName()+tr("</b><br /><br />")
 			        + tr("<b>DNI: </b>")+c.getDni()+tr("<br />")

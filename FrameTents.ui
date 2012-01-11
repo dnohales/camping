@@ -152,7 +152,15 @@
      </column>
      <column>
       <property name="text">
+       <string>Per/Carp</string>
+      </property>
+      <property name="toolTip">
        <string>Personas/Carpas</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Vehículos</string>
       </property>
      </column>
     </widget>

@@ -35,8 +35,7 @@ private slots:
 	void refreshWidgets();
 	void on_buttonVehicleAdd_clicked();
 	void on_buttonVehicleDelete_clicked();
-	
-	void on_editLocation_editingFinished();
+	void on_editLocation_textChanged(QString );
 	
 private:
 	Client *client;

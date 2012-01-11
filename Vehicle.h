@@ -9,7 +9,8 @@ class Vehicle;
 class VehicleCollection : public QList<Vehicle>
 {
 public:
-	QString toHtml();
+	QString toHtml() const;
+	QString toString() const;
 };
 
 class Vehicle : public ActiveRecord

@@ -17,6 +17,7 @@ class Location : public ActiveRecord
 	ACTIVE_RECORD(Location, LocationCollection)
 	
 	enum Type {
+		ALL = -1,
 		TENT = 0,
 		DORM = 1
 	};

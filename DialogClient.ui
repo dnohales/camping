@@ -210,7 +210,7 @@
       <widget class="QSpinBox" name="spinPeopleNum"/>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label_7">
+      <widget class="QLabel" name="labelTentNum">
        <property name="text">
         <string>Número de carpas</string>
        </property>
@@ -295,7 +295,7 @@ font: oblique 9pt;</string>
      <item row="4" column="2">
       <widget class="QLabel" name="label_12">
        <property name="text">
-        <string>Ceular</string>
+        <string>Celular</string>
        </property>
        <property name="buddy">
         <cstring>editCel</cstring>

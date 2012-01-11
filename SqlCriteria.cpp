@@ -21,11 +21,17 @@ SqlCriteria & SqlCriteria::addCondition(QString condition, QString separator)
 QString SqlCriteria::buildSelectQueryAsString()
 {
 	QString q = "SELECT "+this->select()+" FROM " + this->table();
+	
 	if(!this->join().isEmpty()){
 		q += " " + this->join();
 	}
+	
 	if(!this->where().isEmpty()){
 		q += " WHERE " + this->where();
+	}
+	
+	if(!this->group().isEmpty()){
+		q += " GROUP BY " + this->group();
 	}
 	
 	if(!this->order().isEmpty()){

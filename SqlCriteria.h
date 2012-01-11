@@ -23,6 +23,7 @@ public:
 	QString from() { return this->_from; }
 	QString join() { return this->_join; }
 	QString select() { return this->_select; }
+	QString group() { return this->_group; }
 	
 	SqlCriteria & setTable(QString value) { this->_table = value; return *this; }
 	SqlCriteria & setWhere(QString value) { this->_where = value; return *this; }
@@ -31,6 +32,7 @@ public:
 	SqlCriteria & setFrom(QString value) { this->_from = value; return *this; }
 	SqlCriteria & setJoin(QString value) { this->_join = value; return *this; }
 	SqlCriteria & setSelect(QString value) { this->_select = value; return *this; }
+	SqlCriteria & setGroup(QString value) { this->_group = value; return *this; }
 private:
 	QString _table;
 	QString _where;
@@ -39,6 +41,7 @@ private:
 	QString _from;
 	QString _join;
 	QString _select;
+	QString _group;
 	QMap<QString, QVariant> _binds;
 };
 

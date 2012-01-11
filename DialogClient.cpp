@@ -22,7 +22,9 @@ DialogClient::DialogClient(Client *_client, Location::Type _type, QWidget *paren
 	}
 	
 	if(this->type == Location::DORM){
-		this->ui->labelLocation->setText(tr("Número de dormi"));
+		ui->labelLocation->setText(tr("Número de dormi"));
+		ui->labelTentNum->hide();
+		ui->spinTentNum->hide();
 	}
 	
 	QCompleter *completer = new QCompleter(Location().findAllByType(this->type).toNameList());
@@ -261,7 +263,7 @@ void DialogClient::on_buttonVehicleDelete_clicked()
 	}
 }
 
-void DialogClient::on_editLocation_editingFinished()
+void DialogClient::on_editLocation_textChanged(QString )
 {
     if(Location().findByNameType(ui->editLocation->text(), this->type).isNew()){
 		ui->labelLocationNote->show();
