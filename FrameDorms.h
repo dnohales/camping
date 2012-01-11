@@ -21,7 +21,7 @@ public slots:
 	void refreshData();
 	
 private:
-	void refreshComboMonths();
+	void refreshComboMonths(ClientCollection &clist);
 
 private slots:
 	void onMenuCreate();

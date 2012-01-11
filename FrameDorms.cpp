@@ -18,9 +18,8 @@ FrameDorms::~FrameDorms()
     delete ui;
 }
 
-void FrameDorms::refreshComboMonths()
+void FrameDorms::refreshComboMonths(ClientCollection &clist)
 {
-	ClientCollection clist = Client().findAll();
 	QList<QDate> totalDates;
 	QDate previousSelectedDate;
 	bool previousFinded = false;
@@ -64,27 +63,15 @@ void FrameDorms::refreshComboMonths()
 void FrameDorms::refreshData()
 {
 	QDate dateini, dateend;
+	ClientCollection clist = Client().findAll(this->baseCriteria(Location::DORM));
+	LocationCollection dormis = Location().findAllByType(Location::DORM);
 	
-	this->refreshComboMonths();
+	this->refreshComboMonths(clist);
 	
 	dateini = ui->comboMonth->itemData(ui->comboMonth->currentIndex()).toDate();
 	dateend = ui->comboMonth->itemData(ui->comboMonth->currentIndex()).toDate().addMonths(1).addDays(-1);
 	
-	//Se busca los clientes que están entre un mes y otro y ocupan dormis
-	SqlCriteria criteria;
-	criteria.setOrder("in_time");
-	criteria.setSelect("client.*, location.type AS _location_type");
-	criteria.setJoin("JOIN location ON client.location_id = location.id");
-	criteria.addCondition("_location_type = :loctype");
-	criteria.bindValue(":loctype", Location::DORM);
-	criteria.addCondition("in_time BETWEEN :dateA1 AND :dateA2 OR out_time BETWEEN :dateB1 AND :dateB2");
-	criteria.bindValue(":dateA1", dateini);
-	criteria.bindValue(":dateA2", dateend);
-	criteria.bindValue(":dateB1", dateini);
-	criteria.bindValue(":dateB2", dateend);
-	
-	ClientCollection clist = Client().findAll(criteria);
-	LocationCollection dormis = Location().findAllByType(Location::DORM);
+	clist = clist.filterByDates(dateini, dateend);
 	
 	if(clist.count() > 0){
 		ui->table->setRowCount(dateend.day());
