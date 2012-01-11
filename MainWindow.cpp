@@ -4,6 +4,7 @@
 #include "DialogClient.h"
 #include "DialogAbout.h"
 #include "DialogPrintClients.h"
+#include "DialogReceiptEdit.h"
 #include "ui_MainWindow.h"
 #include <QPrintDialog>
 #include <QPageSetupDialog>
@@ -224,5 +225,11 @@ void MainWindow::on_actionAcerca_de_Qt_triggered()
 void MainWindow::on_actionPrintClients_triggered()
 {
     DialogPrintClients dialog(ui->frameTents->currentList(), this);
+	dialog.exec();
+}
+
+void MainWindow::on_actionReceiptEdit_triggered()
+{
+    DialogReceiptEdit dialog(this);
 	dialog.exec();
 }

@@ -327,7 +327,7 @@ de camping nuevo</string>
      <string>Camping</string>
     </property>
     <addaction name="actionCarpas_y_dormis"/>
-    <addaction name="actionEditar_plantilla_para_el_recibo_del_cliente"/>
+    <addaction name="actionReceiptEdit"/>
     <addaction name="separator"/>
     <addaction name="actionPrintClients"/>
    </widget>
@@ -386,7 +386,7 @@ de camping nuevo</string>
     <string>Configurar carpas y dormis...</string>
    </property>
   </action>
-  <action name="actionEditar_plantilla_para_el_recibo_del_cliente">
+  <action name="actionReceiptEdit">
    <property name="text">
     <string>Editar plantilla para el recibo del cliente</string>
    </property>

@@ -26,7 +26,9 @@ SOURCES += main.cpp\
     MainFrame.cpp \
     DialogClientSelector.cpp \
     DialogAbout.cpp \
-    DialogPrintClients.cpp
+    DialogPrintClients.cpp \
+    DialogReceiptEdit.cpp \
+    RichTextEditorWidget.cpp
 
 HEADERS  += MainWindow.h \
     FrameTents.h \
@@ -45,7 +47,9 @@ HEADERS  += MainWindow.h \
     MainFrame.h \
     DialogClientSelector.h \
     DialogAbout.h \
-    DialogPrintClients.h
+    DialogPrintClients.h \
+    DialogReceiptEdit.h \
+    RichTextEditorWidget.h
 
 FORMS    += MainWindow.ui \
     FrameTents.ui \
@@ -53,7 +57,8 @@ FORMS    += MainWindow.ui \
     DialogClient.ui \
     DialogClientSelector.ui \
     DialogAbout.ui \
-    DialogPrintClients.ui
+    DialogPrintClients.ui \
+    DialogReceiptEdit.ui
 
 RESOURCES += \
     default.qrc
@@ -68,4 +73,31 @@ OTHER_FILES += \
     green-arrow.svg \
     dorm.png \
     ReceiptDefault.html \
-    ClientCollectionDefault.html
+    html/ReceiptDefault.html \
+    html/ClientCollectionDefault.html \
+    images/tent.png \
+    images/search.svg \
+    images/red-arrow.svg \
+    images/open.svg \
+    images/new.svg \
+    images/green-arrow.svg \
+    images/dorm.png \
+    images/delete.svg \
+    imgs/tent.png \
+    imgs/search.svg \
+    imgs/red-arrow.svg \
+    imgs/open.svg \
+    imgs/new.svg \
+    imgs/green-arrow.svg \
+    imgs/dorm.png \
+    imgs/delete.svg \
+    imgs/add.svg \
+    imgs/richtexteditor/textunder.png \
+    imgs/richtexteditor/textsuperscript.png \
+    imgs/richtexteditor/textsubscript.png \
+    imgs/richtexteditor/textright.png \
+    imgs/richtexteditor/textleft.png \
+    imgs/richtexteditor/textjustify.png \
+    imgs/richtexteditor/textitalic.png \
+    imgs/richtexteditor/textcenter.png \
+    imgs/richtexteditor/textbold.png

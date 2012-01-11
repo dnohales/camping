@@ -2,19 +2,28 @@
     <qresource prefix="/db">
         <file>template.sql</file>
     </qresource>
-    <qresource prefix="/imgs">
-        <file>new.svg</file>
-        <file>open.svg</file>
-        <file>search.svg</file>
-        <file>add.svg</file>
-        <file>green-arrow.svg</file>
-        <file>red-arrow.svg</file>
-        <file>delete.svg</file>
-        <file>dorm.png</file>
-        <file>tent.png</file>
-    </qresource>
     <qresource prefix="/html">
-        <file alias="client-collection.html">ClientCollectionDefault.html</file>
-        <file alias="receipt.html">ReceiptDefault.html</file>
+        <file alias="client-collection.html">html/ClientCollectionDefault.html</file>
+        <file alias="receipt.html">html/ReceiptDefault.html</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>imgs/add.svg</file>
+        <file>imgs/delete.svg</file>
+        <file>imgs/dorm.png</file>
+        <file>imgs/green-arrow.svg</file>
+        <file>imgs/new.svg</file>
+        <file>imgs/open.svg</file>
+        <file>imgs/red-arrow.svg</file>
+        <file>imgs/search.svg</file>
+        <file>imgs/tent.png</file>
+        <file>imgs/richtexteditor/textbold.png</file>
+        <file>imgs/richtexteditor/textcenter.png</file>
+        <file>imgs/richtexteditor/textitalic.png</file>
+        <file>imgs/richtexteditor/textjustify.png</file>
+        <file>imgs/richtexteditor/textleft.png</file>
+        <file>imgs/richtexteditor/textright.png</file>
+        <file>imgs/richtexteditor/textsubscript.png</file>
+        <file>imgs/richtexteditor/textsuperscript.png</file>
+        <file>imgs/richtexteditor/textunder.png</file>
     </qresource>
 </RCC>
