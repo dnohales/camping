@@ -100,11 +100,14 @@ QString Client::getReceiptHtml() const
 	    .replace("{dni}", this->getDni(), Qt::CaseInsensitive)
 	    .replace("{direccion}", this->getAdress(), Qt::CaseInsensitive)
 	    .replace("{cantidad_personas}", QString::number(this->getPeopleNum()), Qt::CaseInsensitive)
-	    .replace("{cantidad_carpas}", QString::number(this->getTentNum()), Qt::CaseInsensitive)
 		.replace("{vehiculos}", this->getVehicles().toHtml(), Qt::CaseInsensitive)
 		.replace("{ubicacion}", this->getLocation().getReadableName(), Qt::CaseInsensitive)
 		.replace("{fecha_entrada}", this->getDateIn().toString("dd/MM/yyyy"), Qt::CaseInsensitive)
 		.replace("{fecha_salida}", this->getDateOut().toString("dd/MM/yyyy"), Qt::CaseInsensitive);
+	
+	if(this->getLocation().getType() != Location::DORM){
+		html.replace("{cantidad_carpas}", "<tr><td class=\"campo\">Cant. Carpas: </td><td class=\"valor\">"+QString::number(this->getTentNum())+"</td></tr>", Qt::CaseInsensitive);
+	}
 	
 	return html;
 }
@@ -127,7 +130,6 @@ QString ClientCollection::toHtmlDocument(QString title) const
 		<< "<th>Personas/Carpas</th>"
 	    << "<th>Veh&iacute;culos</th>"
 		<< "<th>Tel&eacute;fonos</th>"
-	    << "<th>Estado</th>"
 		<< "</tr>";
 	for(int i = 0; i < this->count(); i++){
 		Client c(this->at(i));
@@ -140,7 +142,6 @@ QString ClientCollection::toHtmlDocument(QString title) const
 		list << "<td>" << c.getPeopleNum() << "/" << c.getTentNum() << "</td>";
 		list << "<td>" << c.getVehicles().toHtml() << "</td>";
 		list << "<td>" << "Tel: " << c.getTel() << "<br />" << "Cel: " << c.getCel() << "</td>";
-		list << "<td>" << (c.isHousing()? "Hu&eacute;sped":"Vencido") << "</td>";
 		
 		list << "</tr>";
 	}
