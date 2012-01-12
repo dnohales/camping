@@ -103,7 +103,10 @@ QString Client::getReceiptHtml() const
 		.replace("{fecha_salida}", this->getDateOut().toString("dd/MM/yyyy"), Qt::CaseInsensitive);
 	
 	if(this->getLocation().getType() != Location::DORM){
-		html.replace("{cantidad_carpas}", "<tr><td class=\"campo\">Cant. Carpas: </td><td class=\"valor\">"+QString::number(this->getTentNum())+"</td></tr>", Qt::CaseInsensitive);
+		html.replace("{cantidad_carpas}", QString::number(this->getTentNum()), Qt::CaseInsensitive);
+		html.replace("{cantidad_carpas_style}", "visibility:visible;", Qt::CaseInsensitive);
+	} else{
+		html.replace("{cantidad_carpas_style}", "visibility:hidden;", Qt::CaseInsensitive);
 	}
 	
 	return html;
