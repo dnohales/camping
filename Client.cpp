@@ -142,7 +142,7 @@ QString ClientCollection::toHtmlDocument(QString title) const
 		list << "<td>" << c.getLocation().getReadableName() << "</td>";
 		list << "<td>" << c.getPeopleNum() << "/" << c.getTentNum() << "</td>";
 		list << "<td>" << c.getVehicles().toHtml() << "</td>";
-		list << "<td>" << c.getCel() << "</td>";
+		list << "<td>" << c.getBeck() << "</td>";
 		list << "<td>" << c.getTel() << "</td>";
 		
 		list << "</tr>";

@@ -89,7 +89,7 @@ void DialogClient::refreshWidgets()
 	this->ui->editDni->setText(client->getDni());
 	this->ui->editEmail->setText(client->getEmail());
 	this->ui->editTel->setText(client->getTel());
-	this->ui->editCel->setText(client->getCel());
+	this->ui->editBeck->setText(client->getBeck());
 	
 	ui->vehicles->setRowCount(0);
 	
@@ -140,7 +140,7 @@ void DialogClient::accept()
 		client->setDni( this->ui->editDni->text() );
 		client->setEmail( this->ui->editEmail->text() );
 		client->setTel( this->ui->editTel->text() );
-		client->setCel( this->ui->editCel->text() );
+		client->setBeck( this->ui->editBeck->text() );
 		
 		client->validate();
 		

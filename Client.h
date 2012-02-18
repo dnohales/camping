@@ -45,7 +45,7 @@ public:
 	ACTIVE_RECORD_FIELD(getLocationId, setLocationId, int, "location_id")
 	ACTIVE_RECORD_FIELD_STRING(getEmail, setEmail, "email")
 	ACTIVE_RECORD_FIELD_STRING(getTel, setTel, "tel")
-	ACTIVE_RECORD_FIELD_STRING(getCel, setCel, "cel")
+	ACTIVE_RECORD_FIELD_STRING(getBeck, setBeck, "cel")
 	ACTIVE_RECORD_FIELD_STRING(getDni, setDni, "dni")
 	ACTIVE_RECORD_FIELD_STRING(getAdress, setAddress, "address")
 	ACTIVE_RECORD_FIELD(getPeopleNum, setPeopleNum, int, "people_num")
