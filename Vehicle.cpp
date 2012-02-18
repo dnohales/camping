@@ -1,4 +1,5 @@
 #include "Vehicle.h"
+#include <QStringList>
 
 QString Vehicle::tableName()
 {
@@ -16,13 +17,13 @@ QString VehicleCollection::toHtml() const
 	return html;
 }
 
-QString VehicleCollection::toString() const
+QString VehicleCollection::toString(const QString &separator) const
 {
-	QString result;
+	QStringList vlist;
 	
 	for(int i = 0; i < this->count(); i++){
-		result += this->at(i).getModel() + " (" + this->at(i).getPatent() + ")\n";
+		vlist.append(this->at(i).getModel() + " (" + this->at(i).getPatent() + ")");
 	}
 	
-	return result.trimmed();
+	return vlist.join(separator);
 }

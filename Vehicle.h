@@ -10,7 +10,7 @@ class VehicleCollection : public QList<Vehicle>
 {
 public:
 	QString toHtml() const;
-	QString toString() const;
+	QString toString(const QString &separator = "\n") const;
 };
 
 class Vehicle : public ActiveRecord
