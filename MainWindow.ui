@@ -326,16 +326,13 @@ de camping nuevo</string>
     <property name="title">
      <string>Camping</string>
     </property>
-    <addaction name="actionCarpas_y_dormis"/>
     <addaction name="actionReceiptEdit"/>
-    <addaction name="separator"/>
     <addaction name="actionPrintClients"/>
    </widget>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
      <string>Ayuda</string>
     </property>
-    <addaction name="actionAyuda"/>
     <addaction name="actionPedir_soporte"/>
     <addaction name="separator"/>
     <addaction name="actionAcerca_de"/>
@@ -379,11 +376,6 @@ de camping nuevo</string>
   <action name="actionPedir_soporte">
    <property name="text">
     <string>Pedir soporte</string>
-   </property>
-  </action>
-  <action name="actionCarpas_y_dormis">
-   <property name="text">
-    <string>Configurar carpas y dormis...</string>
    </property>
   </action>
   <action name="actionReceiptEdit">
