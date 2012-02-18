@@ -86,12 +86,12 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Mes:</string>
+         <string>Año:</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="comboMonth">
+       <widget class="QComboBox" name="comboYear">
         <property name="currentIndex">
          <number>-1</number>
         </property>
@@ -123,7 +123,7 @@
  </resources>
  <connections>
   <connection>
-   <sender>comboMonth</sender>
+   <sender>comboYear</sender>
    <signal>currentIndexChanged(int)</signal>
    <receiver>FrameDorms</receiver>
    <slot>requestRefresh()</slot>

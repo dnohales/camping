@@ -19,9 +19,12 @@ public:
 	
 public slots:
 	void refreshData();
+
+protected:
+	void resizeEvent(QResizeEvent *);
 	
 private:
-	void refreshComboMonths(ClientCollection &clist);
+	void refreshComboYears(ClientCollection &clist);
 
 private slots:
 	void onMenuCreate();
@@ -31,6 +34,7 @@ private slots:
 	void on_buttonAdd_clicked();
 	void on_table_itemActivated(QTableWidgetItem* item);
 	void on_table_customContextMenuRequested(QPoint pos);
+	void onTableColumnWidthUpdate();
 	
 private:
 	QTableWidgetItem *selectedItem;
