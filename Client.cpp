@@ -129,7 +129,8 @@ QString ClientCollection::toHtmlDocument(QString title) const
 		<< "<th>Ubicaci&oacute;n</th>"
 		<< "<th>Personas/Carpas</th>"
 	    << "<th>Veh&iacute;culos</th>"
-		<< "<th>Tel&eacute;fonos</th>"
+	    << "<th>Se&nacute;a</th>"
+		<< "<th>Tel&eacute;fono</th>"
 		<< "</tr>";
 	for(int i = 0; i < this->count(); i++){
 		Client c(this->at(i));
@@ -141,7 +142,8 @@ QString ClientCollection::toHtmlDocument(QString title) const
 		list << "<td>" << c.getLocation().getReadableName() << "</td>";
 		list << "<td>" << c.getPeopleNum() << "/" << c.getTentNum() << "</td>";
 		list << "<td>" << c.getVehicles().toHtml() << "</td>";
-		list << "<td>" << "Tel: " << c.getTel() << "<br />" << "Cel: " << c.getCel() << "</td>";
+		list << "<td>" << c.getCel() << "</td>";
+		list << "<td>" << c.getTel() << "</td>";
 		
 		list << "</tr>";
 	}

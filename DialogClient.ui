@@ -295,7 +295,7 @@ font: oblique 9pt;</string>
      <item row="4" column="2">
       <widget class="QLabel" name="label_12">
        <property name="text">
-        <string>Celular</string>
+        <string>Seña</string>
        </property>
        <property name="buddy">
         <cstring>editCel</cstring>

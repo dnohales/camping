@@ -53,12 +53,12 @@ void FrameTents::refreshData()
 			item->setText(2, c.getDateOut().toString("dd/MM/yyyy") + " (" + QString::number(c.getHousingDays()) + tr(" días)"));
 			item->setText(3, l.getName());
 			item->setText(4, QString::number(c.getPeopleNum()) + "/" + QString::number(c.getTentNum()));
-			item->setText(5, c.getVehicles().toString(", "));
+			item->setText(5, c.getCel());
+			item->setText(6, c.getVehicles().toString(", "));
 			
 			tooltip = tr("<b>")+c.getFullName()+tr("</b><br /><br />")
 			        + tr("<b>DNI: </b>")+c.getDni()+tr("<br />")
 			        + tr("<b>Teléfono: </b>")+c.getTel()+tr("<br />")
-			        + tr("<b>Celular: </b>")+c.getCel()+tr("<br />")
 			        + tr("<b>E-Mail: </b>")+c.getEmail()+tr("<br />")
 			        + tr("<b>Dirección: </b>")+c.getAdress();
 			item->setToolTip(0, tooltip);

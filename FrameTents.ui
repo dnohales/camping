@@ -124,6 +124,12 @@
      <property name="contextMenuPolicy">
       <enum>Qt::ActionsContextMenu</enum>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QTreeWidget::item {
+	margin-top: 18px;
+	margin-right: 10px;
+}</string>
+     </property>
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
@@ -156,6 +162,11 @@
       </property>
       <property name="toolTip">
        <string>Personas/Carpas</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Seña</string>
       </property>
      </column>
      <column>
