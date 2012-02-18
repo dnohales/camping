@@ -33,7 +33,7 @@ void FrameTents::onAddClicked()
 void FrameTents::refreshData()
 {
 	SqlCriteria criteria = this->baseCriteria(this->ui->checkBoxDorms->isChecked()? Location::ALL : Location::TENT);
-	criteria.setOrder("out_time DESC");
+	criteria.setOrder("in_time DESC");
 	_currentList = Client().findAll(criteria);
 	
 	this->ui->list->clear();
