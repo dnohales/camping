@@ -44,6 +44,8 @@ private slots:
 	
 	void on_actionReceiptEdit_triggered();
 	
+	void on_actionPedir_soporte_triggered();
+	
 private:
 	void openExistentFile(QString filename);
 	
