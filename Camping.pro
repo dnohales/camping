@@ -101,3 +101,5 @@ OTHER_FILES += \
     imgs/richtexteditor/textitalic.png \
     imgs/richtexteditor/textcenter.png \
     imgs/richtexteditor/textbold.png
+
+RC_FILE = camping.rc
