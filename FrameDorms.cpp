@@ -96,8 +96,17 @@ void FrameDorms::refreshData()
 	
 	//Recorro los clientes filtrados para saber cual será el mes final a mostrar
 	for(int i = 0; i < clist.count(); i++){
-		if(clist.at(i).getDateOut().month() > dateend.month()){
-			dateend.setDate(dateend.year(), clist.at(i).getDateOut().month(), clist.at(i).getDateOut().daysInMonth());
+		QDate clientMaxDate;
+		
+		if(clist.at(i).getDateIn().year() == dateend.year()){
+			clientMaxDate = clist.at(i).getDateIn();
+		}
+		if(clist.at(i).getDateOut().year() == dateend.year()){
+			clientMaxDate = clist.at(i).getDateOut();
+		}
+		
+		if(clientMaxDate.month() > dateend.month()){
+			dateend.setDate(dateend.year(), clientMaxDate.month(), clientMaxDate.daysInMonth());
 		}
 	}
 	
@@ -137,8 +146,15 @@ void FrameDorms::refreshData()
 					itemData = "";
 					for(int k = 0; k < indexList.count(); k++){
 						if(dateToCheck == clist.at(indexList[k]).getDateIn()){
-							itemText += clist.at(indexList[k]).getFullName() + "\n";
+							itemText += clist.at(indexList[k]).getFullName();
+							if(clist.at(indexList[k]).getDateOut().year() > dateToCheck.year()){
+								itemText += QString(" (sigue en %1)").arg(dateToCheck.year()+1);
+							}
+							itemText += "\n";
+						} else if (dateToCheck.dayOfYear() == 1) {
+							itemText += clist.at(indexList[k]).getFullName() + QString("(desde %1)\n").arg(dateToCheck.year()-1);
 						}
+						
 						itemData += QString::number(clist.at(indexList[k]).getId()) + ",";
 					}
 					itemData.truncate(itemData.length() - 1);
