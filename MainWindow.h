@@ -5,32 +5,32 @@
 #include <QTimer>
 
 namespace Ui {
-    class MainWindow;
+	class MainWindow;
 }
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-	
+	explicit MainWindow(QWidget *parent = 0);
+	~MainWindow();
+
 	QString searchQuery();
-	
+
 private:
 	QString getCampingSaveFileName();
 
 signals:
 	void textSearched(QString query);
 	void fileOpened(QString filename);
-	
+
 public slots:
 	void refreshInitializedState();
 	void showTents();
 	void showDorms();
 	void requestRefresh();
-	
+
 private slots:
 	void onSearchTimeout();
 	void onOpenFile();
@@ -41,17 +41,17 @@ private slots:
 	void on_actionAcerca_de_triggered();
 	void on_actionAcerca_de_Qt_triggered();
 	void on_actionPrintClients_triggered();
-	
+
 	void on_actionReceiptEdit_triggered();
-	
+
 	void on_actionPedir_soporte_triggered();
-	
+
 private:
 	void openExistentFile(QString filename);
-	
+
 private:
 	QTimer *_searchTimer;
-    Ui::MainWindow *ui;
+	Ui::MainWindow *ui;
 };
 
 #endif // MAINWINDOW_H

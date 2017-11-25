@@ -6,7 +6,7 @@
 #include "DialogClient.h"
 
 MainFrame::MainFrame(QWidget *parent) :
-    QFrame(parent)
+	QFrame(parent)
 {
 	this->setRefreshed(false);
 }
@@ -38,13 +38,13 @@ SqlCriteria MainFrame::baseCriteria(Location::Type findType)
 {
 	SqlCriteria criteria;
 	QString query;
-	
+
 	if(!this->mainParent()->searchQuery().isEmpty()){
 		query = "%"+this->mainParent()->searchQuery()+"%";
 	}
-	
+
 	criteria.setSelect("client.*");
-	
+
 	if(findType != Location::ALL || !query.isEmpty()){
 		criteria.setSelect(criteria.select()+",location.type AS _location_type, location.name AS _location_name");
 		criteria.setJoin("JOIN location ON client.location_id = location.id");
@@ -53,7 +53,7 @@ SqlCriteria MainFrame::baseCriteria(Location::Type findType)
 			criteria.bindValue(":loctype", findType);
 		}
 	}
-	
+
 	if(!query.isEmpty()){
 		criteria.setSelect(criteria.select()+",vehicle.patent AS _vehicle_patent, vehicle.model AS _vehicle_model");
 		criteria.setJoin(criteria.join()+" LEFT OUTER JOIN vehicle ON vehicle.client_id = client.id");
@@ -66,7 +66,7 @@ SqlCriteria MainFrame::baseCriteria(Location::Type findType)
 		criteria.bindValue(":query5", query);
 		criteria.bindValue(":query6", query);
 	}
-	
+
 	return criteria;
 }
 
@@ -106,11 +106,11 @@ void MainFrame::doPrintReceipt(Client &c)
 void MainFrame::doDeleteClient(Client &c)
 {
 	if(QMessageBox::question(
-	            this,
-	            tr("Borrando cliente"),
-	            tr("¿Estás seguro que quieres borrar a %1?").arg(c.getFullName()),
-	            QMessageBox::Yes, QMessageBox::No)
-	    == QMessageBox::Yes ){
+				this,
+				tr("Borrando cliente"),
+				tr("¿Estás seguro que quieres borrar a %1?").arg(c.getFullName()),
+				QMessageBox::Yes, QMessageBox::No)
+		== QMessageBox::Yes ){
 		c.deleteRecord();
 		this->requestRefresh();
 	}

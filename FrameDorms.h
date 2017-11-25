@@ -6,23 +6,23 @@
 #include <QTableWidget>
 
 namespace Ui {
-    class FrameDorms;
+	class FrameDorms;
 }
 
 class FrameDorms : public MainFrame
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit FrameDorms(QWidget *parent = 0);
-    ~FrameDorms();
-	
+	explicit FrameDorms(QWidget *parent = 0);
+	~FrameDorms();
+
 public slots:
 	void refreshData();
 
 protected:
 	void resizeEvent(QResizeEvent *);
-	
+
 private:
 	void refreshComboYears(ClientCollection &clist);
 
@@ -35,10 +35,10 @@ private slots:
 	void on_table_itemActivated(QTableWidgetItem* item);
 	void on_table_customContextMenuRequested(QPoint pos);
 	void onTableColumnWidthUpdate();
-	
+
 private:
 	QTableWidgetItem *selectedItem;
-    Ui::FrameDorms *ui;
+	Ui::FrameDorms *ui;
 };
 
 #endif // FRAMEDORMS_H

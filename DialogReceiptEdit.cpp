@@ -5,18 +5,18 @@
 #include <QMessageBox>
 
 DialogReceiptEdit::DialogReceiptEdit(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::DialogReceiptEdit)
+	QDialog(parent),
+	ui(new Ui::DialogReceiptEdit)
 {
-    ui->setupUi(this);
-	
+	ui->setupUi(this);
+
 	ui->buttonBox->button(QDialogButtonBox::Reset)->setText(tr("Restaurar al texto predeterminado"));
 	ui->editor->setText(App()->config()->receiptTemplate());
 }
 
 DialogReceiptEdit::~DialogReceiptEdit()
 {
-    delete ui;
+	delete ui;
 }
 
 void DialogReceiptEdit::onButtonClicked(QAbstractButton *button)
@@ -25,10 +25,10 @@ void DialogReceiptEdit::onButtonClicked(QAbstractButton *button)
 	{
 	case  QDialogButtonBox::ResetRole:
 		if(QMessageBox::question(
-		            this,
-		            tr("Restaurar comprobante"),
-		            tr("¿Estás seguro que quieres restaurar el comprobante a sus valores de fábrica? perderás los cambios actuales."),
-		            QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes){
+					this,
+					tr("Restaurar comprobante"),
+					tr("¿Estás seguro que quieres restaurar el comprobante a sus valores de fábrica? perderás los cambios actuales."),
+					QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes){
 			App()->config()->restoreReceipt();
 			App()->config()->save();
 			ui->editor->setText(App()->config()->receiptTemplate());

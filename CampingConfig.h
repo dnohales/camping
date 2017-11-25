@@ -8,16 +8,16 @@
 
 class CampingConfig : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit CampingConfig(QObject *parent = 0);
+	explicit CampingConfig(QObject *parent = 0);
 	void init();
 	void clear();
 	void save();
 	int dbVersion();
 	QString lastFilename();
 	QString receiptTemplate();
-	
+
 signals:
 
 public slots:
@@ -25,7 +25,7 @@ public slots:
 	void setLastFilename(QString filename);
 	void setCustomReceipt(QString receipt);
 	void restoreReceipt();
-	
+
 private:
 	QMap<QString, QVariant> data;
 };

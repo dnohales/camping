@@ -50,7 +50,6 @@
 #include <QSyntaxHighlighter>
 #include <QDialog>
 #include <QAction>
-#include <QtWebKit/QWebView>
 
 class QTabWidget;
 class QToolBar;
@@ -59,87 +58,87 @@ class RichTextEditor;
 
 class RichTextEditorWidget : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit RichTextEditorWidget(QWidget *parent = 0);
-    ~RichTextEditorWidget();
+	explicit RichTextEditorWidget(QWidget *parent = 0);
+	~RichTextEditorWidget();
 
-    void setText(const QString &text);
-    QString text() const;
+	void setText(const QString &text);
+	QString text() const;
 
 private slots:
-    void tabIndexChanged(int newIndex);
-    void richTextChanged();
-    void sourceChanged();
+	void tabIndexChanged(int newIndex);
+	void richTextChanged();
+	void sourceChanged();
 
 private:
-    enum TabIndex { RichTextIndex, SourceIndex };
-    enum State { Clean, RichTextChanged, SourceChanged };
-    RichTextEditor *m_editor;
-    QTextEdit      *m_text_edit;
-    QTabWidget     *m_tab_widget;
-    State m_state;
+	enum TabIndex { RichTextIndex, SourceIndex };
+	enum State { Clean, RichTextChanged, SourceChanged };
+	RichTextEditor *m_editor;
+	QTextEdit      *m_text_edit;
+	QTabWidget     *m_tab_widget;
+	State m_state;
 };
 
 class RichTextEditor : public QWebView
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    RichTextEditor(QWidget *parent = 0);
-    QString html() const;
+	RichTextEditor(QWidget *parent = 0);
+	QString html() const;
 
 signals:
-    void textChanged();
+	void textChanged();
 };
 
 class HtmlTextEdit : public QTextEdit
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    HtmlTextEdit(QWidget *parent = 0)
-        : QTextEdit(parent)
-    {}
+	HtmlTextEdit(QWidget *parent = 0)
+		: QTextEdit(parent)
+	{}
 
-    void contextMenuEvent(QContextMenuEvent *event);
+	void contextMenuEvent(QContextMenuEvent *event);
 
 private slots:
-    void actionTriggered(QAction *action);
+	void actionTriggered(QAction *action);
 };
 
 /* HTML syntax highlighter based on Qt Quarterly example */
 class HtmlHighlighter : public QSyntaxHighlighter
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    enum Construct {
-        Entity,
-        Tag,
-        Comment,
-        Attribute,
-        Value,
-        LastConstruct = Value
-    };
+	enum Construct {
+		Entity,
+		Tag,
+		Comment,
+		Attribute,
+		Value,
+		LastConstruct = Value
+	};
 
-    HtmlHighlighter(QTextEdit *textEdit);
+	HtmlHighlighter(QTextEdit *textEdit);
 
-    void setFormatFor(Construct construct, const QTextCharFormat &format);
+	void setFormatFor(Construct construct, const QTextCharFormat &format);
 
-    QTextCharFormat formatFor(Construct construct) const
-    { return m_formats[construct]; }
+	QTextCharFormat formatFor(Construct construct) const
+	{ return m_formats[construct]; }
 
 protected:
-    enum State {
-        NormalState = -1,
-        InComment,
-        InTag
-    };
+	enum State {
+		NormalState = -1,
+		InComment,
+		InTag
+	};
 
-    void highlightBlock(const QString &text);
+	void highlightBlock(const QString &text);
 
 private:
-    QTextCharFormat m_formats[LastConstruct + 1];
+	QTextCharFormat m_formats[LastConstruct + 1];
 };
 
 #endif // RITCHTEXTEDITORWIDGET_H

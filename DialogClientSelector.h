@@ -5,28 +5,28 @@
 #include <QListWidget>
 
 namespace Ui {
-    class DialogClientSelector;
+	class DialogClientSelector;
 }
 
 class DialogClientSelector : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit DialogClientSelector(QString idList, QWidget *parent = 0);
-    ~DialogClientSelector();
+	explicit DialogClientSelector(QString idList, QWidget *parent = 0);
+	~DialogClientSelector();
 	int selectedId();
-	
+
 public slots:
-	void exec();
+	int exec();
 	void accept();
 
 private slots:
 	void on_list_itemActivated(QListWidgetItem* item);
-	
+
 private:
 	int _selectedId;
-    Ui::DialogClientSelector *ui;
+	Ui::DialogClientSelector *ui;
 };
 
 #endif // DIALOGCLIENTSELECTOR_H

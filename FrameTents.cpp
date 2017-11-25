@@ -6,13 +6,12 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QPrintDialog>
-#include <QtWebKit/QWebView>
 
 FrameTents::FrameTents(QWidget *parent) :
-    MainFrame(parent),
-    ui(new Ui::FrameTents)
+	MainFrame(parent),
+	ui(new Ui::FrameTents)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 
 	this->ui->list->addAction(this->ui->actionListEdit);
 	this->ui->list->addAction(this->ui->actionListPrint);
@@ -21,7 +20,7 @@ FrameTents::FrameTents(QWidget *parent) :
 
 FrameTents::~FrameTents()
 {
-    delete ui;
+	delete ui;
 }
 
 void FrameTents::onAddClicked()
@@ -35,9 +34,9 @@ void FrameTents::refreshData()
 	SqlCriteria criteria = this->baseCriteria(this->ui->checkBoxDorms->isChecked()? Location::ALL : Location::TENT);
 	criteria.setOrder("in_time DESC");
 	_currentList = Client().findAll(criteria);
-	
+
 	this->ui->list->clear();
-	
+
 	for(int i = 0; i < _currentList.count(); i++){
 		Client c(_currentList.at(i));
 		Location l = c.getLocation();
@@ -47,7 +46,7 @@ void FrameTents::refreshData()
 		){
 			QString tooltip;
 			QTreeWidgetItem *item = new QTreeWidgetItem(this->ui->list);
-			
+
 			item->setText(0, c.getFullName());
 			item->setText(1, c.getDateIn().toString("dd/MM/yyyy"));
 			item->setText(2, c.getDateOut().toString("dd/MM/yyyy") + " (" + QString::number(c.getHousingDays()) + tr(" días)"));
@@ -55,16 +54,16 @@ void FrameTents::refreshData()
 			item->setText(4, QString::number(c.getPeopleNum()) + "/" + QString::number(c.getTentNum()));
 			item->setText(5, c.getBeck());
 			item->setText(6, c.getVehicles().toString(", "));
-			
+
 			tooltip = tr("<b>")+c.getFullName()+tr("</b><br /><br />")
-			        + tr("<b>DNI: </b>")+c.getDni()+tr("<br />")
-			        + tr("<b>Teléfono: </b>")+c.getTel()+tr("<br />")
-			        + tr("<b>E-Mail: </b>")+c.getEmail()+tr("<br />")
-			        + tr("<b>Dirección: </b>")+c.getAdress();
+					+ tr("<b>DNI: </b>")+c.getDni()+tr("<br />")
+					+ tr("<b>Teléfono: </b>")+c.getTel()+tr("<br />")
+					+ tr("<b>E-Mail: </b>")+c.getEmail()+tr("<br />")
+					+ tr("<b>Dirección: </b>")+c.getAdress();
 			item->setToolTip(0, tooltip);
-			
+
 			item->setData(0, Qt::UserRole, c.getId());
-			
+
 			if(!c.isHousing()){
 				for(int j = 0; j < item->columnCount(); j++){
 					item->setForeground(j, QBrush(Qt::darkRed));
@@ -73,7 +72,7 @@ void FrameTents::refreshData()
 			} else{
 				item->setData(0, Qt::DecorationRole, QIcon(":/imgs/green-arrow.svg"));
 			}
-			
+
 			if(l.getType() == Location::TENT){
 				item->setData(3, Qt::DecorationRole, QIcon(":/imgs/tent.png"));
 			} else{
@@ -81,9 +80,9 @@ void FrameTents::refreshData()
 			}
 		}
 	}
-	
+
 	this->ui->list->header()->resizeSections(QHeaderView::ResizeToContents);
-	
+
 	MainFrame::refreshData();
 }
 
@@ -115,7 +114,7 @@ void FrameTents::on_actionListDelete_triggered()
 
 void FrameTents::on_list_itemActivated(QTreeWidgetItem* item, int /*column*/)
 {
-    Client c( Client().findById(item->data(0, Qt::UserRole).toInt()) );
+	Client c( Client().findById(item->data(0, Qt::UserRole).toInt()) );
 	this->doEditClient(c);
 }
 

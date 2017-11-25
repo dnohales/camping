@@ -16,10 +16,10 @@ public:
 class Vehicle : public ActiveRecord
 {
 	ACTIVE_RECORD(Vehicle, VehicleCollection)
-	
+
 public:
-    QString tableName();
-	
+	QString tableName();
+
 	ACTIVE_RECORD_FIELD(getClientId, setClientId, int, "client_id")
 	ACTIVE_RECORD_FIELD_STRING(getModel, setModel, "model")
 	ACTIVE_RECORD_FIELD_STRING(getPatent, setPatent, "patent")

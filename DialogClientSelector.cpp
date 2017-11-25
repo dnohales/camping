@@ -5,30 +5,30 @@
 #include "Client.h"
 
 DialogClientSelector::DialogClientSelector(QString idList, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::DialogClientSelector)
+	QDialog(parent),
+	ui(new Ui::DialogClientSelector)
 {
-    ui->setupUi(this);
-	
+	ui->setupUi(this);
+
 	this->ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Aceptar"));
 	this->ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancelar"));
-	
+
 	QStringList ids(idList.split(','));
 	qDebug() << ids;
-	
+
 	for(int i = 0; i < ids.count(); i++){
 		Client c(Client().findById(ids.at(i).toInt()));
 		QListWidgetItem *item = new QListWidgetItem();
 		item->setText(c.getFullName());
 		item->setData(Qt::UserRole, c.getId());
-		
+
 		ui->list->addItem(item);
 	}
 }
 
 DialogClientSelector::~DialogClientSelector()
 {
-    delete ui;
+	delete ui;
 }
 
 int DialogClientSelector::selectedId()
@@ -58,6 +58,6 @@ void DialogClientSelector::accept()
 
 void DialogClientSelector::on_list_itemActivated(QListWidgetItem* item)
 {
-    item->setSelected(true);
+	item->setSelected(true);
 	this->accept();
 }

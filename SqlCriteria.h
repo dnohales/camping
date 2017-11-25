@@ -8,14 +8,14 @@
 class SqlCriteria
 {
 public:
-    explicit SqlCriteria();
-	
+	explicit SqlCriteria();
+
 	SqlCriteria & addCondition(QString condition, QString separator = "AND");
 	QSqlQuery buildSelectQuery();
 	QString buildSelectQueryAsString();
-	
+
 	SqlCriteria bindValue(const QString &placeholder, const QVariant &val);
-	
+
 	QString table() { return this->_table; }
 	QString where() { return this->_where; }
 	QString order() { return this->_order; }
@@ -24,7 +24,7 @@ public:
 	QString join() { return this->_join; }
 	QString select() { return this->_select; }
 	QString group() { return this->_group; }
-	
+
 	SqlCriteria & setTable(QString value) { this->_table = value; return *this; }
 	SqlCriteria & setWhere(QString value) { this->_where = value; return *this; }
 	SqlCriteria & setOrder(QString value) { this->_order = value; return *this; }

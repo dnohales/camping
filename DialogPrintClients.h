@@ -5,18 +5,18 @@
 #include "Client.h"
 
 namespace Ui {
-    class DialogPrintClients;
+	class DialogPrintClients;
 }
 
 class DialogPrintClients : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit DialogPrintClients(const ClientCollection &list, QWidget *parent = 0);
-    ~DialogPrintClients();
+	explicit DialogPrintClients(const ClientCollection &list, QWidget *parent = 0);
+	~DialogPrintClients();
 	const ClientCollection *currentList() const;
-	
+
 public slots:
 	void updateFilteredList();
 	void updateInfo();
@@ -25,7 +25,7 @@ public slots:
 private:
 	const ClientCollection originalList;
 	ClientCollection filteredList;
-    Ui::DialogPrintClients *ui;
+	Ui::DialogPrintClients *ui;
 };
 
 #endif // DIALOGPRINTCLIENTS_H

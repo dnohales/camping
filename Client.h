@@ -24,11 +24,11 @@ public:
 class Client : public ActiveRecord
 {
 	ACTIVE_RECORD(Client, ClientCollection)
-	
+
 public:
 	QString tableName();
 	void validate();
-	
+
 	QString getFullName() const;
 	Location getLocation() const;
 	void setLocation(const Location &loc);
@@ -37,7 +37,7 @@ public:
 	VehicleCollection getVehicles() const;
 	ClientCollection getConflictingClients() const;
 	QString getReceiptHtml() const;
-	
+
 	ACTIVE_RECORD_FIELD_STRING(getName, setName, "name")
 	ACTIVE_RECORD_FIELD_STRING(getSurame, setSurame, "surname")
 	ACTIVE_RECORD_FIELD(getDateIn, setDateIn, QDate, "in_time")
@@ -50,7 +50,7 @@ public:
 	ACTIVE_RECORD_FIELD_STRING(getAdress, setAddress, "address")
 	ACTIVE_RECORD_FIELD(getPeopleNum, setPeopleNum, int, "people_num")
 	ACTIVE_RECORD_FIELD(getTentNum, setTentNum, int, "tent_num")
-	
+
 protected:
 	void init();
 };

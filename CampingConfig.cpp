@@ -3,7 +3,7 @@
 #include <QSettings>
 
 CampingConfig::CampingConfig(QObject *parent) :
-    QObject(parent)
+	QObject(parent)
 {
 	this->clear();
 }
@@ -11,7 +11,7 @@ CampingConfig::CampingConfig(QObject *parent) :
 void CampingConfig::init()
 {
 	this->clear();
-	
+
 	QSqlQuery query("SELECT key, value FROM config", Db());
 	while(query.next()){
 		this->data[query.value(0).toString()] = query.value(1);
@@ -21,7 +21,7 @@ void CampingConfig::init()
 void CampingConfig::clear()
 {
 	this->data.clear();
-	
+
 	this->setDbVersion(App()->dbVersion());
 }
 
@@ -29,23 +29,23 @@ void CampingConfig::save()
 {
 	QMapIterator<QString, QVariant> i(this->data);
 	QSqlQuery recordQuery(Db());
-	
+
 	Db().transaction();
 	Db().exec("DELETE FROM config");
-	
+
 	while(i.hasNext()){
 		i.next();
 
 		QString queryStr;
 		queryStr = "INSERT INTO config(key, value) VALUES (:key, :value)";
-		
+
 		recordQuery.prepare(queryStr);
 		recordQuery.bindValue(":value", i.value());
 		recordQuery.bindValue(":key", i.key());
 		recordQuery.exec();
 	}
 	Db().commit();
-	
+
 	this->init();
 }
 

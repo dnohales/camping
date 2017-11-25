@@ -20,43 +20,43 @@ QStringList ActiveRecord::validFieldsList()
 {
 	QSqlRecord record = this->record();
 	QStringList list;
-	
-	for(int i = 0; i < record.count(); i++){
+
+	for (int i = 0; i < record.count(); i++) {
 		QString fieldName = this->record().fieldName(i);
 		if(fieldName != "id" && fieldName[0] != '_'){
 			list.append(fieldName);
 		}
 	}
-	
+
 	return list;
 }
 
 void ActiveRecord::save(bool validate)
-{	
+{
 	QString q("");
 	QSqlQuery query(Db());
 	int lastId;
 	QStringList fields(validFieldsList());
-	
+
 	if(this->isTemplate()){
 		throw ActiveRecordException(QObject::tr("Una ActiveRecord plantilla es solo para fabricar otros ActiveRecord's."));
 	}
-	
+
 	if(validate){
 		this->validate();
 	}
-	
+
 	this->setUpdateTime(QDateTime::currentDateTime());
-	
+
 	if(this->isNew()){
 		this->setCreateTime(QDateTime::currentDateTime());
 		q += QString("INSERT INTO %1 (").arg(this->tableName());
-		
+
 		for(int i = 0; i < fields.count(); i++){
 			q += QString("%1, ").arg(fields[i]);
 		}
 		q.truncate(q.length() - 2);
-		
+
 		q += ") VALUES (";
 		for(int i = 0; i < fields.count(); i++){
 			q += QString(":%1, ").arg(fields[i]);
@@ -65,14 +65,14 @@ void ActiveRecord::save(bool validate)
 		q += ")";
 	} else{
 		q += QString("UPDATE %1 SET ").arg(this->tableName());
-		
+
 		for(int i = 0; i < fields.count(); i++){
 			q += QString("%1 = :%1, ").arg(fields[i]);
 		}
 		q.truncate(q.length() - 2);
 		q += " WHERE id = :id";
 	}
-	
+
 	query.prepare(q);
 	for(int i = 0; i < fields.count(); i++){
 		query.bindValue(QString(":")+fields[i], this->record().value(fields[i]));
@@ -82,7 +82,7 @@ void ActiveRecord::save(bool validate)
 	}
 	query.exec();
 	printQueryDebug(4, query);
-	
+
 	if(query.lastError().isValid()){
 		throw ActiveRecordException(QObject::tr("Ocurrió un error al guardar el registro: %1.").arg(query.lastError().text()));
 	} else{
@@ -183,7 +183,7 @@ void ActiveRecord::printQueryDebug(int type, QSqlQuery &query)
 {
 	QString msg;
 	QMapIterator<QString, QVariant> i(query.boundValues());
-	
+
 	switch(type){
 	case 1:
 		qDebug() << "[AR: Finding single]" << query.lastQuery();
@@ -201,17 +201,17 @@ void ActiveRecord::printQueryDebug(int type, QSqlQuery &query)
 		qDebug() << "[AR: Other]" << query.lastQuery();
 		break;
 	}
-	
+
 	msg = "";
 	while(i.hasNext()){
 		i.next();
 		msg += i.key() + " => " + i.value().toString() + "\n          ";
 	}
-	
+
 	if(!msg.isEmpty()){
 		qDebug("%s %s", "  [BINDS]", qPrintable(msg.trimmed()));
 	}
-	
+
 	if(query.lastError().isValid()){
 		qDebug() << "  [ERROR]" << query.lastError().text();
 	}
