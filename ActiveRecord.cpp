@@ -11,6 +11,11 @@ ActiveRecord::ActiveRecord(bool isTemplate)
 	this->_isTemplate = isTemplate;
 }
 
+ActiveRecord::~ActiveRecord()
+{
+
+}
+
 QSqlRecord ActiveRecord::record() const
 {
 	return this->_record;

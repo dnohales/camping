@@ -53,7 +53,7 @@ public: \
 	className findById(int id){ \
 		return this->find(SqlCriteria().addCondition(QString("id = ") + QString::number(id))); \
 	}
-	
+
 
 class ActiveRecordException : public CampingException
 {
@@ -67,9 +67,10 @@ public:
 class ActiveRecord
 {
 public:
-    ActiveRecord(QSqlRecord record);
+	ActiveRecord(QSqlRecord record);
 	explicit ActiveRecord(bool isTemplate = true);
-	
+	virtual ~ActiveRecord();
+
 	QSqlRecord record() const;
 	void save(bool validate = true);
 	void reset();
@@ -81,13 +82,13 @@ public:
 	virtual QString tableName() = 0;
 	void deleteById(int id);
 	void deleteRecord();
-	
+
 	static QString tr(const char *sourceText, const char *comment = 0, int n = -1);
-	
+
 	ACTIVE_RECORD_FIELD(getId, setId, int, "id")
 	ACTIVE_RECORD_FIELD(getCreateTime, setCreateTime, QDateTime, "create_time")
 	ACTIVE_RECORD_FIELD(getUpdateTime, setUpdateTime, QDateTime, "update_time")
-	
+
 protected:
 	void initEmptyRecord();
 	virtual void init();
@@ -96,7 +97,7 @@ protected:
 	void setFieldValue(QString name, QVariant value);
 	void printQueryDebug(int type, QSqlQuery &query);
 	QStringList validFieldsList();
-	
+
 private:
 	QSqlRecord _record;
 	QSqlRecord _originalRecord;
