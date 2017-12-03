@@ -1,12 +1,8 @@
 <RCC>
-    <qresource prefix="/db">
-        <file>template.sql</file>
-    </qresource>
-    <qresource prefix="/html">
-        <file alias="client-collection.html">html/ClientCollectionDefault.html</file>
-        <file alias="receipt.html">html/ReceiptDefault.html</file>
-    </qresource>
     <qresource prefix="/">
+        <file>db/template.sql</file>
+        <file>html/client-collection.html</file>
+        <file>html/receipt.html</file>
         <file>imgs/add.svg</file>
         <file>imgs/delete.svg</file>
         <file>imgs/dorm.png</file>
