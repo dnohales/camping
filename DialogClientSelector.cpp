@@ -36,13 +36,14 @@ int DialogClientSelector::selectedId()
 	return this->_selectedId;
 }
 
-void DialogClientSelector::exec()
+int DialogClientSelector::exec()
 {
 	if (ui->list->count() == 1) {
 		ui->list->item(0)->setSelected(true);
 		this->accept();
+		return QDialog::Accepted;
 	} else {
-		QDialog::exec();
+		return QDialog::exec();
 	}
 }
 
