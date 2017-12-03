@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets printsupport sql
+QT       += core gui widgets printsupport sql webenginewidgets
 
 TARGET = Camping
 TEMPLATE = app

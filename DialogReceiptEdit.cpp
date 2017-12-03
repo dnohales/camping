@@ -34,9 +34,11 @@ void DialogReceiptEdit::onButtonClicked(QAbstractButton *button)
 		}
 		break;
 	case QDialogButtonBox::AcceptRole:
-		App()->config()->setCustomReceipt(ui->editor->text());
-		App()->config()->save();
-		QDialog::accept();
+		this->ui->editor->text([this] (const QString &text) {
+			App()->config()->setCustomReceipt(text);
+			App()->config()->save();
+			QDialog::accept();
+		});
 		break;
 	case QDialogButtonBox::RejectRole:
 		QDialog::reject();

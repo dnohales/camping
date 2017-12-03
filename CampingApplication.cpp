@@ -2,7 +2,7 @@
 #include "common.h"
 #include "main.h"
 #include <QPrintDialog>
-#include <QtWebKit/QWebEngineView>
+#include <QWebEngineView>
 
 CampingApplication::CampingApplication(int &argc, char **argv, int version)
 	: QApplication(argc, argv, version)
@@ -146,7 +146,6 @@ void CampingApplication::printHtml(QString html, QWidget *parent)
 	if (dialog.result() == QPrintDialog::Accepted) {
 		QWebEngineView webview(parent);
 		webview.setHtml(html);
-
-		webview.print(this->printer());
+		webview.page()->print(this->printer(), [](bool) {});
 	}
 }

@@ -49,31 +49,30 @@
 
 #include "RichTextEditorWidget.h"
 
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QPointer>
-
+#include <QAction>
+#include <QColorDialog>
+#include <QComboBox>
+#include <QDialogButtonBox>
+#include <QFile>
+#include <QFontDatabase>
+#include <QHBoxLayout>
+#include <QIcon>
+#include <QList>
+#include <QMap>
+#include <QMenu>
+#include <QMoveEvent>
+#include <QPainter>
+#include <QPointer>
+#include <QPushButton>
 #include <QSyntaxHighlighter>
-#include <QWebFrame>
-#include <QtCore/QFile>
-#include <QtGui/QAction>
-#include <QtGui/QColorDialog>
-#include <QtGui/QComboBox>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QFontDatabase>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QIcon>
-#include <QtGui/QMenu>
-#include <QtGui/QMoveEvent>
-#include <QtGui/QPainter>
-#include <QtGui/QPushButton>
-#include <QtGui/QTabWidget>
-#include <QtGui/QTextBlock>
-#include <QtGui/QTextCursor>
-#include <QtGui/QTextDocument>
-#include <QtGui/QToolBar>
-#include <QtGui/QToolButton>
-#include <QtGui/QVBoxLayout>
+#include <QTabWidget>
+#include <QTextBlock>
+#include <QTextCursor>
+#include <QTextDocument>
+#include <QToolBar>
+#include <QToolButton>
+#include <QVBoxLayout>
+#include <QWebEngineView>
 
 void HtmlTextEdit::contextMenuEvent(QContextMenuEvent *event)
 {
@@ -117,13 +116,17 @@ void HtmlTextEdit::actionTriggered(QAction *action)
 RichTextEditor::RichTextEditor(QWidget *parent)
 	: QWebEngineView(parent)
 {
-	connect(this->page(), SIGNAL(contentsChanged()), this, SIGNAL(textChanged()));
-	this->page()->setContentEditable(true);
+	connect(this->page(), SIGNAL(loadFinished(bool)), this, SLOT(pageLoadFinished()));
 }
 
-QString RichTextEditor::html() const
+void RichTextEditor::pageLoadFinished()
 {
-	return this->page()->currentFrame()->toHtml();
+	this->page()->runJavaScript("document.body.contentEditable = true;");
+}
+
+void RichTextEditor::html(const QWebEngineCallback<const QString &> &resultCallback) const
+{
+	this->page()->toHtml(resultCallback);
 }
 
 HtmlHighlighter::HtmlHighlighter(QTextEdit *textEdit)
@@ -272,12 +275,11 @@ RichTextEditorWidget::RichTextEditorWidget(QWidget *parent)
 	  m_editor(new RichTextEditor()),
 	  m_text_edit(new HtmlTextEdit),
 	  m_tab_widget(new QTabWidget),
-	  m_state(Clean)
+	  m_source_changed(false)
 {
 	m_text_edit->setAcceptRichText(false);
 	new HtmlHighlighter(m_text_edit);
 
-	connect(m_editor, SIGNAL(textChanged()), this, SLOT(richTextChanged()));
 	connect(m_text_edit, SIGNAL(textChanged()), this, SLOT(sourceChanged()));
 
 	QWidget *rich_edit = new QWidget;
@@ -308,41 +310,37 @@ void RichTextEditorWidget::setText(const QString &text)
 {
 	m_editor->setHtml(text);
 	m_text_edit->setPlainText(text);
-	m_state = Clean;
+	m_source_changed = false;
 }
 
-QString RichTextEditorWidget::text() const
+void RichTextEditorWidget::text(std::function<void (const QString &)> func) const
 {
 	if (m_tab_widget->currentIndex() == RichTextIndex) {
-		return m_editor->html();
+		m_editor->html(func);
 	} else {
-		return m_text_edit->toPlainText();
+		QString plainText = m_text_edit->toPlainText();
+		func(plainText);
 	}
 }
 
 void RichTextEditorWidget::tabIndexChanged(int newIndex)
 {
 	// Anything changed, is there a need for a conversion?
-	if (newIndex == SourceIndex && m_state != RichTextChanged)
+	if (newIndex == RichTextIndex && !m_source_changed)
 		return;
-	if (newIndex == RichTextIndex && m_state != SourceChanged)
-		return;
-	const State oldState = m_state;
 
-	if (newIndex == SourceIndex)
-		m_text_edit->setPlainText(m_editor->html());
-	else
+	if (newIndex == SourceIndex) {
+		m_editor->html([this] (const QString &html) {
+			this->m_text_edit->setPlainText(html);
+		});
+	} else {
 		m_editor->setHtml(m_text_edit->toPlainText());
+	}
 
-	m_state = oldState; // Changed is triggered by setting the text
-}
-
-void RichTextEditorWidget::richTextChanged()
-{
-	m_state = RichTextChanged;
+	m_source_changed = false;
 }
 
 void RichTextEditorWidget::sourceChanged()
 {
-	m_state = SourceChanged;
+	m_source_changed = true;
 }

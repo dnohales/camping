@@ -47,9 +47,10 @@
 #include <QDialog>
 #include <QPointer>
 #include <QSyntaxHighlighter>
+#include <QTextEdit>
 #include <QToolBar>
-#include <QtGui/QTextEdit>
-#include <QtGui/QWidget>
+#include <QWebEngineView>
+#include <QWidget>
 
 class QTabWidget;
 class QToolBar;
@@ -64,31 +65,30 @@ public:
 	~RichTextEditorWidget();
 
 	void setText(const QString &text);
-	QString text() const;
+	void RichTextEditorWidget::text(std::function<void (const QString &)> func) const;
 
 private slots:
 	void tabIndexChanged(int newIndex);
-	void richTextChanged();
 	void sourceChanged();
 
 private:
 	enum TabIndex { RichTextIndex,
 					SourceIndex };
-	enum State { Clean,
-				 RichTextChanged,
-				 SourceChanged };
 	RichTextEditor *m_editor;
 	QTextEdit *m_text_edit;
 	QTabWidget *m_tab_widget;
-	State m_state;
+	bool m_source_changed;
 };
 
-class RichTextEditor : public QWebView
+class RichTextEditor : public QWebEngineView
 {
 	Q_OBJECT
 public:
 	RichTextEditor(QWidget *parent = 0);
-	QString html() const;
+	void html(const QWebEngineCallback<const QString &> &resultCallback) const;
+
+public slots:
+	void pageLoadFinished();
 
 signals:
 	void textChanged();
