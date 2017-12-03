@@ -1,16 +1,17 @@
 #ifndef DIALOGADDCLIENT_H
 #define DIALOGADDCLIENT_H
 
-#include <QDialog>
-#include <QDate>
-#include <QPushButton>
-#include <QStandardItemModel>
 #include "Client.h"
 #include "Location.h"
 #include "Vehicle.h"
+#include <QDate>
+#include <QDialog>
+#include <QPushButton>
+#include <QStandardItemModel>
 
-namespace Ui {
-	class DialogClient;
+namespace Ui
+{
+class DialogClient;
 }
 
 class DialogClient : public QDialog
@@ -31,11 +32,11 @@ public slots:
 	void reset();
 
 private slots:
-	void onButtonBoxClicked(QAbstractButton*);
+	void onButtonBoxClicked(QAbstractButton *);
 	void refreshWidgets();
 	void on_buttonVehicleAdd_clicked();
 	void on_buttonVehicleDelete_clicked();
-	void on_editLocation_textChanged(QString );
+	void on_editLocation_textChanged(QString);
 
 private:
 	Client *client;

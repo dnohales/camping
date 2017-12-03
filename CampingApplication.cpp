@@ -1,11 +1,11 @@
-#include "main.h"
-#include "common.h"
 #include "CampingApplication.h"
+#include "common.h"
+#include "main.h"
 #include <QPrintDialog>
 #include <QtWebKit/QWebEngineView>
 
-CampingApplication::CampingApplication(int &argc, char **argv, int version) :
-	QApplication(argc, argv, version)
+CampingApplication::CampingApplication(int &argc, char **argv, int version)
+	: QApplication(argc, argv, version)
 {
 	QSqlDatabase::addDatabase("QSQLITE");
 	this->_initialized = false;
@@ -19,7 +19,7 @@ CampingConfig *CampingApplication::config()
 	return &this->_config;
 }
 
-QPrinter * CampingApplication::printer()
+QPrinter *CampingApplication::printer()
 {
 	return &this->_printer;
 }
@@ -38,37 +38,37 @@ void CampingApplication::initNewDatabase(QString filename)
 {
 	//Abrir archiv con la consulta
 	QFile sqlFile(":/db/template.sql");
-	if( !sqlFile.open(QFile::ReadOnly) ){
+	if (!sqlFile.open(QFile::ReadOnly)) {
 		throw CampingException(tr("No se puede obtener la plantilla de datos para crear la base de datos"));
 	}
 
 	//Abrir base de datos auxiliar "new"
 	QFile databaseFile(filename);
-	if(databaseFile.exists()){
+	if (databaseFile.exists()) {
 		databaseFile.remove();
 	}
 	QSqlDatabase newDatabase = QSqlDatabase::addDatabase("QSQLITE", "new");
 	newDatabase.setDatabaseName(filename);
-	if(!newDatabase.open()){
+	if (!newDatabase.open()) {
 		throw CampingException(tr("No se pudo crear el archivo para la base de datos"));
 	}
 
 	//Llenar base de datos nueva
 	QString sQuery(sqlFile.readAll().data());
-	try{
+	try {
 		this->execMulti(newDatabase, sQuery);
-	} catch(CampingException &e){
-		throw CampingException(tr("No se pudo ejecutar la consulta que crea la base de datos: ")+e.message());
+	} catch (CampingException &e) {
+		throw CampingException(tr("No se pudo ejecutar la consulta que crea la base de datos: ") + e.message());
 	}
 
 	//Chequear base de datos
-	try{
+	try {
 		this->checkDatabase(newDatabase);
 		QSqlDatabase::cloneDatabase(QSqlDatabase::database("new"), "main");
 		Db().open();
 		this->config()->init();
 		this->setInitialized(true);
-	} catch(CampingException &e){
+	} catch (CampingException &e) {
 		throw e;
 	}
 }
@@ -76,23 +76,23 @@ void CampingApplication::initNewDatabase(QString filename)
 void CampingApplication::initExistentDatabase(QString filename)
 {
 	QFile databaseFile(filename);
-	if(!databaseFile.exists()){
+	if (!databaseFile.exists()) {
 		throw CampingException(tr("El archivo no existe."));
 	}
 
 	QSqlDatabase newDatabase = QSqlDatabase::addDatabase("QSQLITE", "new");
 	newDatabase.setDatabaseName(filename);
-	if(!newDatabase.open()){
+	if (!newDatabase.open()) {
 		throw CampingException(tr("No se pudo abrir la base de datos"));
 	}
 
-	try{
+	try {
 		this->checkDatabase(newDatabase);
 		QSqlDatabase::cloneDatabase(QSqlDatabase::database("new"), "main");
 		Db().open();
 		this->config()->init();
 		this->setInitialized(true);
-	} catch(CampingException &e){
+	} catch (CampingException &e) {
 		throw e;
 	}
 }
@@ -100,14 +100,17 @@ void CampingApplication::initExistentDatabase(QString filename)
 void CampingApplication::checkDatabase(QSqlDatabase &db)
 {
 	QStringList checkTables;
-	checkTables << "client" << "config" << "location" << "vehicle";
+	checkTables << "client"
+				<< "config"
+				<< "location"
+				<< "vehicle";
 	checkTables.sort();
 
 	QStringList tables = db.tables();
 	tables.sort();
 	tables.removeOne("sqlite_sequence");
 
-	if(checkTables != tables){
+	if (checkTables != tables) {
 		throw CampingException(tr("La base de datos está corrupta"));
 	}
 }
@@ -120,12 +123,12 @@ void CampingApplication::execMulti(QSqlDatabase &db, QString &query)
 	QSqlQuery sqlQuery;
 
 	db.transaction();
-	while(i.hasNext()){
+	while (i.hasNext()) {
 		QString line = i.next();
 		strQuery += line + "\n";
-		if(line.endsWith(';')){
+		if (line.endsWith(';')) {
 			sqlQuery = db.exec(strQuery);
-			if(sqlQuery.lastError().isValid()){
+			if (sqlQuery.lastError().isValid()) {
 				db.rollback();
 				throw CampingException(sqlQuery.lastError().text());
 			}
@@ -140,11 +143,10 @@ void CampingApplication::printHtml(QString html, QWidget *parent)
 	QPrintDialog dialog(this->printer(), parent);
 	dialog.exec();
 
-	if(dialog.result() == QPrintDialog::Accepted){
+	if (dialog.result() == QPrintDialog::Accepted) {
 		QWebEngineView webview(parent);
 		webview.setHtml(html);
 
 		webview.print(this->printer());
 	}
 }
-

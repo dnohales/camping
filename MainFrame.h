@@ -1,10 +1,10 @@
 #ifndef MAINFRAME_H
 #define MAINFRAME_H
 
-#include <QFrame>
-#include "SqlCriteria.h"
-#include "MainWindow.h"
 #include "Client.h"
+#include "MainWindow.h"
+#include "SqlCriteria.h"
+#include <QFrame>
 
 class MainFrame : public QFrame
 {
@@ -36,7 +36,6 @@ signals:
 private:
 	bool _refreshed;
 	MainWindow *_parent;
-
 };
 
 #endif // MAINFRAME_H

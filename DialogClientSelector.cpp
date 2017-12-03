@@ -1,12 +1,12 @@
 #include "DialogClientSelector.h"
+#include "Client.h"
 #include "ui_DialogClientSelector.h"
 #include <QMessageBox>
 #include <QPushButton>
-#include "Client.h"
 
-DialogClientSelector::DialogClientSelector(QString idList, QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::DialogClientSelector)
+DialogClientSelector::DialogClientSelector(QString idList, QWidget *parent)
+	: QDialog(parent),
+	  ui(new Ui::DialogClientSelector)
 {
 	ui->setupUi(this);
 
@@ -16,7 +16,7 @@ DialogClientSelector::DialogClientSelector(QString idList, QWidget *parent) :
 	QStringList ids(idList.split(','));
 	qDebug() << ids;
 
-	for(int i = 0; i < ids.count(); i++){
+	for (int i = 0; i < ids.count(); i++) {
 		Client c(Client().findById(ids.at(i).toInt()));
 		QListWidgetItem *item = new QListWidgetItem();
 		item->setText(c.getFullName());
@@ -38,25 +38,25 @@ int DialogClientSelector::selectedId()
 
 void DialogClientSelector::exec()
 {
-	if(ui->list->count() == 1){
+	if (ui->list->count() == 1) {
 		ui->list->item(0)->setSelected(true);
 		this->accept();
-	} else{
+	} else {
 		QDialog::exec();
 	}
 }
 
 void DialogClientSelector::accept()
 {
-	if(ui->list->selectedItems().count() == 0){
+	if (ui->list->selectedItems().count() == 0) {
 		QMessageBox::warning(this, tr("Error"), tr("Por favor seleccione un cliente."));
-	} else{
+	} else {
 		this->_selectedId = ui->list->selectedItems().at(0)->data(Qt::UserRole).toInt();
 		QDialog::accept();
 	}
 }
 
-void DialogClientSelector::on_list_itemActivated(QListWidgetItem* item)
+void DialogClientSelector::on_list_itemActivated(QListWidgetItem *item)
 {
 	item->setSelected(true);
 	this->accept();

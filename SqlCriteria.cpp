@@ -1,18 +1,18 @@
-#include <QMapIterator>
-#include <QDebug>
-#include "main.h"
 #include "SqlCriteria.h"
+#include "main.h"
+#include <QDebug>
+#include <QMapIterator>
 
 SqlCriteria::SqlCriteria()
 {
 	this->setSelect("*");
 }
 
-SqlCriteria & SqlCriteria::addCondition(QString condition, QString separator)
+SqlCriteria &SqlCriteria::addCondition(QString condition, QString separator)
 {
-	if(!this->where().isEmpty()){
+	if (!this->where().isEmpty()) {
 		this->setWhere("(" + this->where() + ") " + separator + " (" + condition + ")");
-	} else{
+	} else {
 		this->setWhere(condition);
 	}
 	return *this;
@@ -20,27 +20,27 @@ SqlCriteria & SqlCriteria::addCondition(QString condition, QString separator)
 
 QString SqlCriteria::buildSelectQueryAsString()
 {
-	QString q = "SELECT "+this->select()+" FROM " + this->table();
+	QString q = "SELECT " + this->select() + " FROM " + this->table();
 
-	if(!this->join().isEmpty()){
+	if (!this->join().isEmpty()) {
 		q += " " + this->join();
 	}
 
-	if(!this->where().isEmpty()){
+	if (!this->where().isEmpty()) {
 		q += " WHERE " + this->where();
 	}
 
-	if(!this->group().isEmpty()){
+	if (!this->group().isEmpty()) {
 		q += " GROUP BY " + this->group();
 	}
 
-	if(!this->order().isEmpty()){
+	if (!this->order().isEmpty()) {
 		q += " ORDER BY " + this->order();
 	}
 
-	if(!this->limit().isEmpty()){
+	if (!this->limit().isEmpty()) {
 		q += " LIMIT " + this->limit();
-		if(!this->from().isEmpty()){
+		if (!this->from().isEmpty()) {
 			q += ", " + this->from();
 		}
 	}
@@ -53,7 +53,7 @@ QSqlQuery SqlCriteria::buildSelectQuery()
 	QSqlQuery query(Db());
 	QMapIterator<QString, QVariant> i(_binds);
 	query.prepare(this->buildSelectQueryAsString());
-	while(i.hasNext()){
+	while (i.hasNext()) {
 		i.next();
 		query.bindValue(i.key(), i.value());
 	}
@@ -61,7 +61,7 @@ QSqlQuery SqlCriteria::buildSelectQuery()
 	return query;
 }
 
-SqlCriteria SqlCriteria::bindValue(const QString& placeholder, const QVariant& val)
+SqlCriteria SqlCriteria::bindValue(const QString &placeholder, const QVariant &val)
 {
 	_binds[placeholder] = val;
 	return *this;
@@ -86,4 +86,3 @@ QVariant SqlCriteria::boundValue(int pos) const
 {
 	return _query.boundValue(pos);
 }*/
-

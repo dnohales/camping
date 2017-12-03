@@ -1,8 +1,8 @@
 #include "main.h"
-#include "common.h"
 #include "MainWindow.h"
-#include <QTranslator>
+#include "common.h"
 #include <QLibraryInfo>
+#include <QTranslator>
 
 #define TEST 0
 
@@ -14,15 +14,15 @@ int main(int argc, char *argv[])
 
 	QTranslator qtTranslator;
 	qtTranslator.load("qt_" + QLocale::system().name(),
-			 QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+					  QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 	a.installTranslator(&qtTranslator);
 
-	if(!TEST){
+	if (!TEST) {
 		MainWindow w;
 		w.show();
 
 		return a.exec();
-	} else{
+	} else {
 		return test();
 	}
 }

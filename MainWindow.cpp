@@ -1,20 +1,20 @@
-#include "main.h"
-#include "common.h"
 #include "MainWindow.h"
-#include "DialogClient.h"
 #include "DialogAbout.h"
+#include "DialogClient.h"
 #include "DialogPrintClients.h"
 #include "DialogReceiptEdit.h"
+#include "common.h"
+#include "main.h"
 #include "ui_MainWindow.h"
-#include <QPrintDialog>
 #include <QPageSetupDialog>
-#include <QPrinter>
+#include <QPrintDialog>
 #include <QPrintPreviewDialog>
+#include <QPrinter>
 #include <QSettings>
 
-MainWindow::MainWindow(QWidget *parent) :
-	QMainWindow(parent),
-	ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+	: QMainWindow(parent),
+	  ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
 	this->setWindowTitle(App()->name());
@@ -32,17 +32,18 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->connect(ui->frameDorms, SIGNAL(refreshed()), SLOT(requestRefresh()));
 	this->connect(this, SIGNAL(textSearched(QString)), SLOT(requestRefresh()));
 
-	if(!App()->config()->lastFilename().isEmpty()){
-		try{
+	if (!App()->config()->lastFilename().isEmpty()) {
+		try {
 			App()->initExistentDatabase(App()->config()->lastFilename());
 			emit fileOpened(App()->config()->lastFilename());
-		} catch(...){}
+		} catch (...) {
+		}
 	}
 
 	QSettings settings;
-	if(settings.value("Window/Maximized").toBool()){
+	if (settings.value("Window/Maximized").toBool()) {
 		this->showMaximized();
-	} else{
+	} else {
 		this->resize(settings.value("Window/Width").toInt(), settings.value("Window/Height").toInt());
 	}
 
@@ -60,7 +61,7 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
-void MainWindow::on_lineEditSearch_textChanged(QString )
+void MainWindow::on_lineEditSearch_textChanged(QString)
 {
 	this->_searchTimer->stop();
 	this->_searchTimer->start();
@@ -82,14 +83,13 @@ void MainWindow::onOpenFile()
 		this,
 		tr("Abrir un archivo de camping"),
 		QString(),
-		tr("Archivo de camping (*.%1);;Todos los archivos (*)").arg(App()->fileExtension())
-	);
-	if(!filename.isEmpty()){
-		try{
+		tr("Archivo de camping (*.%1);;Todos los archivos (*)").arg(App()->fileExtension()));
+	if (!filename.isEmpty()) {
+		try {
 			App()->initExistentDatabase(filename);
 			emit fileOpened(filename);
-		} catch(CampingException &e){
-			QMessageBox::critical(this, App()->name(), tr("No se puede abrir \"%1\": %2.").arg(filename, e.message()) );
+		} catch (CampingException &e) {
+			QMessageBox::critical(this, App()->name(), tr("No se puede abrir \"%1\": %2.").arg(filename, e.message()));
 		}
 	}
 }
@@ -97,13 +97,13 @@ void MainWindow::onOpenFile()
 void MainWindow::onFileSaveAs()
 {
 	QString filename = this->getCampingSaveFileName();
-	if(!filename.isNull()){
-		try{
+	if (!filename.isNull()) {
+		try {
 			QFile::copy(Db().databaseName(), filename);
 			App()->initExistentDatabase(filename);
 			emit fileOpened(filename);
-		} catch(CampingException &e){
-			QMessageBox::critical(this, App()->name(), tr("No se pudo recargar la base de datos \"%1\": %2.").arg(filename, e.message()) );
+		} catch (CampingException &e) {
+			QMessageBox::critical(this, App()->name(), tr("No se pudo recargar la base de datos \"%1\": %2.").arg(filename, e.message()));
 		}
 	}
 }
@@ -111,12 +111,12 @@ void MainWindow::onFileSaveAs()
 void MainWindow::onNewFile()
 {
 	QString filename = this->getCampingSaveFileName();
-	if(!filename.isEmpty()){
-		try{
+	if (!filename.isEmpty()) {
+		try {
 			App()->initNewDatabase(filename);
 			emit fileOpened(filename);
-		} catch(CampingException &e){
-			QMessageBox::critical(this, App()->name(), tr("No se puede crear la base de datos en \"%1\": %2.").arg(filename, e.message()) );
+		} catch (CampingException &e) {
+			QMessageBox::critical(this, App()->name(), tr("No se puede crear la base de datos en \"%1\": %2.").arg(filename, e.message()));
 		}
 	}
 }
@@ -127,19 +127,17 @@ QString MainWindow::getCampingSaveFileName()
 		this,
 		tr("Seleccione la ubicación donde guardar el camping"),
 		QString(),
-		tr("Archivo de camping (*.%1);;Todos los archivos (*)").arg(App()->fileExtension())
-	);
+		tr("Archivo de camping (*.%1);;Todos los archivos (*)").arg(App()->fileExtension()));
 
-	if( !filename.isNull() && !filename.endsWith(App()->fileExtensionWithDot()) ){
+	if (!filename.isNull() && !filename.endsWith(App()->fileExtensionWithDot())) {
 		filename += App()->fileExtensionWithDot();
 	}
 
-	if( QFile::exists(filename) && QMessageBox::question(
-			this,
-			App()->name(),
-			tr("Ya existe el archivo \"%1\" ¿Desea reemplazarlo?").arg(QFileInfo(filename).completeBaseName()),
-			QMessageBox::Yes, QMessageBox::No
-	) == QMessageBox::No){
+	if (QFile::exists(filename) && QMessageBox::question(
+									   this,
+									   App()->name(),
+									   tr("Ya existe el archivo \"%1\" ¿Desea reemplazarlo?").arg(QFileInfo(filename).completeBaseName()),
+									   QMessageBox::Yes, QMessageBox::No) == QMessageBox::No) {
 		filename = "";
 	}
 
@@ -157,7 +155,7 @@ void MainWindow::refreshInitializedState()
 	this->ui->frameTents->setVisible(ini);
 	this->ui->frameDorms->setVisible(ini);
 
-	if(ini){
+	if (ini) {
 		this->showTents();
 	}
 }
@@ -179,7 +177,7 @@ void MainWindow::showTents()
 
 	this->ui->actionPrintClients->setEnabled(true);
 
-	if(!this->ui->frameTents->isRefreshed()){
+	if (!this->ui->frameTents->isRefreshed()) {
 		this->ui->frameTents->refreshData();
 	}
 }
@@ -194,7 +192,7 @@ void MainWindow::showDorms()
 
 	this->ui->actionPrintClients->setEnabled(false);
 
-	if(!this->ui->frameDorms->isRefreshed()){
+	if (!this->ui->frameDorms->isRefreshed()) {
 		this->ui->frameDorms->refreshData();
 	}
 }
@@ -204,9 +202,9 @@ void MainWindow::requestRefresh()
 	this->ui->frameTents->requestRefresh();
 	this->ui->frameDorms->requestRefresh();
 
-	if(this->ui->frameTents->isVisible() && !this->ui->frameTents->isRefreshed()){
+	if (this->ui->frameTents->isVisible() && !this->ui->frameTents->isRefreshed()) {
 		this->ui->frameTents->refreshData();
-	} else if(this->ui->frameDorms->isVisible() && !this->ui->frameDorms->isRefreshed()){
+	} else if (this->ui->frameDorms->isVisible() && !this->ui->frameDorms->isRefreshed()) {
 		this->ui->frameDorms->refreshData();
 	}
 }

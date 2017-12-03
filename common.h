@@ -1,22 +1,22 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlError>
-#include <QSqlRecord>
-#include <QVariant>
+#include <QDebug>
+#include <QFile>
+#include <QFileDialog>
 #include <QMapIterator>
 #include <QMessageBox>
-#include <QFileDialog>
-#include <QFile>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
+#include <QSqlRecord>
 #include <QTextCodec>
-#include <QDebug>
+#include <QVariant>
 
+#include "ActiveRecord.h"
 #include "CampingApplication.h"
 #include "CampingConfig.h"
 #include "CampingException.h"
-#include "ActiveRecord.h"
 #include "Client.h"
 #include "Location.h"
 

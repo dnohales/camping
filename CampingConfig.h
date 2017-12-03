@@ -1,8 +1,8 @@
 #ifndef CAMPINGCONFIG_H
 #define CAMPINGCONFIG_H
 
-#include <QObject>
 #include <QMap>
+#include <QObject>
 #include <QString>
 #include <QVariant>
 

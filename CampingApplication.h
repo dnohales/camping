@@ -1,10 +1,10 @@
 #ifndef CAMPINGAPPLICATION_H
 #define CAMPINGAPPLICATION_H
 
-#include <QApplication>
-#include <QSqlDatabase>
-#include <QPrinter>
 #include "CampingConfig.h"
+#include <QApplication>
+#include <QPrinter>
+#include <QSqlDatabase>
 
 class CampingConfig;
 
@@ -26,6 +26,7 @@ public:
 	void checkDatabase(QSqlDatabase &db);
 	bool isInitialized() const;
 	void setInitialized(bool ini);
+
 private:
 	void execMulti(QSqlDatabase &db, QString &query);
 

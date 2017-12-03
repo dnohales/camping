@@ -40,10 +40,10 @@
 ****************************************************************************/
 
 /*#include "richtexteditor_p.h"
+#include "abstractsettings_p.h"
 #include "htmlhighlighter_p.h"
 #include "iconselector_p.h"
 #include "ui_addlinkdialog.h"
-#include "abstractsettings_p.h"
 
 #include "iconloader_p.h"*/
 
@@ -53,45 +53,46 @@
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
 
+#include <QSyntaxHighlighter>
+#include <QWebFrame>
+#include <QtCore/QFile>
 #include <QtGui/QAction>
 #include <QtGui/QColorDialog>
 #include <QtGui/QComboBox>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QFontDatabase>
-#include <QtGui/QTextCursor>
-#include <QtGui/QPainter>
+#include <QtGui/QHBoxLayout>
 #include <QtGui/QIcon>
 #include <QtGui/QMenu>
 #include <QtGui/QMoveEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QPushButton>
 #include <QtGui/QTabWidget>
-#include <QtGui/QTextDocument>
 #include <QtGui/QTextBlock>
+#include <QtGui/QTextCursor>
+#include <QtGui/QTextDocument>
 #include <QtGui/QToolBar>
 #include <QtGui/QToolButton>
 #include <QtGui/QVBoxLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QPushButton>
-#include <QtGui/QDialogButtonBox>
-#include <QSyntaxHighlighter>
-#include <QtCore/QFile>
-#include <QWebFrame>
 
 void HtmlTextEdit::contextMenuEvent(QContextMenuEvent *event)
 {
 	QMenu *menu = createStandardContextMenu();
 	QMenu *htmlMenu = new QMenu(tr("Insertar entidad HTML"), menu);
 
-	typedef struct {
+	typedef struct
+	{
 		const char *text;
 		const char *entity;
 	} Entry;
 
 	const Entry entries[] = {
-		{ "&&amp; (&&)", "&amp;" },
-		{ "&&nbsp;", "&nbsp;" },
-		{ "&&lt; (<)", "&lt;" },
-		{ "&&gt; (>)", "&gt;" },
-		{ "&&copy; (Copyright)", "&copy;" },
-		{ "&&reg; (Trade Mark)", "&reg;" },
+		{"&&amp; (&&)", "&amp;"},
+		{"&&nbsp;", "&nbsp;"},
+		{"&&lt; (<)", "&lt;"},
+		{"&&gt; (>)", "&gt;"},
+		{"&&copy; (Copyright)", "&copy;"},
+		{"&&reg; (Trade Mark)", "&reg;"},
 	};
 
 	for (int i = 0; i < 6; ++i) {
@@ -102,8 +103,8 @@ void HtmlTextEdit::contextMenuEvent(QContextMenuEvent *event)
 	}
 
 	menu->addMenu(htmlMenu);
-	connect(htmlMenu, SIGNAL(triggered(QAction*)),
-					  SLOT(actionTriggered(QAction*)));
+	connect(htmlMenu, SIGNAL(triggered(QAction *)),
+			SLOT(actionTriggered(QAction *)));
 	menu->exec(event->globalPos());
 	delete menu;
 }
@@ -191,10 +192,7 @@ void HtmlHighlighter::highlightBlock(const QString &text)
 					} else {
 						state = InTag;
 						start = pos;
-						while (pos < len && text.at(pos) != space
-							   && text.at(pos) != endTag
-							   && text.at(pos) != tab
-							   && text.mid(pos, 2) != endElement)
+						while (pos < len && text.at(pos) != space && text.at(pos) != endTag && text.at(pos) != tab && text.mid(pos, 2) != endElement)
 							++pos;
 						if (text.mid(pos, 2) == endElement)
 							++pos;
@@ -250,9 +248,7 @@ void HtmlHighlighter::highlightBlock(const QString &text)
 						// Tag not ending, not a quote and no whitespace, so
 						// we must be dealing with an attribute.
 						++pos;
-						while (pos < len && text.at(pos) != space
-							   && text.at(pos) != tab
-							   && text.at(pos) != equals)
+						while (pos < len && text.at(pos) != space && text.at(pos) != tab && text.at(pos) != equals)
 							++pos;
 						setFormat(start, pos - start, m_formats[Attribute]);
 						start = pos;
@@ -271,12 +267,12 @@ void HtmlHighlighter::highlightBlock(const QString &text)
 	setCurrentBlockState(state);
 };
 
-RichTextEditorWidget::RichTextEditorWidget(QWidget *parent)  :
-	QWidget(parent),
-	m_editor(new RichTextEditor()),
-	m_text_edit(new HtmlTextEdit),
-	m_tab_widget(new QTabWidget),
-	m_state(Clean)
+RichTextEditorWidget::RichTextEditorWidget(QWidget *parent)
+	: QWidget(parent),
+	  m_editor(new RichTextEditor()),
+	  m_text_edit(new HtmlTextEdit),
+	  m_tab_widget(new QTabWidget),
+	  m_state(Clean)
 {
 	m_text_edit->setAcceptRichText(false);
 	new HtmlHighlighter(m_text_edit);
@@ -296,7 +292,7 @@ RichTextEditorWidget::RichTextEditorWidget(QWidget *parent)  :
 	m_tab_widget->addTab(rich_edit, tr("Texto con formato"));
 	m_tab_widget->addTab(plain_edit, tr("Código HTML"));
 	connect(m_tab_widget, SIGNAL(currentChanged(int)),
-						  SLOT(tabIndexChanged(int)));
+			SLOT(tabIndexChanged(int)));
 
 	m_editor->setFocus();
 
@@ -317,9 +313,9 @@ void RichTextEditorWidget::setText(const QString &text)
 
 QString RichTextEditorWidget::text() const
 {
-	if(m_tab_widget->currentIndex() == RichTextIndex){
+	if (m_tab_widget->currentIndex() == RichTextIndex) {
 		return m_editor->html();
-	} else{
+	} else {
 		return m_text_edit->toPlainText();
 	}
 }
@@ -350,4 +346,3 @@ void RichTextEditorWidget::sourceChanged()
 {
 	m_state = SourceChanged;
 }
-

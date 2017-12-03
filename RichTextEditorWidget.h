@@ -42,14 +42,14 @@
 #ifndef RITCHTEXTEDITORWIDGET_H
 #define RITCHTEXTEDITORWIDGET_H
 
-#include <QtGui/QTextEdit>
-#include <QtGui/QWidget>
-#include <QToolBar>
+#include <QAction>
 #include <QComboBox>
+#include <QDialog>
 #include <QPointer>
 #include <QSyntaxHighlighter>
-#include <QDialog>
-#include <QAction>
+#include <QToolBar>
+#include <QtGui/QTextEdit>
+#include <QtGui/QWidget>
 
 class QTabWidget;
 class QToolBar;
@@ -72,11 +72,14 @@ private slots:
 	void sourceChanged();
 
 private:
-	enum TabIndex { RichTextIndex, SourceIndex };
-	enum State { Clean, RichTextChanged, SourceChanged };
+	enum TabIndex { RichTextIndex,
+					SourceIndex };
+	enum State { Clean,
+				 RichTextChanged,
+				 SourceChanged };
 	RichTextEditor *m_editor;
-	QTextEdit      *m_text_edit;
-	QTabWidget     *m_tab_widget;
+	QTextEdit *m_text_edit;
+	QTabWidget *m_tab_widget;
 	State m_state;
 };
 
@@ -98,7 +101,8 @@ class HtmlTextEdit : public QTextEdit
 public:
 	HtmlTextEdit(QWidget *parent = 0)
 		: QTextEdit(parent)
-	{}
+	{
+	}
 
 	void contextMenuEvent(QContextMenuEvent *event);
 
@@ -126,7 +130,9 @@ public:
 	void setFormatFor(Construct construct, const QTextCharFormat &format);
 
 	QTextCharFormat formatFor(Construct construct) const
-	{ return m_formats[construct]; }
+	{
+		return m_formats[construct];
+	}
 
 protected:
 	enum State {

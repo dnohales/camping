@@ -1,12 +1,13 @@
 #ifndef FRAMEDORMS_H
 #define FRAMEDORMS_H
 
-#include <QFrame>
 #include "MainFrame.h"
+#include <QFrame>
 #include <QTableWidget>
 
-namespace Ui {
-	class FrameDorms;
+namespace Ui
+{
+class FrameDorms;
 }
 
 class FrameDorms : public MainFrame
@@ -32,7 +33,7 @@ private slots:
 	void onMenuPrint();
 	void onMenuDelete();
 	void on_buttonAdd_clicked();
-	void on_table_itemActivated(QTableWidgetItem* item);
+	void on_table_itemActivated(QTableWidgetItem *item);
 	void on_table_customContextMenuRequested(QPoint pos);
 	void onTableColumnWidthUpdate();
 

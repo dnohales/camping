@@ -1,12 +1,13 @@
 #ifndef FRAMETENTS_H
 #define FRAMETENTS_H
 
+#include "MainFrame.h"
 #include <QFrame>
 #include <QTreeWidget>
-#include "MainFrame.h"
 
-namespace Ui {
-	class FrameTents;
+namespace Ui
+{
+class FrameTents;
 }
 
 class FrameTents : public MainFrame
@@ -26,7 +27,7 @@ private slots:
 	void on_actionListEdit_triggered();
 	void on_actionListPrint_triggered();
 	void on_actionListDelete_triggered();
-	void on_list_itemActivated(QTreeWidgetItem* item, int column);
+	void on_list_itemActivated(QTreeWidgetItem *item, int column);
 
 private:
 	ClientCollection _currentList;

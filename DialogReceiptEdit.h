@@ -4,8 +4,9 @@
 #include <QDialog>
 #include <QPushButton>
 
-namespace Ui {
-	class DialogReceiptEdit;
+namespace Ui
+{
+class DialogReceiptEdit;
 }
 
 class DialogReceiptEdit : public QDialog

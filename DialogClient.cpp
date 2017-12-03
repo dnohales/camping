@@ -1,13 +1,13 @@
-#include <QMessageBox>
-#include <QCompleter>
 #include "DialogClient.h"
 #include "ui_DialogClient.h"
+#include <QCompleter>
+#include <QMessageBox>
 
-DialogClient::DialogClient(Client *_client, Location::Type _type, QWidget *parent) :
-	QDialog(parent),
-	client(_client),
-	type(_type),
-	ui(new Ui::DialogClient)
+DialogClient::DialogClient(Client *_client, Location::Type _type, QWidget *parent)
+	: QDialog(parent),
+	  client(_client),
+	  type(_type),
+	  ui(new Ui::DialogClient)
 {
 	ui->setupUi(this);
 
@@ -15,13 +15,13 @@ DialogClient::DialogClient(Client *_client, Location::Type _type, QWidget *paren
 	this->ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancelar"));
 	this->ui->buttonBox->button(QDialogButtonBox::Reset)->setText(tr("Revertir"));
 
-	if(client->isNew()){
+	if (client->isNew()) {
 		this->setWindowTitle(tr("Creando un cliente nuevo"));
-	} else{
+	} else {
 		this->setWindowTitle(tr("Editando a %1").arg(client->getFullName()));
 	}
 
-	if(this->type == Location::DORM){
+	if (this->type == Location::DORM) {
 		ui->labelLocation->setText(tr("Número de dormi"));
 		ui->labelTentNum->hide();
 		ui->spinTentNum->hide();
@@ -58,11 +58,11 @@ void DialogClient::updateDaysCount()
 	QDateTime dateOut(this->ui->editDateOut->date());
 	int days = dateIn.daysTo(dateOut);
 
-	if(days < 0){
+	if (days < 0) {
 		this->ui->editDateIn->setStyleSheet("color:red");
 		this->ui->editDateOut->setStyleSheet("color:red");
 		this->ui->spinDaysIn->setValue(0);
-	} else{
+	} else {
 		this->ui->editDateIn->setStyleSheet("color:black");
 		this->ui->editDateOut->setStyleSheet("color:black");
 		this->ui->spinDaysIn->setValue(days);
@@ -93,10 +93,10 @@ void DialogClient::refreshWidgets()
 
 	ui->vehicles->setRowCount(0);
 
-	if(!client->isNew()){
+	if (!client->isNew()) {
 		VehicleCollection vlist = client->getVehicles();
 
-		for(int i=0; i < vlist.count(); i++){
+		for (int i = 0; i < vlist.count(); i++) {
 			Vehicle v(vlist.at(i));
 
 			ui->vehicles->insertRow(i);
@@ -110,8 +110,7 @@ void DialogClient::refreshWidgets()
 
 void DialogClient::onButtonBoxClicked(QAbstractButton *button)
 {
-	switch(this->ui->buttonBox->buttonRole(button))
-	{
+	switch (this->ui->buttonBox->buttonRole(button)) {
 	case QDialogButtonBox::ResetRole:
 		this->reset();
 		break;
@@ -125,27 +124,27 @@ void DialogClient::accept()
 	ClientCollection conflicts;
 	QString conflictMsg;
 
-	try{
+	try {
 		Db().transaction();
-		client->setName( this->ui->editName->text() );
-		client->setSurame( this->ui->editSurname->text() );
+		client->setName(this->ui->editName->text());
+		client->setSurame(this->ui->editSurname->text());
 
-		client->setDateIn( this->ui->editDateIn->date() );
-		client->setDateOut( this->ui->editDateOut->date() );
+		client->setDateIn(this->ui->editDateIn->date());
+		client->setDateOut(this->ui->editDateOut->date());
 
-		client->setPeopleNum( this->ui->spinPeopleNum->value() );
-		client->setTentNum( this->ui->spinTentNum->value() );
+		client->setPeopleNum(this->ui->spinPeopleNum->value());
+		client->setTentNum(this->ui->spinTentNum->value());
 
-		client->setAddress( this->ui->editAddress->text() );
-		client->setDni( this->ui->editDni->text() );
-		client->setEmail( this->ui->editEmail->text() );
-		client->setTel( this->ui->editTel->text() );
-		client->setBeck( this->ui->editBeck->text() );
+		client->setAddress(this->ui->editAddress->text());
+		client->setDni(this->ui->editDni->text());
+		client->setEmail(this->ui->editEmail->text());
+		client->setTel(this->ui->editTel->text());
+		client->setBeck(this->ui->editBeck->text());
 
 		client->validate();
 
 		Location loc = Location().findByNameType(this->ui->editLocation->text(), this->type);
-		if(loc.isNew()){
+		if (loc.isNew()) {
 			loc.setName(this->ui->editLocation->text());
 			loc.setType(this->type);
 			loc.save();
@@ -153,20 +152,16 @@ void DialogClient::accept()
 		client->setLocation(loc);
 
 		conflicts = client->getConflictingClients();
-		if(conflicts.count() > 0){
+		if (conflicts.count() > 0) {
 			conflictMsg = tr("Ya hay clientes ocupando la ubicación <b>%1</b> entre las fechas estipuladas, los clientes son:<br /><br />").arg(loc.getName());
-			for(int i = 0; i < conflicts.count(); i++){
+			for (int i = 0; i < conflicts.count(); i++) {
 				Client conflictClient(conflicts.at(i));
-				conflictMsg += tr("<b>%1</b>: del %2 al %3<br />").arg(
-					conflictClient.getFullName(),
-					conflictClient.getDateIn().toString("d 'de' MMMM"),
-					conflictClient.getDateOut().toString("d 'de' MMMM")
-				);
+				conflictMsg += tr("<b>%1</b>: del %2 al %3<br />").arg(conflictClient.getFullName(), conflictClient.getDateIn().toString("d 'de' MMMM"), conflictClient.getDateOut().toString("d 'de' MMMM"));
 			}
 			conflictMsg += tr("<br />¿Desea continuar de todas formas?");
-			QMessageBox conflictDialog(QMessageBox::Question, tr("Conflictos entre clientes"), conflictMsg, QMessageBox::Yes|QMessageBox::No);
+			QMessageBox conflictDialog(QMessageBox::Question, tr("Conflictos entre clientes"), conflictMsg, QMessageBox::Yes | QMessageBox::No);
 			conflictDialog.setTextFormat(Qt::RichText);
-			if( conflictDialog.exec() == QMessageBox::No ){
+			if (conflictDialog.exec() == QMessageBox::No) {
 				Db().rollback();
 				return;
 			}
@@ -174,30 +169,30 @@ void DialogClient::accept()
 
 		client->save();
 
-		for(int i=0; i < ui->vehicles->rowCount(); i++){
+		for (int i = 0; i < ui->vehicles->rowCount(); i++) {
 			int id = ui->vehicles->item(i, 0)->data(Qt::UserRole).toInt();
-			if((id == 0 && !this->isVehicleRowEmpty(i)) || id > 0){
+			if ((id == 0 && !this->isVehicleRowEmpty(i)) || id > 0) {
 				Vehicle newV(false);
-				if(id > 0){
+				if (id > 0) {
 					newV = Vehicle().findById(id);
-				} else{
+				} else {
 					newV.setClientId(client->getId());
 				}
-				newV.setModel( ui->vehicles->item(i, 0)->text() );
-				newV.setPatent( ui->vehicles->item(i, 1)->text() );
-				newV.setSize( ui->vehicles->item(i, 2)->text() );
+				newV.setModel(ui->vehicles->item(i, 0)->text());
+				newV.setPatent(ui->vehicles->item(i, 1)->text());
+				newV.setSize(ui->vehicles->item(i, 2)->text());
 
-				if(newV.isModified()){
+				if (newV.isModified()) {
 					newV.save();
 				}
-			} else if(id < 0){
+			} else if (id < 0) {
 				Vehicle().deleteById(-id);
 			}
 		}
 
 		Db().commit();
 		QDialog::accept();
-	} catch(ActiveRecordException &e){
+	} catch (ActiveRecordException &e) {
 		QMessageBox::critical(this, tr("Error"), e.message());
 		Db().rollback();
 	}
@@ -205,12 +200,11 @@ void DialogClient::accept()
 
 void DialogClient::reset()
 {
-	if(QMessageBox::question(
-		this,
-		tr("Revirtiendo cambios"),
-		tr("¿Estás seguro que deseas descartar los cambios hechos y editar el cliente nuevamente?"),
-		QMessageBox::Yes, QMessageBox::No
-	) == QMessageBox::Yes){
+	if (QMessageBox::question(
+			this,
+			tr("Revirtiendo cambios"),
+			tr("¿Estás seguro que deseas descartar los cambios hechos y editar el cliente nuevamente?"),
+			QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
 		this->client->reset();
 		this->refreshWidgets();
 		this->ui->editName->setFocus();
@@ -219,8 +213,8 @@ void DialogClient::reset()
 
 bool DialogClient::isVehicleRowEmpty(int row)
 {
-	for(int i = 0; i < ui->vehicles->columnCount(); i++){
-		if(!ui->vehicles->item(row, i)->text().trimmed().isEmpty()){
+	for (int i = 0; i < ui->vehicles->columnCount(); i++) {
+		if (!ui->vehicles->item(row, i)->text().trimmed().isEmpty()) {
 			return false;
 		}
 	}
@@ -233,7 +227,7 @@ void DialogClient::on_buttonVehicleAdd_clicked()
 	int lastRowItem = ui->vehicles->rowCount();
 
 	ui->vehicles->insertRow(lastRowItem);
-	for(int j = 0; j < ui->vehicles->columnCount(); j++){
+	for (int j = 0; j < ui->vehicles->columnCount(); j++) {
 		ui->vehicles->setItem(lastRowItem, j, new QTableWidgetItem(""));
 		ui->vehicles->item(lastRowItem, j)->setForeground(QBrush(Qt::darkGreen));
 	}
@@ -247,27 +241,27 @@ void DialogClient::on_buttonVehicleDelete_clicked()
 	QFont delFont;
 	delFont.setStrikeOut(true);
 
-	for(int i = v->rowCount()-1; i >= 0; i--){
-		if( v->item(i, 0)->isSelected() ){
+	for (int i = v->rowCount() - 1; i >= 0; i--) {
+		if (v->item(i, 0)->isSelected()) {
 			int id = v->item(i, 0)->data(Qt::UserRole).toInt();
 
-			if(id == 0){
+			if (id == 0) {
 				v->removeRow(i);
 			} else {
 				v->item(i, 0)->setData(Qt::UserRole, -id);
-				for(int j = 0; j < v->columnCount(); j++){
-					v->item(i, j)->setFont(id > 0? delFont:QFont());
+				for (int j = 0; j < v->columnCount(); j++) {
+					v->item(i, j)->setFont(id > 0 ? delFont : QFont());
 				}
 			}
 		}
 	}
 }
 
-void DialogClient::on_editLocation_textChanged(QString )
+void DialogClient::on_editLocation_textChanged(QString)
 {
-	if(Location().findByNameType(ui->editLocation->text(), this->type).isNew()){
+	if (Location().findByNameType(ui->editLocation->text(), this->type).isNew()) {
 		ui->labelLocationNote->show();
-	} else{
+	} else {
 		ui->labelLocationNote->hide();
 	}
 }

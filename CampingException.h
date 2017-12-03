@@ -11,6 +11,7 @@ public:
 	void setMessage(QString message);
 	int code() const;
 	void setCode(int code);
+
 private:
 	QString _message;
 	int _code;

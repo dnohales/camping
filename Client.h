@@ -4,8 +4,8 @@
 #include "ActiveRecord.h"
 #include "Location.h"
 #include "Vehicle.h"
-#include <QList>
 #include <QAbstractListModel>
+#include <QList>
 
 class Client;
 

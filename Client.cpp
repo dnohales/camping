@@ -9,7 +9,7 @@ QString Client::tableName()
 
 void Client::init()
 {
-	if(this->isNew()){
+	if (this->isNew()) {
 		this->setDateIn(QDate::currentDate());
 		this->setDateOut(QDate::currentDate().addDays(1));
 		this->setPeopleNum(0);
@@ -19,18 +19,18 @@ void Client::init()
 
 void Client::validate()
 {
-	if(this->getName().isEmpty() && this->getSurame().isEmpty()){
+	if (this->getName().isEmpty() && this->getSurame().isEmpty()) {
 		throw ActiveRecordException(tr("Debe especificarse el nombre o apellido del cliente"));
 	}
 
-	if(this->getDateOut() < this->getDateIn()){
+	if (this->getDateOut() < this->getDateIn()) {
 		throw ActiveRecordException(tr("La fecha de salida no puede ser menor que la de entrada"));
 	}
 }
 
 QString Client::getFullName() const
 {
-	return this->getName()+" "+this->getSurame();
+	return this->getName() + " " + this->getSurame();
 }
 
 Location Client::getLocation() const
@@ -57,7 +57,7 @@ bool Client::isHousing() const
 
 VehicleCollection Client::getVehicles() const
 {
-	return Vehicle().findAll(SqlCriteria().addCondition("client_id = "+QString::number(this->getId())));
+	return Vehicle().findAll(SqlCriteria().addCondition("client_id = " + QString::number(this->getId())));
 }
 
 ClientCollection Client::getConflictingClients() const
@@ -78,9 +78,9 @@ QList<int> ClientCollection::findByLocationAndDate(const Location &loc, const QD
 {
 	QList<int> indexList;
 
-	for(int i = 0; i < this->count(); i++){
+	for (int i = 0; i < this->count(); i++) {
 		Client c(this->at(i));
-		if(c.getLocationId() == loc.getId() && c.getDateIn() <= date && c.getDateOut() > date){
+		if (c.getLocationId() == loc.getId() && c.getDateIn() <= date && c.getDateOut() > date) {
 			indexList.append(i);
 		}
 	}
@@ -102,10 +102,10 @@ QString Client::getReceiptHtml() const
 		.replace("{fecha_entrada}", this->getDateIn().toString("dd/MM/yyyy"), Qt::CaseInsensitive)
 		.replace("{fecha_salida}", this->getDateOut().toString("dd/MM/yyyy"), Qt::CaseInsensitive);
 
-	if(this->getLocation().getType() != Location::DORM){
+	if (this->getLocation().getType() != Location::DORM) {
 		html.replace("{cantidad_carpas}", QString::number(this->getTentNum()), Qt::CaseInsensitive);
 		html.replace("{cantidad_carpas_style}", "visibility:visible;", Qt::CaseInsensitive);
-	} else{
+	} else {
 		html.replace("{cantidad_carpas_style}", "visibility:hidden;", Qt::CaseInsensitive);
 	}
 
@@ -122,17 +122,17 @@ QString ClientCollection::toHtmlDocument(QString title) const
 	QTextStream list(&listString);
 
 	list << "<table class=\"datatable\">"
-		<< "<tr>"
-		<< "<th>Cliente</th>"
-		<< "<th>F. Entrada</th>"
-		<< "<th>F. Salida</th>"
-		<< "<th>Ubicaci&oacute;n</th>"
-		<< "<th>Personas/Carpas</th>"
-		<< "<th>Veh&iacute;culos</th>"
-		<< "<th>Se&nacute;a</th>"
-		<< "<th>Tel&eacute;fono</th>"
-		<< "</tr>";
-	for(int i = 0; i < this->count(); i++){
+		 << "<tr>"
+		 << "<th>Cliente</th>"
+		 << "<th>F. Entrada</th>"
+		 << "<th>F. Salida</th>"
+		 << "<th>Ubicaci&oacute;n</th>"
+		 << "<th>Personas/Carpas</th>"
+		 << "<th>Veh&iacute;culos</th>"
+		 << "<th>Se&nacute;a</th>"
+		 << "<th>Tel&eacute;fono</th>"
+		 << "</tr>";
+	for (int i = 0; i < this->count(); i++) {
 		Client c(this->at(i));
 		list << "<tr>";
 
@@ -160,16 +160,14 @@ ClientCollection ClientCollection::filterByDates(const QDate &dateini, const QDa
 {
 	ClientCollection col;
 
-	for(int i = 0; i < this->count(); i++){
+	for (int i = 0; i < this->count(); i++) {
 		Client c(this->at(i));
 
-		if( (c.getDateIn() >= dateini && c.getDateIn() <= dateend) ||
-			(c.getDateOut() >= dateini && c.getDateOut() <= dateend) ){
+		if ((c.getDateIn() >= dateini && c.getDateIn() <= dateend) ||
+			(c.getDateOut() >= dateini && c.getDateOut() <= dateend)) {
 			col.append(c);
 		}
 	}
 
 	return col;
 }
-
-

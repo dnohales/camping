@@ -1,12 +1,12 @@
 #include "DialogReceiptEdit.h"
-#include "ui_DialogReceiptEdit.h"
 #include "main.h"
+#include "ui_DialogReceiptEdit.h"
 #include <QFile>
 #include <QMessageBox>
 
-DialogReceiptEdit::DialogReceiptEdit(QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::DialogReceiptEdit)
+DialogReceiptEdit::DialogReceiptEdit(QWidget *parent)
+	: QDialog(parent),
+	  ui(new Ui::DialogReceiptEdit)
 {
 	ui->setupUi(this);
 
@@ -21,20 +21,19 @@ DialogReceiptEdit::~DialogReceiptEdit()
 
 void DialogReceiptEdit::onButtonClicked(QAbstractButton *button)
 {
-	switch(ui->buttonBox->buttonRole(button))
-	{
-	case  QDialogButtonBox::ResetRole:
-		if(QMessageBox::question(
-					this,
-					tr("Restaurar comprobante"),
-					tr("¿Estás seguro que quieres restaurar el comprobante a sus valores de fábrica? perderás los cambios actuales."),
-					QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes){
+	switch (ui->buttonBox->buttonRole(button)) {
+	case QDialogButtonBox::ResetRole:
+		if (QMessageBox::question(
+				this,
+				tr("Restaurar comprobante"),
+				tr("¿Estás seguro que quieres restaurar el comprobante a sus valores de fábrica? perderás los cambios actuales."),
+				QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
 			App()->config()->restoreReceipt();
 			App()->config()->save();
 			ui->editor->setText(App()->config()->receiptTemplate());
 		}
 		break;
-	case  QDialogButtonBox::AcceptRole:
+	case QDialogButtonBox::AcceptRole:
 		App()->config()->setCustomReceipt(ui->editor->text());
 		App()->config()->save();
 		QDialog::accept();

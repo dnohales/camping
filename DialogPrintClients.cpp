@@ -2,10 +2,10 @@
 #include "ui_DialogPrintClients.h"
 #include <QPushButton>
 
-DialogPrintClients::DialogPrintClients(const ClientCollection &list, QWidget *parent) :
-	QDialog(parent),
-	originalList(list),
-	ui(new Ui::DialogPrintClients)
+DialogPrintClients::DialogPrintClients(const ClientCollection &list, QWidget *parent)
+	: QDialog(parent),
+	  originalList(list),
+	  ui(new Ui::DialogPrintClients)
 {
 	ui->setupUi(this);
 
@@ -26,13 +26,13 @@ DialogPrintClients::~DialogPrintClients()
 	delete ui;
 }
 
-const ClientCollection * DialogPrintClients::currentList() const
+const ClientCollection *DialogPrintClients::currentList() const
 {
 	const ClientCollection *c;
 
-	if(ui->checkBoxFilter->isChecked()){
+	if (ui->checkBoxFilter->isChecked()) {
 		c = &filteredList;
-	} else{
+	} else {
 		c = &originalList;
 	}
 

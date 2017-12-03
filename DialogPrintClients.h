@@ -1,11 +1,12 @@
 #ifndef DIALOGPRINTCLIENTS_H
 #define DIALOGPRINTCLIENTS_H
 
-#include <QDialog>
 #include "Client.h"
+#include <QDialog>
 
-namespace Ui {
-	class DialogPrintClients;
+namespace Ui
+{
+class DialogPrintClients;
 }
 
 class DialogPrintClients : public QDialog

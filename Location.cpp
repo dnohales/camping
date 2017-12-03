@@ -8,7 +8,7 @@ QString Location::tableName()
 
 void Location::init()
 {
-	if(this->isNew()){
+	if (this->isNew()) {
 		this->setType(Location::TENT);
 	}
 }
@@ -16,33 +16,31 @@ void Location::init()
 Location Location::findByNameType(QString name, Location::Type type)
 {
 	return this->find(SqlCriteria()
-					  .addCondition("name LIKE :name AND type = :type")
-					  .bindValue(":name", name.simplified())
-					  .bindValue(":type", type)
-					 );
+						  .addCondition("name LIKE :name AND type = :type")
+						  .bindValue(":name", name.simplified())
+						  .bindValue(":type", type));
 }
 
 LocationCollection Location::findAllByType(Location::Type type)
 {
 	return this->findAll(SqlCriteria()
-					  .addCondition("type = :type")
-					  .bindValue(":type", type)
-					  .setOrder("name ASC")
-						 );
+							 .addCondition("type = :type")
+							 .bindValue(":type", type)
+							 .setOrder("name ASC"));
 }
 
 void Location::validate()
 {
-	if(this->getName().isEmpty()){
+	if (this->getName().isEmpty()) {
 		throw ActiveRecordException(tr("El nombre de la ubicación no puede estar vacío"));
 	}
 
-	if( !Location().findByNameType(this->getName(), this->getType()).isNew() ){
-		throw ActiveRecordException( tr("Ya existe la ubicación") );
+	if (!Location().findByNameType(this->getName(), this->getType()).isNew()) {
+		throw ActiveRecordException(tr("Ya existe la ubicación"));
 	}
 
-	if(this->getType() != Location::TENT && this->getType() != Location::DORM){
-		throw ActiveRecordException( tr("El tipo de ubicación no es válido (%1)").arg(QString::number(this->getType())) );
+	if (this->getType() != Location::TENT && this->getType() != Location::DORM) {
+		throw ActiveRecordException(tr("El tipo de ubicación no es válido (%1)").arg(QString::number(this->getType())));
 	}
 }
 
@@ -58,9 +56,9 @@ void Location::setType(Location::Type value)
 
 QString Location::getReadableName()
 {
-	if(this->getType() == Location::DORM){
+	if (this->getType() == Location::DORM) {
 		return "Dormi Nº " + this->getName();
-	} else{
+	} else {
 		return this->getName();
 	}
 }
@@ -69,7 +67,7 @@ QStringList LocationCollection::toNameList()
 {
 	QStringList list;
 
-	for(int i=0; i < this->count(); i++){
+	for (int i = 0; i < this->count(); i++) {
 		list.append(this->at(i).getName());
 	}
 

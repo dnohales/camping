@@ -4,8 +4,9 @@
 #include <QDialog>
 #include <QPushButton>
 
-namespace Ui {
-	class DialogAbout;
+namespace Ui
+{
+class DialogAbout;
 }
 
 class DialogAbout : public QDialog
@@ -17,7 +18,7 @@ public:
 	~DialogAbout();
 
 private slots:
-	void on_buttonBox_clicked(QAbstractButton* button);
+	void on_buttonBox_clicked(QAbstractButton *button);
 
 private:
 	Ui::DialogAbout *ui;

@@ -4,8 +4,9 @@
 #include <QMainWindow>
 #include <QTimer>
 
-namespace Ui {
-	class MainWindow;
+namespace Ui
+{
+class MainWindow;
 }
 
 class MainWindow : public QMainWindow
@@ -36,7 +37,7 @@ private slots:
 	void onOpenFile();
 	void onNewFile();
 	void onFileSaveAs();
-	void on_lineEditSearch_textChanged(QString );
+	void on_lineEditSearch_textChanged(QString);
 	void onFileOpened(QString filename);
 	void on_actionAcerca_de_triggered();
 	void on_actionAcerca_de_Qt_triggered();

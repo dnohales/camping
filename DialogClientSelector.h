@@ -4,8 +4,9 @@
 #include <QDialog>
 #include <QListWidget>
 
-namespace Ui {
-	class DialogClientSelector;
+namespace Ui
+{
+class DialogClientSelector;
 }
 
 class DialogClientSelector : public QDialog
@@ -22,7 +23,7 @@ public slots:
 	void accept();
 
 private slots:
-	void on_list_itemActivated(QListWidgetItem* item);
+	void on_list_itemActivated(QListWidgetItem *item);
 
 private:
 	int _selectedId;

@@ -1,9 +1,9 @@
-#include "main.h"
 #include "common.h"
+#include "main.h"
 #include <QSettings>
 
-CampingConfig::CampingConfig(QObject *parent) :
-	QObject(parent)
+CampingConfig::CampingConfig(QObject *parent)
+	: QObject(parent)
 {
 	this->clear();
 }
@@ -13,7 +13,7 @@ void CampingConfig::init()
 	this->clear();
 
 	QSqlQuery query("SELECT key, value FROM config", Db());
-	while(query.next()){
+	while (query.next()) {
 		this->data[query.value(0).toString()] = query.value(1);
 	}
 }
@@ -33,7 +33,7 @@ void CampingConfig::save()
 	Db().transaction();
 	Db().exec("DELETE FROM config");
 
-	while(i.hasNext()){
+	while (i.hasNext()) {
 		i.next();
 
 		QString queryStr;
@@ -73,9 +73,9 @@ void CampingConfig::setLastFilename(QString filename)
 
 QString CampingConfig::receiptTemplate()
 {
-	if(data.contains("custom_receipt") && !data["custom_receipt"].toString().isEmpty()){
+	if (data.contains("custom_receipt") && !data["custom_receipt"].toString().isEmpty()) {
 		return data["custom_receipt"].toString();
-	} else{
+	} else {
 		QFile htmlFile(":/html/receipt.html");
 		htmlFile.open(QFile::ReadOnly);
 		return htmlFile.readAll();
@@ -91,4 +91,3 @@ void CampingConfig::restoreReceipt()
 {
 	this->data["custom_receipt"] = QVariant();
 }
-
