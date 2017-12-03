@@ -151,7 +151,7 @@ bool ActiveRecord::isValid()
 	try {
 		this->validate();
 		return true;
-	} catch (ActiveRecordException &e) {
+	} catch (ActiveRecordException) {
 		return false;
 	}
 }
