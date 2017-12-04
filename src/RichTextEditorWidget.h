@@ -65,7 +65,7 @@ public:
 	~RichTextEditorWidget();
 
 	void setText(const QString &text);
-	void RichTextEditorWidget::text(std::function<void (const QString &)> func) const;
+	void RichTextEditorWidget::text(std::function<void(const QString &)> func) const;
 
 private slots:
 	void tabIndexChanged(int newIndex);

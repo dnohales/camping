@@ -313,7 +313,7 @@ void RichTextEditorWidget::setText(const QString &text)
 	m_source_changed = false;
 }
 
-void RichTextEditorWidget::text(std::function<void (const QString &)> func) const
+void RichTextEditorWidget::text(std::function<void(const QString &)> func) const
 {
 	if (m_tab_widget->currentIndex() == RichTextIndex) {
 		m_editor->html(func);
@@ -330,7 +330,7 @@ void RichTextEditorWidget::tabIndexChanged(int newIndex)
 		return;
 
 	if (newIndex == SourceIndex) {
-		m_editor->html([this] (const QString &html) {
+		m_editor->html([this](const QString &html) {
 			this->m_text_edit->setPlainText(html);
 		});
 	} else {

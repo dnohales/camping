@@ -1,8 +1,8 @@
 #ifndef MAINFRAME_H
 #define MAINFRAME_H
 
-#include "Reservation.h"
 #include "MainWindow.h"
+#include "Reservation.h"
 #include "SqlCriteria.h"
 #include <QFrame>
 

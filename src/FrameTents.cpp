@@ -1,6 +1,6 @@
 #include "FrameTents.h"
-#include "Reservation.h"
 #include "DialogReservation.h"
+#include "Reservation.h"
 #include "main.h"
 #include "ui_FrameTents.h"
 #include <QDebug>
@@ -55,10 +55,10 @@ void FrameTents::refreshData()
 			item->setText(6, r.getVehicles().toString(", "));
 
 			tooltip = tr("<b>") + r.getClient().getFullName() + tr("</b><br /><br />") +
-				tr("<b>DNI: </b>") + r.getClient().getDni() + tr("<br />") +
-				tr("<b>Teléfono: </b>") + r.getClient().getTel() + tr("<br />") +
-				tr("<b>E-Mail: </b>") + r.getClient().getEmail() + tr("<br />") +
-				tr("<b>Dirección: </b>") + r.getClient().getAdress();
+					  tr("<b>DNI: </b>") + r.getClient().getDni() + tr("<br />") +
+					  tr("<b>Teléfono: </b>") + r.getClient().getTel() + tr("<br />") +
+					  tr("<b>E-Mail: </b>") + r.getClient().getEmail() + tr("<br />") +
+					  tr("<b>Dirección: </b>") + r.getClient().getAdress();
 			item->setToolTip(0, tooltip);
 
 			item->setData(0, Qt::UserRole, r.getId());

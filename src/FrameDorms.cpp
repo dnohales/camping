@@ -1,7 +1,7 @@
 #include "FrameDorms.h"
-#include "Reservation.h"
 #include "DialogReservation.h"
 #include "DialogReservationSelector.h"
+#include "Reservation.h"
 #include "ui_FrameDorms.h"
 #include <QItemDelegate>
 #include <QMenu>
