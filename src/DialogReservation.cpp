@@ -18,8 +18,10 @@ DialogReservation::DialogReservation(Reservation *_reservation, Location::Type _
 	this->ui->buttonBox->button(QDialogButtonBox::Reset)->setText(tr("Revertir"));
 
 	if (reservation->isNew()) {
+		ui->editName->setFocus();
 		this->setWindowTitle(tr("Creando una reservación nueva"));
 	} else {
+		ui->editDateIn->setFocus();
 		this->setWindowTitle(tr("Editando a %1 para el %2").arg(this->completedClient.getFullName(), this->reservation->getDateIn().toString("dd/MM/yyyy")));
 	}
 
@@ -82,6 +84,7 @@ void DialogReservation::onClientCompleterActivated(const QModelIndex &index)
 {
 	completedClient = Client().findById(index.data(Qt::UserRole).toInt());
 	QTimer::singleShot(10, this, SLOT(refreshClientWidgets()));
+	ui->editDateIn->setFocus();
 }
 
 void DialogReservation::refreshClientWidgets()
