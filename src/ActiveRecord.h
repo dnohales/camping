@@ -12,81 +12,85 @@
 #include <QSqlRecord>
 #include <QVariant>
 
-#define ACTIVE_RECORD_FIELD(getter, setter, type, field)							           \
-	type getter() const																		   \
-	{                                                                                          \
-		return this->record().value(field).value<type>();                                      \
-	}                                                                                          \
-	void setter(type value)																	   \
-	{                                                                                          \
-		this->setFieldValue(field, QVariant(value));										   \
+#define ACTIVE_RECORD_FIELD(getter, setter, type, field)  \
+	type getter() const                                   \
+	{                                                     \
+		return this->record().value(field).value<type>(); \
+	}                                                     \
+	void setter(type value)                               \
+	{                                                     \
+		this->setFieldValue(field, QVariant(value));      \
 	}
 
-#define ACTIVE_RECORD_FIELD_STRING(getter, setter, field)                                      \
-	QString getter() const                                                                     \
-	{                                                                                          \
-		return this->record().value(field).value<QString>();                                   \
-	}                                                                                          \
-	void setter(QString value)														           \
-	{                                                                                          \
-		this->setFieldValue(field, QVariant(value.simplified()));                              \
+#define ACTIVE_RECORD_FIELD_STRING(getter, setter, field)         \
+	QString getter() const                                        \
+	{                                                             \
+		return this->record().value(field).value<QString>();      \
+	}                                                             \
+	void setter(QString value)                                    \
+	{                                                             \
+		this->setFieldValue(field, QVariant(value.simplified())); \
 	}
 
-#define ACTIVE_RECORD_MANY_TO_ONE(getter, setter, _class, field)                               \
-	_class getter() const                                                                      \
-	{                                                                                          \
-		return _class().findById(this->getter ## Id());                                        \
-	}                                                                                          \
-	void setter(const _class &value)                                                           \
-	{                                                                                          \
-		this->setter ## Id(value.getId());                                                     \
-	}                                                                                          \
-	int getter ## Id() const                                                                   \
-	{                                                                                          \
-		return this->record().value(field).value<int>();                                       \
-	}                                                                                          \
-	void setter ## Id(int value)                                                               \
-	{                                                                                          \
-		this->setFieldValue(field, QVariant(value));                                           \
+#define ACTIVE_RECORD_MANY_TO_ONE(getter, setter, _class, field) \
+	_class getter() const                                        \
+	{                                                            \
+		return _class().findById(this->getter##Id());            \
+	}                                                            \
+	void setter(const _class &value)                             \
+	{                                                            \
+		this->setter##Id(value.getId());                         \
+	}                                                            \
+	int getter##Id() const                                       \
+	{                                                            \
+		return this->record().value(field).value<int>();         \
+	}                                                            \
+	void setter##Id(int value)                                   \
+	{                                                            \
+		this->setFieldValue(field, QVariant(value));             \
 	}
 
-#define ACTIVE_RECORD(className, collectionName)                                               \
-public:                                                                                        \
-	className(QSqlRecord record) : ActiveRecord(record) { this->setRecord(record); }           \
-	className(bool isTemplate = true) : ActiveRecord(isTemplate) { this->initEmptyRecord(); }  \
-	className queryToSingle(QSqlQuery query)                                                   \
-	{                                                                                          \
-		printQueryDebug(1, query);                                                             \
-		query.next();                                                                          \
-		className object(query.record());                                                      \
-		return object;                                                                         \
-	}                                                                                          \
-	collectionName queryToCollection(QSqlQuery query)                                          \
-	{                                                                                          \
-		printQueryDebug(2, query);                                                             \
-		collectionName c;                                                                      \
-		while (query.next()) {                                                                 \
-			c.append(className(query.record()));                                               \
-		}                                                                                      \
-		return c;                                                                              \
-	}                                                                                          \
-	className find(SqlCriteria criteria = SqlCriteria())                                       \
-	{                                                                                          \
-		criteria.setTable(this->tableName());                                                  \
-		QSqlQuery query(criteria.buildSelectQuery());                                          \
-		query.exec();                                                                          \
-		return this->queryToSingle(query);                                                     \
-	}                                                                                          \
-	collectionName findAll(SqlCriteria criteria = SqlCriteria())                               \
-	{                                                                                          \
-		criteria.setTable(this->tableName());                                                  \
-		QSqlQuery query(criteria.buildSelectQuery());                                          \
-		query.exec();                                                                          \
-		return this->queryToCollection(query);                                                 \
-	}                                                                                          \
-	className findById(int id)                                                                 \
-	{                                                                                          \
-		return this->find(SqlCriteria().addCondition(QString("id = ") + QString::number(id))); \
+#define ACTIVE_RECORD(className, collectionName)                                                   \
+public:                                                                                            \
+	className(QSqlRecord record) : ActiveRecord(record) { this->setRecord(record); }               \
+	className(bool isTemplate = true) : ActiveRecord(isTemplate) { this->initEmptyRecord(); }      \
+	className queryToSingle(QSqlQuery query)                                                       \
+	{                                                                                              \
+		printQueryDebug(1, query);                                                                 \
+		query.next();                                                                              \
+		className object(query.record());                                                          \
+		return object;                                                                             \
+	}                                                                                              \
+	collectionName queryToCollection(QSqlQuery query)                                              \
+	{                                                                                              \
+		printQueryDebug(2, query);                                                                 \
+		collectionName c;                                                                          \
+		while (query.next()) {                                                                     \
+			c.append(className(query.record()));                                                   \
+		}                                                                                          \
+		return c;                                                                                  \
+	}                                                                                              \
+	className find(SqlCriteria criteria = SqlCriteria())                                           \
+	{                                                                                              \
+		criteria.setTable(this->tableName());                                                      \
+		QSqlQuery query(criteria.buildSelectQuery());                                              \
+		query.exec();                                                                              \
+		return this->queryToSingle(query);                                                         \
+	}                                                                                              \
+	collectionName findAll(SqlCriteria criteria = SqlCriteria())                                   \
+	{                                                                                              \
+		criteria.setTable(this->tableName());                                                      \
+		QSqlQuery query(criteria.buildSelectQuery());                                              \
+		query.exec();                                                                              \
+		return this->queryToCollection(query);                                                     \
+	}                                                                                              \
+	className findById(int id)                                                                     \
+	{                                                                                              \
+		if (!id) {                                                                                 \
+			return className(false);                                                               \
+		} else {                                                                                   \
+			return this->find(SqlCriteria().addCondition(QString("id = ") + QString::number(id))); \
+		}                                                                                          \
 	}
 
 class ActiveRecordException : public CampingException
