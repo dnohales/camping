@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include "DialogAbout.h"
-#include "DialogClient.h"
-#include "DialogPrintClients.h"
+#include "DialogReservation.h"
+#include "DialogPrintReservations.h"
 #include "DialogReceiptEdit.h"
 #include "common.h"
 #include "main.h"
@@ -33,11 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
 	this->connect(this, SIGNAL(textSearched(QString)), SLOT(requestRefresh()));
 
 	if (!App()->config()->lastFilename().isEmpty()) {
-		try {
-			App()->initExistentDatabase(App()->config()->lastFilename());
-			emit fileOpened(App()->config()->lastFilename());
-		} catch (...) {
-		}
+		openExistentFile(App()->config()->lastFilename());
 	}
 
 	QSettings settings;
@@ -77,6 +73,16 @@ QString MainWindow::searchQuery()
 	return this->ui->lineEditSearch->text().simplified();
 }
 
+void MainWindow::openExistentFile(QString filename)
+{
+	try {
+		App()->initExistentDatabase(filename);
+		emit fileOpened(filename);
+	} catch (CampingException &e) {
+		QMessageBox::critical(this, App()->name(), tr("No se puede abrir \"%1\": %2.").arg(filename, e.message()));
+	}
+}
+
 void MainWindow::onOpenFile()
 {
 	QString filename = QFileDialog::getOpenFileName(
@@ -85,12 +91,7 @@ void MainWindow::onOpenFile()
 		QString(),
 		tr("Archivo de camping (*.%1);;Todos los archivos (*)").arg(App()->fileExtension()));
 	if (!filename.isEmpty()) {
-		try {
-			App()->initExistentDatabase(filename);
-			emit fileOpened(filename);
-		} catch (CampingException &e) {
-			QMessageBox::critical(this, App()->name(), tr("No se puede abrir \"%1\": %2.").arg(filename, e.message()));
-		}
+		openExistentFile(filename);
 	}
 }
 
@@ -98,13 +99,11 @@ void MainWindow::onFileSaveAs()
 {
 	QString filename = this->getCampingSaveFileName();
 	if (!filename.isNull()) {
-		try {
-			QFile::copy(Db().databaseName(), filename);
-			App()->initExistentDatabase(filename);
-			emit fileOpened(filename);
-		} catch (CampingException &e) {
-			QMessageBox::critical(this, App()->name(), tr("No se pudo recargar la base de datos \"%1\": %2.").arg(filename, e.message()));
+		if (!QFile::copy(Db().databaseName(), filename)) {
+			QMessageBox::critical(this, App()->name(),
+								  tr("No se pudo copiar el archivo \"%1\" a \"%2\".").arg(Db().databaseName(), filename));
 		}
+		openExistentFile(filename);
 	}
 }
 
@@ -222,7 +221,7 @@ void MainWindow::on_actionAcerca_de_Qt_triggered()
 
 void MainWindow::on_actionPrintClients_triggered()
 {
-	DialogPrintClients dialog(ui->frameTents->currentList(), this);
+	DialogPrintReservations dialog(ui->frameTents->currentList(), this);
 	dialog.exec();
 }
 

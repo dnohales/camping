@@ -22,13 +22,14 @@ SOURCES += src/main.cpp\
     src/Location.cpp \
     src/SqlCriteria.cpp \
     src/Vehicle.cpp \
-    src/DialogClient.cpp \
     src/MainFrame.cpp \
-    src/DialogClientSelector.cpp \
     src/DialogAbout.cpp \
-    src/DialogPrintClients.cpp \
     src/DialogReceiptEdit.cpp \
-    src/RichTextEditorWidget.cpp
+    src/RichTextEditorWidget.cpp \
+    src/Reservation.cpp \
+    src/DialogReservation.cpp \
+    src/DialogReservationSelector.cpp \
+    src/DialogPrintReservations.cpp
 
 HEADERS += src/MainWindow.h \
     src/FrameTents.h \
@@ -43,22 +44,23 @@ HEADERS += src/MainWindow.h \
     src/SqlCriteria.h \
     src/common.h \
     src/Vehicle.h \
-    src/DialogClient.h \
     src/MainFrame.h \
-    src/DialogClientSelector.h \
     src/DialogAbout.h \
-    src/DialogPrintClients.h \
     src/DialogReceiptEdit.h \
-    src/RichTextEditorWidget.h
+    src/RichTextEditorWidget.h \
+    src/Reservation.h \
+    src/DialogReservation.h \
+    src/DialogReservationSelector.h \
+    src/DialogPrintReservations.h
 
 FORMS += src/ui/MainWindow.ui \
     src/ui/FrameTents.ui \
     src/ui/FrameDorms.ui \
-    src/ui/DialogClient.ui \
-    src/ui/DialogClientSelector.ui \
     src/ui/DialogAbout.ui \
-    src/ui/DialogPrintClients.ui \
-    src/ui/DialogReceiptEdit.ui
+    src/ui/DialogReceiptEdit.ui \
+    src/ui/DialogReservation.ui \
+    src/ui/DialogReservationSelector.ui \
+    src/ui/DialogPrintReservations.ui
 
 RESOURCES += \
     res/default.qrc

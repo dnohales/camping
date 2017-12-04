@@ -1,12 +1,12 @@
-#include "DialogClientSelector.h"
-#include "Client.h"
-#include "ui_DialogClientSelector.h"
+#include "DialogReservationSelector.h"
+#include "Reservation.h"
+#include "ui_DialogReservationSelector.h"
 #include <QMessageBox>
 #include <QPushButton>
 
-DialogClientSelector::DialogClientSelector(QString idList, QWidget *parent)
+DialogReservationSelector::DialogReservationSelector(QString idList, QWidget *parent)
 	: QDialog(parent),
-	  ui(new Ui::DialogClientSelector)
+	  ui(new Ui::DialogReservationSelector)
 {
 	ui->setupUi(this);
 
@@ -17,26 +17,26 @@ DialogClientSelector::DialogClientSelector(QString idList, QWidget *parent)
 	qDebug() << ids;
 
 	for (int i = 0; i < ids.count(); i++) {
-		Client c(Client().findById(ids.at(i).toInt()));
+		Reservation r(Reservation().findById(ids.at(i).toInt()));
 		QListWidgetItem *item = new QListWidgetItem();
-		item->setText(c.getFullName());
-		item->setData(Qt::UserRole, c.getId());
+		item->setText(r.getClient().getFullName());
+		item->setData(Qt::UserRole, r.getId());
 
 		ui->list->addItem(item);
 	}
 }
 
-DialogClientSelector::~DialogClientSelector()
+DialogReservationSelector::~DialogReservationSelector()
 {
 	delete ui;
 }
 
-int DialogClientSelector::selectedId()
+int DialogReservationSelector::selectedId()
 {
 	return this->_selectedId;
 }
 
-int DialogClientSelector::exec()
+int DialogReservationSelector::exec()
 {
 	if (ui->list->count() == 1) {
 		ui->list->item(0)->setSelected(true);
@@ -47,7 +47,7 @@ int DialogClientSelector::exec()
 	}
 }
 
-void DialogClientSelector::accept()
+void DialogReservationSelector::accept()
 {
 	if (ui->list->selectedItems().count() == 0) {
 		QMessageBox::warning(this, tr("Error"), tr("Por favor seleccione un cliente."));
@@ -57,7 +57,7 @@ void DialogClientSelector::accept()
 	}
 }
 
-void DialogClientSelector::on_list_itemActivated(QListWidgetItem *item)
+void DialogReservationSelector::on_list_itemActivated(QListWidgetItem *item)
 {
 	item->setSelected(true);
 	this->accept();

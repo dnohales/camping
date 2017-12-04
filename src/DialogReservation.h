@@ -1,7 +1,7 @@
-#ifndef DIALOGADDCLIENT_H
-#define DIALOGADDCLIENT_H
+#ifndef DIALOGRESERVATION_H
+#define DIALOGRESERVATION_H
 
-#include "Client.h"
+#include "Reservation.h"
 #include "Location.h"
 #include "Vehicle.h"
 #include <QDate>
@@ -11,16 +11,16 @@
 
 namespace Ui
 {
-class DialogClient;
+class DialogReservation;
 }
 
-class DialogClient : public QDialog
+class DialogReservation : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit DialogClient(Client *_client, Location::Type _type = Location::TENT, QWidget *parent = 0);
-	~DialogClient();
+	explicit DialogReservation(Reservation *_reservation, Location::Type _type = Location::TENT, QWidget *parent = 0);
+	~DialogReservation();
 
 	bool isVehicleRowEmpty(int row);
 
@@ -39,9 +39,9 @@ private slots:
 	void on_editLocation_textChanged(QString);
 
 private:
-	Client *client;
+	Reservation *reservation;
 	Location::Type type;
-	Ui::DialogClient *ui;
+	Ui::DialogReservation *ui;
 };
 
-#endif // DIALOGADDCLIENT_H
+#endif // DIALOGRESERVATION_H

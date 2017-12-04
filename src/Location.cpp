@@ -35,7 +35,8 @@ void Location::validate()
 		throw ActiveRecordException(tr("El nombre de la ubicación no puede estar vacío"));
 	}
 
-	if (!Location().findByNameType(this->getName(), this->getType()).isNew()) {
+	Location existentLocation = Location().findByNameType(this->getName(), this->getType());
+	if (!existentLocation.isNew() && this->getId() != existentLocation.getId()) {
 		throw ActiveRecordException(tr("Ya existe la ubicación"));
 	}
 

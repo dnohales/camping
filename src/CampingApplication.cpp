@@ -36,7 +36,7 @@ void CampingApplication::setInitialized(bool ini)
 
 void CampingApplication::initNewDatabase(QString filename)
 {
-	//Abrir archiv con la consulta
+	//Abrir archivo con la consulta
 	QFile sqlFile(":/db/template.sql");
 	if (!sqlFile.open(QFile::ReadOnly)) {
 		throw CampingException(tr("No se puede obtener la plantilla de datos para crear la base de datos"));
@@ -99,10 +99,25 @@ void CampingApplication::initExistentDatabase(QString filename)
 
 void CampingApplication::checkDatabase(QSqlDatabase &db)
 {
+	QSqlQuery dbVersionQuery(db);
+
+	dbVersionQuery.prepare("SELECT value FROM config WHERE key = :key");
+	dbVersionQuery.bindValue(":key", QVariant("db_version"));
+	dbVersionQuery.exec();
+
+	if (!dbVersionQuery.next()) {
+		throw CampingException(tr("La base de datos no tiene número de versión"));
+	}
+
+	if (dbVersionQuery.value(0).toInt() != 2) {
+		throw CampingException(tr("La base de datos es antigua"));
+	}
+
 	QStringList checkTables;
 	checkTables << "client"
 				<< "config"
 				<< "location"
+				<< "reservation"
 				<< "vehicle";
 	checkTables.sort();
 

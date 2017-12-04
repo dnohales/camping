@@ -1,11 +1,11 @@
-#include "DialogPrintClients.h"
-#include "ui_DialogPrintClients.h"
+#include "DialogPrintReservations.h"
+#include "ui_DialogPrintReservations.h"
 #include <QPushButton>
 
-DialogPrintClients::DialogPrintClients(const ClientCollection &list, QWidget *parent)
+DialogPrintReservations::DialogPrintReservations(const ReservationCollection &list, QWidget *parent)
 	: QDialog(parent),
 	  originalList(list),
-	  ui(new Ui::DialogPrintClients)
+	  ui(new Ui::DialogPrintReservations)
 {
 	ui->setupUi(this);
 
@@ -21,14 +21,14 @@ DialogPrintClients::DialogPrintClients(const ClientCollection &list, QWidget *pa
 	this->updateInfo();
 }
 
-DialogPrintClients::~DialogPrintClients()
+DialogPrintReservations::~DialogPrintReservations()
 {
 	delete ui;
 }
 
-const ClientCollection *DialogPrintClients::currentList() const
+const ReservationCollection *DialogPrintReservations::currentList() const
 {
-	const ClientCollection *c;
+	const ReservationCollection *c;
 
 	if (ui->checkBoxFilter->isChecked()) {
 		c = &filteredList;
@@ -39,23 +39,23 @@ const ClientCollection *DialogPrintClients::currentList() const
 	return c;
 }
 
-void DialogPrintClients::updateFilteredList()
+void DialogPrintReservations::updateFilteredList()
 {
 	this->filteredList = this->originalList.filterByDates(ui->dateIni->date(), ui->dateEnd->date());
 	this->updateInfo();
 }
 
-void DialogPrintClients::updateInfo()
+void DialogPrintReservations::updateInfo()
 {
-	const ClientCollection *c = this->currentList();
+	const ReservationCollection *c = this->currentList();
 	ui->dateIni->setEnabled(ui->checkBoxFilter->isChecked());
 	ui->dateEnd->setEnabled(ui->checkBoxFilter->isChecked());
 
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(c->count() > 0);
-	ui->labelInfo->setText(tr("Se imprimiran %1 cliente(s)").arg(c->count()));
+	ui->labelInfo->setText(tr("Se imprimiran %1 reservación(es)").arg(c->count()));
 }
 
-void DialogPrintClients::accept()
+void DialogPrintReservations::accept()
 {
 	App()->printHtml(currentList()->toHtmlDocument(ui->editTitle->text()));
 	QDialog::accept();

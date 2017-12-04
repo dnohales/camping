@@ -1,7 +1,7 @@
 #include "FrameDorms.h"
-#include "Client.h"
-#include "DialogClient.h"
-#include "DialogClientSelector.h"
+#include "Reservation.h"
+#include "DialogReservation.h"
+#include "DialogReservationSelector.h"
 #include "ui_FrameDorms.h"
 #include <QItemDelegate>
 #include <QMenu>
@@ -34,7 +34,7 @@ FrameDorms::~FrameDorms()
 	delete ui;
 }
 
-void FrameDorms::refreshComboYears(ClientCollection &clist)
+void FrameDorms::refreshComboYears(ReservationCollection &rlist)
 {
 	QList<QDate> totalDates;
 	QDate previousSelectedDate;
@@ -49,13 +49,13 @@ void FrameDorms::refreshComboYears(ClientCollection &clist)
 		previousSelectedDate.setDate(previousSelectedDate.year(), 1, 1);
 	}
 
-	for (int i = 0; i < clist.count(); i++) {
-		QDate date1 = clist.at(i).getDateIn();
+	for (int i = 0; i < rlist.count(); i++) {
+		QDate date1 = rlist.at(i).getDateIn();
 		date1.setDate(date1.year(), 1, 1);
 		if (!totalDates.contains(date1))
 			totalDates.append(date1);
 
-		QDate date2 = clist.at(i).getDateOut();
+		QDate date2 = rlist.at(i).getDateOut();
 		date2.setDate(date2.year(), 1, 1);
 		if (!totalDates.contains(date2))
 			totalDates.append(date2);
@@ -81,38 +81,38 @@ void FrameDorms::refreshComboYears(ClientCollection &clist)
 void FrameDorms::refreshData()
 {
 	QDate dateini, dateend;
-	ClientCollection clist = Client().findAll(this->baseCriteria(Location::DORM));
+	ReservationCollection rlist = Reservation().findAll(this->baseCriteria(Location::DORM));
 	LocationCollection dormis = Location().findAllByType(Location::DORM);
 
 	//Se refresca el combobox
-	this->refreshComboYears(clist);
+	this->refreshComboYears(rlist);
 
 	//Por defecto se mostrará de enero a febrero
 	dateini = ui->comboYear->itemData(ui->comboYear->currentIndex()).toDate();
 	dateend = dateini.addMonths(2).addDays(-1);
 
-	//Se filtra para obtener los clientes del año seleccionado
-	clist = clist.filterByDates(
+	//Se filtra para obtener las reservaciones del año seleccionado
+	rlist = rlist.filterByDates(
 		dateini,
 		dateini.addYears(1).addDays(-1));
 
-	//Recorro los clientes filtrados para saber cual será el mes final a mostrar
-	for (int i = 0; i < clist.count(); i++) {
-		QDate clientMaxDate;
+	//Recorro las reservaciones filtrados para saber cual será el mes final a mostrar
+	for (int i = 0; i < rlist.count(); i++) {
+		QDate reservationMaxDate;
 
-		if (clist.at(i).getDateIn().year() == dateend.year()) {
-			clientMaxDate = clist.at(i).getDateIn();
+		if (rlist.at(i).getDateIn().year() == dateend.year()) {
+			reservationMaxDate = rlist.at(i).getDateIn();
 		}
-		if (clist.at(i).getDateOut().year() == dateend.year()) {
-			clientMaxDate = clist.at(i).getDateOut();
+		if (rlist.at(i).getDateOut().year() == dateend.year()) {
+			reservationMaxDate = rlist.at(i).getDateOut();
 		}
 
-		if (clientMaxDate.month() > dateend.month()) {
-			dateend.setDate(dateend.year(), clientMaxDate.month(), clientMaxDate.daysInMonth());
+		if (reservationMaxDate.month() > dateend.month()) {
+			dateend.setDate(dateend.year(), reservationMaxDate.month(), reservationMaxDate.daysInMonth());
 		}
 	}
 
-	if (clist.count() > 0) {
+	if (rlist.count() > 0) {
 		ui->table->setRowCount(dateend.dayOfYear());
 		ui->table->setColumnCount(dormis.count());
 
@@ -129,7 +129,7 @@ void FrameDorms::refreshData()
 					new QTableWidgetItem(dateToCheck.toString("d 'de' MMMM")));
 				ui->table->verticalHeaderItem(dateToCheck.dayOfYear() - 1)->setData(Qt::UserRole, dateToCheck);
 
-				QList<int> indexList = clist.findByLocationAndDate(dormis.at(i), dateToCheck);
+				QList<int> indexList = rlist.findByLocationAndDate(dormis.at(i), dateToCheck);
 				QTableWidgetItem *item = new QTableWidgetItem();
 				QString itemText;
 				QString itemData;
@@ -146,17 +146,17 @@ void FrameDorms::refreshData()
 					itemText = "";
 					itemData = "";
 					for (int k = 0; k < indexList.count(); k++) {
-						if (dateToCheck == clist.at(indexList[k]).getDateIn()) {
-							itemText += clist.at(indexList[k]).getFullName();
-							if (clist.at(indexList[k]).getDateOut().year() > dateToCheck.year()) {
+						if (dateToCheck == rlist.at(indexList[k]).getDateIn()) {
+							itemText += rlist.at(indexList[k]).getClient().getFullName();
+							if (rlist.at(indexList[k]).getDateOut().year() > dateToCheck.year()) {
 								itemText += QString(" (sigue en %1)").arg(dateToCheck.year() + 1);
 							}
 							itemText += "\n";
 						} else if (dateToCheck.dayOfYear() == 1) {
-							itemText += clist.at(indexList[k]).getFullName() + QString("(desde %1)\n").arg(dateToCheck.year() - 1);
+							itemText += rlist.at(indexList[k]).getClient().getFullName() + QString("(desde %1)\n").arg(dateToCheck.year() - 1);
 						}
 
-						itemData += QString::number(clist.at(indexList[k]).getId()) + ",";
+						itemData += QString::number(rlist.at(indexList[k]).getId()) + ",";
 					}
 					itemData.truncate(itemData.length() - 1);
 					item->setText(itemText.trimmed());
@@ -180,24 +180,24 @@ void FrameDorms::on_table_itemActivated(QTableWidgetItem *item)
 	QDate date(ui->comboYear->itemData(ui->comboYear->currentIndex(), Qt::UserRole).toDate().addDays(item->row()));
 
 	if (id == "0") {
-		Client c(false);
-		c.setLocationId(ui->table->horizontalHeaderItem(item->column())->data(Qt::UserRole).toInt());
-		c.setDateIn(date);
-		c.setDateOut(date.addDays(1));
+		Reservation r(false);
+		r.setLocationId(ui->table->horizontalHeaderItem(item->column())->data(Qt::UserRole).toInt());
+		r.setDateIn(date);
+		r.setDateOut(date.addDays(1));
 
-		DialogClient dialog(&c, Location::DORM);
+		DialogReservation dialog(&r, Location::DORM);
 		dialog.exec();
-		if (dialog.result() == DialogClientSelector::Accepted) {
+		if (dialog.result() == DialogReservationSelector::Accepted) {
 			this->requestRefresh();
 		}
 	} else {
-		DialogClientSelector selectorDialog(id);
+		DialogReservationSelector selectorDialog(id);
 		selectorDialog.exec();
-		if (selectorDialog.result() == DialogClientSelector::Accepted) {
-			Client c(Client().findById(selectorDialog.selectedId()));
-			DialogClient dialog(&c, Location::DORM);
+		if (selectorDialog.result() == DialogReservationSelector::Accepted) {
+			Reservation r(Reservation().findById(selectorDialog.selectedId()));
+			DialogReservation dialog(&r, Location::DORM);
 			dialog.exec();
-			if (dialog.result() == DialogClientSelector::Accepted) {
+			if (dialog.result() == DialogReservationSelector::Accepted) {
 				this->requestRefresh();
 			}
 		}
@@ -231,48 +231,48 @@ void FrameDorms::on_table_customContextMenuRequested(QPoint pos)
 
 void FrameDorms::on_buttonAdd_clicked()
 {
-	Client c(false);
-	this->doCreateClient(c, Location::DORM);
+	Reservation r(false);
+	this->doCreateReservation(r, Location::DORM);
 }
 
 void FrameDorms::onMenuCreate()
 {
 	QDate date(ui->table->verticalHeaderItem(selectedItem->row())->data(Qt::UserRole).toDate());
-	Client c(false);
-	c.setLocationId(ui->table->horizontalHeaderItem(selectedItem->column())->data(Qt::UserRole).toInt());
-	c.setDateIn(date);
-	c.setDateOut(date.addDays(1));
+	Reservation r(false);
+	r.setLocationId(ui->table->horizontalHeaderItem(selectedItem->column())->data(Qt::UserRole).toInt());
+	r.setDateIn(date);
+	r.setDateOut(date.addDays(1));
 
-	this->doCreateClient(c, Location::DORM);
+	this->doCreateReservation(r, Location::DORM);
 }
 
 void FrameDorms::onMenuEdit()
 {
-	DialogClientSelector selectorDialog(selectedItem->data(Qt::UserRole).toString());
+	DialogReservationSelector selectorDialog(selectedItem->data(Qt::UserRole).toString());
 	selectorDialog.exec();
-	if (selectorDialog.result() == DialogClientSelector::Accepted) {
-		Client c(Client().findById(selectorDialog.selectedId()));
-		this->doEditClient(c);
+	if (selectorDialog.result() == DialogReservationSelector::Accepted) {
+		Reservation r(Reservation().findById(selectorDialog.selectedId()));
+		this->doEditReservation(r);
 	}
 }
 
 void FrameDorms::onMenuPrint()
 {
-	DialogClientSelector selectorDialog(selectedItem->data(Qt::UserRole).toString());
+	DialogReservationSelector selectorDialog(selectedItem->data(Qt::UserRole).toString());
 	selectorDialog.exec();
-	if (selectorDialog.result() == DialogClientSelector::Accepted) {
-		Client c(Client().findById(selectorDialog.selectedId()));
-		this->doPrintReceipt(c);
+	if (selectorDialog.result() == DialogReservationSelector::Accepted) {
+		Reservation r(Reservation().findById(selectorDialog.selectedId()));
+		this->doPrintReceipt(r);
 	}
 }
 
 void FrameDorms::onMenuDelete()
 {
-	DialogClientSelector selectorDialog(selectedItem->data(Qt::UserRole).toString());
+	DialogReservationSelector selectorDialog(selectedItem->data(Qt::UserRole).toString());
 	selectorDialog.exec();
-	if (selectorDialog.result() == DialogClientSelector::Accepted) {
-		Client c(Client().findById(selectorDialog.selectedId()));
-		this->doDeleteClient(c);
+	if (selectorDialog.result() == DialogReservationSelector::Accepted) {
+		Reservation r(Reservation().findById(selectorDialog.selectedId()));
+		this->doDeleteReservation(r);
 	}
 }
 

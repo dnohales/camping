@@ -62,7 +62,7 @@
          <string>Añadir cliente</string>
         </property>
         <property name="icon">
-         <iconset resource="default.qrc">
+         <iconset resource="../../res/default.qrc">
           <normaloff>:/imgs/add.svg</normaloff>:/imgs/add.svg</iconset>
         </property>
        </widget>
@@ -95,7 +95,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="comboClientStatus">
+       <widget class="QComboBox" name="comboReservationStatus">
         <property name="currentIndex">
          <number>0</number>
         </property>
@@ -194,7 +194,7 @@
   </action>
  </widget>
  <resources>
-  <include location="default.qrc"/>
+  <include location="../../res/default.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -214,7 +214,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>comboClientStatus</sender>
+   <sender>comboReservationStatus</sender>
    <signal>currentIndexChanged(int)</signal>
    <receiver>FrameTents</receiver>
    <slot>requestRefresh()</slot>

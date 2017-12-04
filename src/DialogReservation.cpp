@@ -1,13 +1,13 @@
-#include "DialogClient.h"
-#include "ui_DialogClient.h"
+#include "DialogReservation.h"
+#include "ui_DialogReservation.h"
 #include <QCompleter>
 #include <QMessageBox>
 
-DialogClient::DialogClient(Client *_client, Location::Type _type, QWidget *parent)
+DialogReservation::DialogReservation(Reservation *_reservation, Location::Type _type, QWidget *parent)
 	: QDialog(parent),
-	  client(_client),
+	  reservation(_reservation),
 	  type(_type),
-	  ui(new Ui::DialogClient)
+	  ui(new Ui::DialogReservation)
 {
 	ui->setupUi(this);
 
@@ -15,10 +15,10 @@ DialogClient::DialogClient(Client *_client, Location::Type _type, QWidget *paren
 	this->ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancelar"));
 	this->ui->buttonBox->button(QDialogButtonBox::Reset)->setText(tr("Revertir"));
 
-	if (client->isNew()) {
-		this->setWindowTitle(tr("Creando un cliente nuevo"));
+	if (reservation->isNew()) {
+		this->setWindowTitle(tr("Creando una reservación nueva"));
 	} else {
-		this->setWindowTitle(tr("Editando a %1").arg(client->getFullName()));
+		this->setWindowTitle(tr("Editando a %1").arg(reservation->getClient().getFullName()));
 	}
 
 	if (this->type == Location::DORM) {
@@ -40,19 +40,19 @@ DialogClient::DialogClient(Client *_client, Location::Type _type, QWidget *paren
 	this->refreshWidgets();
 }
 
-DialogClient::~DialogClient()
+DialogReservation::~DialogReservation()
 {
 	delete ui;
 }
 
-void DialogClient::updateOutDate(int days)
+void DialogReservation::updateOutDate(int days)
 {
 	QDate dateIn(this->ui->editDateIn->date());
 	QDate dateOut(dateIn.addDays(days));
 	this->ui->editDateOut->setDate(dateOut);
 }
 
-void DialogClient::updateDaysCount()
+void DialogReservation::updateDaysCount()
 {
 	QDateTime dateIn(this->ui->editDateIn->date());
 	QDateTime dateOut(this->ui->editDateOut->date());
@@ -69,32 +69,32 @@ void DialogClient::updateDaysCount()
 	}
 }
 
-void DialogClient::searchLocation()
+void DialogReservation::searchLocation()
 {
 }
 
-void DialogClient::refreshWidgets()
+void DialogReservation::refreshWidgets()
 {
-	this->ui->editName->setText(client->getName());
-	this->ui->editSurname->setText(client->getSurame());
+	this->ui->editName->setText(reservation->getClient().getName());
+	this->ui->editSurname->setText(reservation->getClient().getSurame());
 
-	this->ui->editDateIn->setDate(client->getDateIn());
-	this->ui->editDateOut->setDate(client->getDateOut());
+	this->ui->editDateIn->setDate(reservation->getDateIn());
+	this->ui->editDateOut->setDate(reservation->getDateOut());
 
-	this->ui->editLocation->setText(client->getLocation().getName());
-	this->ui->spinPeopleNum->setValue(client->getPeopleNum());
-	this->ui->spinTentNum->setValue(client->getTentNum());
+	this->ui->editLocation->setText(reservation->getLocation().getName());
+	this->ui->spinPeopleNum->setValue(reservation->getPeopleNum());
+	this->ui->spinTentNum->setValue(reservation->getTentNum());
+	this->ui->editBeck->setText(QString::number(reservation->getBeck()));
 
-	this->ui->editAddress->setText(client->getAdress());
-	this->ui->editDni->setText(client->getDni());
-	this->ui->editEmail->setText(client->getEmail());
-	this->ui->editTel->setText(client->getTel());
-	this->ui->editBeck->setText(client->getBeck());
+	this->ui->editAddress->setText(reservation->getClient().getAdress());
+	this->ui->editDni->setText(reservation->getClient().getDni());
+	this->ui->editEmail->setText(reservation->getClient().getEmail());
+	this->ui->editTel->setText(reservation->getClient().getTel());
 
 	ui->vehicles->setRowCount(0);
 
-	if (!client->isNew()) {
-		VehicleCollection vlist = client->getVehicles();
+	if (!reservation->isNew()) {
+		VehicleCollection vlist = reservation->getVehicles();
 
 		for (int i = 0; i < vlist.count(); i++) {
 			Vehicle v(vlist.at(i));
@@ -108,7 +108,7 @@ void DialogClient::refreshWidgets()
 	}
 }
 
-void DialogClient::onButtonBoxClicked(QAbstractButton *button)
+void DialogReservation::onButtonBoxClicked(QAbstractButton *button)
 {
 	switch (this->ui->buttonBox->buttonRole(button)) {
 	case QDialogButtonBox::ResetRole:
@@ -119,47 +119,51 @@ void DialogClient::onButtonBoxClicked(QAbstractButton *button)
 	}
 }
 
-void DialogClient::accept()
+void DialogReservation::accept()
 {
-	ClientCollection conflicts;
+	ReservationCollection conflicts;
 	QString conflictMsg;
 
 	try {
 		Db().transaction();
-		client->setName(this->ui->editName->text());
-		client->setSurame(this->ui->editSurname->text());
 
-		client->setDateIn(this->ui->editDateIn->date());
-		client->setDateOut(this->ui->editDateOut->date());
+		Client client = reservation->getClient();
 
-		client->setPeopleNum(this->ui->spinPeopleNum->value());
-		client->setTentNum(this->ui->spinTentNum->value());
+		client.setName(this->ui->editName->text());
+		client.setSurame(this->ui->editSurname->text());
+		client.setAddress(this->ui->editAddress->text());
+		client.setDni(this->ui->editDni->text());
+		client.setEmail(this->ui->editEmail->text());
+		client.setTel(this->ui->editTel->text());
 
-		client->setAddress(this->ui->editAddress->text());
-		client->setDni(this->ui->editDni->text());
-		client->setEmail(this->ui->editEmail->text());
-		client->setTel(this->ui->editTel->text());
-		client->setBeck(this->ui->editBeck->text());
-
-		client->validate();
-
-		Location loc = Location().findByNameType(this->ui->editLocation->text(), this->type);
-		if (loc.isNew()) {
-			loc.setName(this->ui->editLocation->text());
-			loc.setType(this->type);
-			loc.save();
+		Location location = Location().findByNameType(this->ui->editLocation->text(), this->type);
+		if (location.isNew()) {
+			location.setName(this->ui->editLocation->text());
+			location.setType(this->type);
 		}
-		client->setLocation(loc);
 
-		conflicts = client->getConflictingClients();
+		reservation->setDateIn(this->ui->editDateIn->date());
+		reservation->setDateOut(this->ui->editDateOut->date());
+		reservation->setPeopleNum(this->ui->spinPeopleNum->value());
+		reservation->setTentNum(this->ui->spinTentNum->value());
+		reservation->setBeck(this->ui->editBeck->text().toDouble());
+
+		location.validate();
+		client.validate();
+		reservation->validate();
+
+		location.save();
+		reservation->setLocation(location);
+
+		conflicts = reservation->getConflictingReservations();
 		if (conflicts.count() > 0) {
-			conflictMsg = tr("Ya hay clientes ocupando la ubicación <b>%1</b> entre las fechas estipuladas, los clientes son:<br /><br />").arg(loc.getName());
+			conflictMsg = tr("Ya hay reservationes ocupando la ubicación <b>%1</b> entre las fechas estipuladas, las reservaciones son:<br /><br />").arg(location.getName());
 			for (int i = 0; i < conflicts.count(); i++) {
-				Client conflictClient(conflicts.at(i));
-				conflictMsg += tr("<b>%1</b>: del %2 al %3<br />").arg(conflictClient.getFullName(), conflictClient.getDateIn().toString("d 'de' MMMM"), conflictClient.getDateOut().toString("d 'de' MMMM"));
+				Reservation conflictReservation(conflicts.at(i));
+				conflictMsg += tr("<b>%1</b>: del %2 al %3<br />").arg(conflictReservation.getClient().getFullName(), conflictReservation.getDateIn().toString("d 'de' MMMM"), conflictReservation.getDateOut().toString("d 'de' MMMM"));
 			}
 			conflictMsg += tr("<br />¿Desea continuar de todas formas?");
-			QMessageBox conflictDialog(QMessageBox::Question, tr("Conflictos entre clientes"), conflictMsg, QMessageBox::Yes | QMessageBox::No);
+			QMessageBox conflictDialog(QMessageBox::Question, tr("Conflictos entre reservaciones"), conflictMsg, QMessageBox::Yes | QMessageBox::No);
 			conflictDialog.setTextFormat(Qt::RichText);
 			if (conflictDialog.exec() == QMessageBox::No) {
 				Db().rollback();
@@ -167,7 +171,9 @@ void DialogClient::accept()
 			}
 		}
 
-		client->save();
+		client.save();
+		reservation->setClient(client);
+		reservation->save();
 
 		for (int i = 0; i < ui->vehicles->rowCount(); i++) {
 			int id = ui->vehicles->item(i, 0)->data(Qt::UserRole).toInt();
@@ -175,9 +181,8 @@ void DialogClient::accept()
 				Vehicle newV(false);
 				if (id > 0) {
 					newV = Vehicle().findById(id);
-				} else {
-					newV.setClientId(client->getId());
 				}
+				newV.setReservation(*reservation);
 				newV.setModel(ui->vehicles->item(i, 0)->text());
 				newV.setPatent(ui->vehicles->item(i, 1)->text());
 				newV.setSize(ui->vehicles->item(i, 2)->text());
@@ -198,20 +203,20 @@ void DialogClient::accept()
 	}
 }
 
-void DialogClient::reset()
+void DialogReservation::reset()
 {
 	if (QMessageBox::question(
 			this,
 			tr("Revirtiendo cambios"),
-			tr("¿Estás seguro que deseas descartar los cambios hechos y editar el cliente nuevamente?"),
+			tr("¿Estás seguro que deseas descartar los cambios hechos y editar la reservación nuevamente?"),
 			QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-		this->client->reset();
+		this->reservation->reset();
 		this->refreshWidgets();
 		this->ui->editName->setFocus();
 	}
 }
 
-bool DialogClient::isVehicleRowEmpty(int row)
+bool DialogReservation::isVehicleRowEmpty(int row)
 {
 	for (int i = 0; i < ui->vehicles->columnCount(); i++) {
 		if (!ui->vehicles->item(row, i)->text().trimmed().isEmpty()) {
@@ -222,7 +227,7 @@ bool DialogClient::isVehicleRowEmpty(int row)
 	return true;
 }
 
-void DialogClient::on_buttonVehicleAdd_clicked()
+void DialogReservation::on_buttonVehicleAdd_clicked()
 {
 	int lastRowItem = ui->vehicles->rowCount();
 
@@ -235,7 +240,7 @@ void DialogClient::on_buttonVehicleAdd_clicked()
 	ui->vehicles->item(lastRowItem, 0)->setData(Qt::UserRole, 0);
 }
 
-void DialogClient::on_buttonVehicleDelete_clicked()
+void DialogReservation::on_buttonVehicleDelete_clicked()
 {
 	QTableWidget *v = ui->vehicles;
 	QFont delFont;
@@ -257,7 +262,7 @@ void DialogClient::on_buttonVehicleDelete_clicked()
 	}
 }
 
-void DialogClient::on_editLocation_textChanged(QString)
+void DialogReservation::on_editLocation_textChanged(QString)
 {
 	if (Location().findByNameType(ui->editLocation->text(), this->type).isNew()) {
 		ui->labelLocationNote->show();

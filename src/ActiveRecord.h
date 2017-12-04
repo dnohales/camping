@@ -12,13 +12,43 @@
 #include <QSqlRecord>
 #include <QVariant>
 
-#define ACTIVE_RECORD_FIELD(getter, setter, type, field)                      \
-	type getter() const { return this->record().value(field).value<type>(); } \
-	void setter(type value) { this->setFieldValue(field, QVariant(value)); }
+#define ACTIVE_RECORD_FIELD(getter, setter, type, field)							           \
+	type getter() const																		   \
+	{                                                                                          \
+		return this->record().value(field).value<type>();                                      \
+	}                                                                                          \
+	void setter(type value)																	   \
+	{                                                                                          \
+		this->setFieldValue(field, QVariant(value));										   \
+	}
 
-#define ACTIVE_RECORD_FIELD_STRING(getter, setter, field)                           \
-	QString getter() const { return this->record().value(field).value<QString>(); } \
-	void setter(QString value) { this->setFieldValue(field, QVariant(value.simplified())); }
+#define ACTIVE_RECORD_FIELD_STRING(getter, setter, field)                                      \
+	QString getter() const                                                                     \
+	{                                                                                          \
+		return this->record().value(field).value<QString>();                                   \
+	}                                                                                          \
+	void setter(QString value)														           \
+	{                                                                                          \
+		this->setFieldValue(field, QVariant(value.simplified()));                              \
+	}
+
+#define ACTIVE_RECORD_MANY_TO_ONE(getter, setter, _class, field)                               \
+	_class getter() const                                                                      \
+	{                                                                                          \
+		return _class().findById(this->getter ## Id());                                        \
+	}                                                                                          \
+	void setter(const _class &value)                                                           \
+	{                                                                                          \
+		this->setter ## Id(value.getId());                                                     \
+	}                                                                                          \
+	int getter ## Id() const                                                                   \
+	{                                                                                          \
+		return this->record().value(field).value<int>();                                       \
+	}                                                                                          \
+	void setter ## Id(int value)                                                               \
+	{                                                                                          \
+		this->setFieldValue(field, QVariant(value));                                           \
+	}
 
 #define ACTIVE_RECORD(className, collectionName)                                               \
 public:                                                                                        \

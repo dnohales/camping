@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DialogPrintClients</class>
- <widget class="QDialog" name="DialogPrintClients">
+ <class>DialogPrintReservations</class>
+ <widget class="QDialog" name="DialogPrintReservations">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -127,7 +127,7 @@ clientes que están entre estas dos fechas:</string>
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>DialogPrintClients</receiver>
+   <receiver>DialogPrintReservations</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -143,7 +143,7 @@ clientes que están entre estas dos fechas:</string>
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>DialogPrintClients</receiver>
+   <receiver>DialogPrintReservations</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -159,7 +159,7 @@ clientes que están entre estas dos fechas:</string>
   <connection>
    <sender>dateIni</sender>
    <signal>dateChanged(QDate)</signal>
-   <receiver>DialogPrintClients</receiver>
+   <receiver>DialogPrintReservations</receiver>
    <slot>updateFilteredList()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -175,7 +175,7 @@ clientes que están entre estas dos fechas:</string>
   <connection>
    <sender>dateEnd</sender>
    <signal>dateChanged(QDate)</signal>
-   <receiver>DialogPrintClients</receiver>
+   <receiver>DialogPrintReservations</receiver>
    <slot>updateFilteredList()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -191,7 +191,7 @@ clientes que están entre estas dos fechas:</string>
   <connection>
    <sender>checkBoxFilter</sender>
    <signal>clicked()</signal>
-   <receiver>DialogPrintClients</receiver>
+   <receiver>DialogPrintReservations</receiver>
    <slot>updateInfo()</slot>
    <hints>
     <hint type="sourcelabel">

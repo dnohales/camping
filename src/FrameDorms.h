@@ -25,7 +25,7 @@ protected:
 	void resizeEvent(QResizeEvent *);
 
 private:
-	void refreshComboYears(ClientCollection &clist);
+	void refreshComboYears(ReservationCollection &clist);
 
 private slots:
 	void onMenuCreate();

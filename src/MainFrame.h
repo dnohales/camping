@@ -1,7 +1,7 @@
 #ifndef MAINFRAME_H
 #define MAINFRAME_H
 
-#include "Client.h"
+#include "Reservation.h"
 #include "MainWindow.h"
 #include "SqlCriteria.h"
 #include <QFrame>
@@ -18,10 +18,10 @@ public:
 	SqlCriteria baseCriteria(Location::Type findType = Location::ALL);
 	bool isRefreshed();
 
-	void doCreateClient(Client &c, Location::Type type);
-	void doEditClient(Client &c);
-	void doPrintReceipt(Client &c);
-	void doDeleteClient(Client &c);
+	void doCreateReservation(Reservation &c, Location::Type type);
+	void doEditReservation(Reservation &c);
+	void doPrintReceipt(Reservation &c);
+	void doDeleteReservation(Reservation &c);
 
 protected:
 	void setRefreshed(bool r);
