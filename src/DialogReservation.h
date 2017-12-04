@@ -1,8 +1,8 @@
 #ifndef DIALOGRESERVATION_H
 #define DIALOGRESERVATION_H
 
-#include "Reservation.h"
 #include "Location.h"
+#include "Reservation.h"
 #include "Vehicle.h"
 #include <QDate>
 #include <QDialog>
@@ -27,18 +27,21 @@ public:
 public slots:
 	void updateOutDate(int days);
 	void updateDaysCount();
-	void searchLocation();
 	void accept();
 	void reset();
 
 private slots:
+	void onClientCompleterActivated(const QModelIndex &index);
 	void onButtonBoxClicked(QAbstractButton *);
+	void refreshClientWidgets();
 	void refreshWidgets();
 	void on_buttonVehicleAdd_clicked();
 	void on_buttonVehicleDelete_clicked();
 	void on_editLocation_textChanged(QString);
+	void on_buttonCompletedClientReset_clicked();
 
 private:
+	Client completedClient;
 	Reservation *reservation;
 	Location::Type type;
 	Ui::DialogReservation *ui;

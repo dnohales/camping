@@ -18,3 +18,27 @@ QString Client::getFullName() const
 {
 	return this->getName() + " " + this->getSurame();
 }
+
+ClientCompleterModel::ClientCompleterModel(const ClientCollection &collection)
+	: collection(collection)
+{
+}
+
+QVariant ClientCompleterModel::data(const QModelIndex &index, int role) const
+{
+	const Client *c = &this->collection.at(index.row());
+	switch (role) {
+	case Qt::DisplayRole:
+	case Qt::EditRole:
+		return QVariant(QString("%1 - %2").arg(c->getFullName(), c->getDni()));
+	case Qt::UserRole:
+		return QVariant(c->getId());
+	default:
+		return QVariant();
+	}
+}
+
+int ClientCompleterModel::rowCount(const QModelIndex &) const
+{
+	return this->collection.count();
+}

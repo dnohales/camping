@@ -2,9 +2,11 @@
 #include "ui_DialogReservation.h"
 #include <QCompleter>
 #include <QMessageBox>
+#include <QTimer>
 
 DialogReservation::DialogReservation(Reservation *_reservation, Location::Type _type, QWidget *parent)
 	: QDialog(parent),
+	  completedClient(_reservation->getClient()),
 	  reservation(_reservation),
 	  type(_type),
 	  ui(new Ui::DialogReservation)
@@ -18,8 +20,14 @@ DialogReservation::DialogReservation(Reservation *_reservation, Location::Type _
 	if (reservation->isNew()) {
 		this->setWindowTitle(tr("Creando una reservación nueva"));
 	} else {
-		this->setWindowTitle(tr("Editando a %1").arg(reservation->getClient().getFullName()));
+		this->setWindowTitle(tr("Editando a %1 para el %2").arg(this->completedClient.getFullName(), this->reservation->getDateIn().toString("dd/MM/yyyy")));
 	}
+
+	QCompleter *clientCompleter = new QCompleter(new ClientCompleterModel(Client().findAll()));
+	clientCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+	clientCompleter->setFilterMode(Qt::MatchContains);
+	connect(clientCompleter, SIGNAL(activated(QModelIndex)), this, SLOT(onClientCompleterActivated(QModelIndex)));
+	this->ui->editName->setCompleter(clientCompleter);
 
 	if (this->type == Location::DORM) {
 		ui->labelLocation->setText(tr("Número de dormi"));
@@ -27,9 +35,10 @@ DialogReservation::DialogReservation(Reservation *_reservation, Location::Type _
 		ui->spinTentNum->hide();
 	}
 
-	QCompleter *completer = new QCompleter(Location().findAllByType(this->type).toNameList());
-	completer->setCaseSensitivity(Qt::CaseInsensitive);
-	this->ui->editLocation->setCompleter(completer);
+	QCompleter *locationCompleter = new QCompleter(Location().findAllByType(this->type).toNameList());
+	locationCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+	locationCompleter->setFilterMode(Qt::MatchContains);
+	this->ui->editLocation->setCompleter(locationCompleter);
 
 	ui->vehicles->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Modelo")));
 	ui->vehicles->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Patente")));
@@ -69,14 +78,40 @@ void DialogReservation::updateDaysCount()
 	}
 }
 
-void DialogReservation::searchLocation()
+void DialogReservation::onClientCompleterActivated(const QModelIndex &index)
 {
+	completedClient = Client().findById(index.data(Qt::UserRole).toInt());
+	QTimer::singleShot(10, this, SLOT(refreshClientWidgets()));
+}
+
+void DialogReservation::refreshClientWidgets()
+{
+	if (!completedClient.isNew()) {
+		ui->completedClientNotice->show();
+		ui->labelCompletedClientNotice->setText(
+			tr("Todos los cambios en la información de contacto de <strong>%1</strong> (como el nombre, dirección, teléfono, etc), "
+			   "surtirá efecto en el resto de las reservas a nombre de <strong>%1</strong>.")
+				.arg(completedClient.getFullName()));
+		if (completedClient.getId() != reservation->getClient().getId()) {
+			ui->buttonCompletedClientReset->show();
+		} else {
+			ui->buttonCompletedClientReset->hide();
+		}
+	} else {
+		ui->completedClientNotice->hide();
+	}
+
+	this->ui->editName->setText(completedClient.getName());
+	this->ui->editSurname->setText(completedClient.getSurame());
+	this->ui->editAddress->setText(completedClient.getAdress());
+	this->ui->editDni->setText(completedClient.getDni());
+	this->ui->editEmail->setText(completedClient.getEmail());
+	this->ui->editTel->setText(completedClient.getTel());
 }
 
 void DialogReservation::refreshWidgets()
 {
-	this->ui->editName->setText(reservation->getClient().getName());
-	this->ui->editSurname->setText(reservation->getClient().getSurame());
+	refreshClientWidgets();
 
 	this->ui->editDateIn->setDate(reservation->getDateIn());
 	this->ui->editDateOut->setDate(reservation->getDateOut());
@@ -85,11 +120,6 @@ void DialogReservation::refreshWidgets()
 	this->ui->spinPeopleNum->setValue(reservation->getPeopleNum());
 	this->ui->spinTentNum->setValue(reservation->getTentNum());
 	this->ui->editBeck->setText(QString::number(reservation->getBeck()));
-
-	this->ui->editAddress->setText(reservation->getClient().getAdress());
-	this->ui->editDni->setText(reservation->getClient().getDni());
-	this->ui->editEmail->setText(reservation->getClient().getEmail());
-	this->ui->editTel->setText(reservation->getClient().getTel());
 
 	ui->vehicles->setRowCount(0);
 
@@ -127,14 +157,12 @@ void DialogReservation::accept()
 	try {
 		Db().transaction();
 
-		Client client = reservation->getClient();
-
-		client.setName(this->ui->editName->text());
-		client.setSurame(this->ui->editSurname->text());
-		client.setAddress(this->ui->editAddress->text());
-		client.setDni(this->ui->editDni->text());
-		client.setEmail(this->ui->editEmail->text());
-		client.setTel(this->ui->editTel->text());
+		completedClient.setName(this->ui->editName->text());
+		completedClient.setSurame(this->ui->editSurname->text());
+		completedClient.setAddress(this->ui->editAddress->text());
+		completedClient.setDni(this->ui->editDni->text());
+		completedClient.setEmail(this->ui->editEmail->text());
+		completedClient.setTel(this->ui->editTel->text());
 
 		Location location = Location().findByNameType(this->ui->editLocation->text(), this->type);
 		if (location.isNew()) {
@@ -149,7 +177,7 @@ void DialogReservation::accept()
 		reservation->setBeck(this->ui->editBeck->text().toDouble());
 
 		location.validate();
-		client.validate();
+		completedClient.validate();
 		reservation->validate();
 
 		location.save();
@@ -171,8 +199,8 @@ void DialogReservation::accept()
 			}
 		}
 
-		client.save();
-		reservation->setClient(client);
+		completedClient.save();
+		reservation->setClient(completedClient);
 		reservation->save();
 
 		for (int i = 0; i < ui->vehicles->rowCount(); i++) {
@@ -211,6 +239,7 @@ void DialogReservation::reset()
 			tr("¿Estás seguro que deseas descartar los cambios hechos y editar la reservación nuevamente?"),
 			QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
 		this->reservation->reset();
+		this->completedClient = this->reservation->getClient();
 		this->refreshWidgets();
 		this->ui->editName->setFocus();
 	}
@@ -269,4 +298,10 @@ void DialogReservation::on_editLocation_textChanged(QString)
 	} else {
 		ui->labelLocationNote->hide();
 	}
+}
+
+void DialogReservation::on_buttonCompletedClientReset_clicked()
+{
+	completedClient = reservation->getClient();
+	refreshClientWidgets();
 }

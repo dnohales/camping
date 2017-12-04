@@ -2,11 +2,23 @@
 #define CLIENT_H
 
 #include "ActiveRecord.h"
+#include <QAbstractListModel>
 
 class Client;
 
 class ClientCollection : public QList<Client>
 {
+};
+
+class ClientCompleterModel : public QAbstractListModel
+{
+public:
+	ClientCompleterModel(const ClientCollection &collection);
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	int rowCount(const QModelIndex &) const;
+
+private:
+	ClientCollection collection;
 };
 
 class Client : public ActiveRecord
