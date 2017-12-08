@@ -183,7 +183,9 @@ void DialogReservation::accept()
 		completedClient.validate();
 		reservation->validate();
 
-		location.save();
+		if (location.isNew()) {
+			location.save();
+		}
 		reservation->setLocation(location);
 
 		conflicts = reservation->getConflictingReservations();
