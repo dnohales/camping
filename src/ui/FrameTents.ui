@@ -59,7 +59,7 @@
       <item>
        <widget class="QPushButton" name="buttonAdd">
         <property name="text">
-         <string>Añadir cliente</string>
+         <string>Añadir reservación</string>
         </property>
         <property name="icon">
          <iconset resource="../../res/default.qrc">
