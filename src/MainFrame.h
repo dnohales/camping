@@ -15,13 +15,7 @@ public:
 	void setMainParent(MainWindow *m);
 	MainWindow *mainParent();
 
-	SqlCriteria baseCriteria(Location::Type findType = Location::ALL);
 	bool isRefreshed();
-
-	void doCreateReservation(Reservation &c, Location::Type type);
-	void doEditReservation(Reservation &c);
-	void doPrintReceipt(Reservation &c);
-	void doDeleteReservation(Reservation &c);
 
 protected:
 	void setRefreshed(bool r);

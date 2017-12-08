@@ -22,7 +22,7 @@ public:
 };
 
 FrameDorms::FrameDorms(QWidget *parent)
-	: MainFrame(parent),
+	: FrameReservations(parent),
 	  ui(new Ui::FrameDorms)
 {
 	ui->setupUi(this);

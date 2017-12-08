@@ -25,11 +25,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 	this->ui->frameTents->setMainParent(this);
 	this->ui->frameDorms->setMainParent(this);
+	this->ui->frameClients->setMainParent(this);
 
 	this->connect(this->_searchTimer, SIGNAL(timeout()), SLOT(onSearchTimeout()));
 	this->connect(this, SIGNAL(fileOpened(QString)), SLOT(onFileOpened(QString)));
 	this->connect(ui->frameTents, SIGNAL(refreshed()), SLOT(requestRefresh()));
 	this->connect(ui->frameDorms, SIGNAL(refreshed()), SLOT(requestRefresh()));
+	this->connect(ui->frameClients, SIGNAL(refreshed()), SLOT(requestRefresh()));
 	this->connect(this, SIGNAL(textSearched(QString)), SLOT(requestRefresh()));
 
 	if (!App()->config()->lastFilename().isEmpty()) {
@@ -166,13 +168,24 @@ void MainWindow::onFileOpened(QString filename)
 	this->requestRefresh();
 }
 
-void MainWindow::showTents()
+void MainWindow::hideAllFrames()
 {
-	this->ui->frameTents->setVisible(true);
-	this->ui->pushButtonTents->setChecked(true);
+	this->ui->frameTents->setVisible(false);
+	this->ui->pushButtonTents->setChecked(false);
 
 	this->ui->frameDorms->setVisible(false);
 	this->ui->pushButtonDorms->setChecked(false);
+
+	this->ui->frameClients->setVisible(false);
+	this->ui->pushButtonClients->setChecked(false);
+}
+
+void MainWindow::showTents()
+{
+	hideAllFrames();
+
+	this->ui->frameTents->setVisible(true);
+	this->ui->pushButtonTents->setChecked(true);
 
 	this->ui->actionPrintClients->setEnabled(true);
 
@@ -183,8 +196,7 @@ void MainWindow::showTents()
 
 void MainWindow::showDorms()
 {
-	this->ui->frameTents->setVisible(false);
-	this->ui->pushButtonTents->setChecked(false);
+	hideAllFrames();
 
 	this->ui->frameDorms->setVisible(true);
 	this->ui->pushButtonDorms->setChecked(true);
@@ -196,15 +208,32 @@ void MainWindow::showDorms()
 	}
 }
 
+void MainWindow::showClients()
+{
+	hideAllFrames();
+
+	this->ui->frameClients->setVisible(true);
+	this->ui->pushButtonClients->setChecked(true);
+
+	this->ui->actionPrintClients->setEnabled(false);
+
+	if (!this->ui->frameClients->isRefreshed()) {
+		this->ui->frameClients->refreshData();
+	}
+}
+
 void MainWindow::requestRefresh()
 {
 	this->ui->frameTents->requestRefresh();
 	this->ui->frameDorms->requestRefresh();
+	this->ui->frameClients->requestRefresh();
 
 	if (this->ui->frameTents->isVisible() && !this->ui->frameTents->isRefreshed()) {
 		this->ui->frameTents->refreshData();
 	} else if (this->ui->frameDorms->isVisible() && !this->ui->frameDorms->isRefreshed()) {
 		this->ui->frameDorms->refreshData();
+	} else if (this->ui->frameClients->isVisible() && !this->ui->frameClients->isRefreshed()) {
+		this->ui->frameClients->refreshData();
 	}
 }
 

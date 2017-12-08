@@ -1,7 +1,7 @@
 #ifndef FRAMETENTS_H
 #define FRAMETENTS_H
 
-#include "MainFrame.h"
+#include "FrameReservations.h"
 #include <QFrame>
 #include <QTreeWidget>
 
@@ -10,7 +10,7 @@ namespace Ui
 class FrameTents;
 }
 
-class FrameTents : public MainFrame
+class FrameTents : public FrameReservations
 {
 	Q_OBJECT
 

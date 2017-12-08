@@ -30,6 +30,7 @@ public slots:
 	void refreshInitializedState();
 	void showTents();
 	void showDorms();
+	void showClients();
 	void requestRefresh();
 
 private slots:
@@ -49,8 +50,8 @@ private slots:
 
 private:
 	void openExistentFile(QString filename);
+	void hideAllFrames();
 
-private:
 	QTimer *_searchTimer;
 	Ui::MainWindow *ui;
 };

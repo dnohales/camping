@@ -8,7 +8,7 @@
 #include <QPrintDialog>
 
 FrameTents::FrameTents(QWidget *parent)
-	: MainFrame(parent),
+	: FrameReservations(parent),
 	  ui(new Ui::FrameTents)
 {
 	ui->setupUi(this);

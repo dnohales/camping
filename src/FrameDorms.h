@@ -1,7 +1,7 @@
 #ifndef FRAMEDORMS_H
 #define FRAMEDORMS_H
 
-#include "MainFrame.h"
+#include "FrameReservations.h"
 #include <QFrame>
 #include <QTableWidget>
 
@@ -10,7 +10,7 @@ namespace Ui
 class FrameDorms;
 }
 
-class FrameDorms : public MainFrame
+class FrameDorms : public FrameReservations
 {
 	Q_OBJECT
 

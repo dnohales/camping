@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FrameClients</class>
+ <widget class="QFrame" name="FrameClients">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>520</width>
+    <height>392</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <property name="frameShape">
+   <enum>QFrame::StyledPanel</enum>
+  </property>
+  <property name="frameShadow">
+   <enum>QFrame::Raised</enum>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>6</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>6</number>
+   </property>
+   <property name="bottomMargin">
+    <number>6</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="buttonAdd">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Añadir cliente</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../res/default.qrc">
+          <normaloff>:/imgs/add.svg</normaloff>:/imgs/add.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTreeWidget" name="list">
+     <property name="contextMenuPolicy">
+      <enum>Qt::ActionsContextMenu</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QTreeWidget::item {
+	margin-top: 18px;
+	margin-right: 10px;
+}</string>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string>Nombre</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Reservas realizadas</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>DNI</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>E-Mail</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Teléfono</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Dirección</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Fecha de creación</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
+  <action name="actionListEdit">
+   <property name="text">
+    <string>Editar</string>
+   </property>
+  </action>
+  <action name="actionListDelete">
+   <property name="text">
+    <string>Borrar</string>
+   </property>
+   <property name="toolTip">
+    <string>Borrar</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../../res/default.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonAdd</sender>
+   <signal>clicked()</signal>
+   <receiver>FrameClients</receiver>
+   <slot>onAddClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>53</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>259</x>
+     <y>195</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onAddClicked()</slot>
+ </slots>
+</ui>

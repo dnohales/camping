@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>545</width>
-    <height>452</height>
+    <width>659</width>
+    <height>444</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -20,15 +20,24 @@
    <string>MainWindow</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="default.qrc">
+   <iconset resource="../../res/default.qrc">
     <normaloff>:/imgs/tent.png</normaloff>:/imgs/tent.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0,0">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0,0,0">
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
@@ -103,7 +112,7 @@
 de camping</string>
            </property>
            <property name="icon">
-            <iconset resource="default.qrc">
+            <iconset resource="../../res/default.qrc">
              <normaloff>:/imgs/open.svg</normaloff>:/imgs/open.svg</iconset>
            </property>
            <property name="iconSize">
@@ -127,7 +136,7 @@ de camping</string>
 de camping nuevo</string>
            </property>
            <property name="icon">
-            <iconset resource="default.qrc">
+            <iconset resource="../../res/default.qrc">
              <normaloff>:/imgs/new.svg</normaloff>:/imgs/new.svg</iconset>
            </property>
            <property name="iconSize">
@@ -187,7 +196,16 @@ de camping nuevo</string>
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -201,11 +219,20 @@ de camping nuevo</string>
          <property name="lineWidth">
           <number>1</number>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,0">
+         <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,1,0">
           <property name="spacing">
            <number>6</number>
           </property>
-          <property name="margin">
+          <property name="leftMargin">
+           <number>6</number>
+          </property>
+          <property name="topMargin">
+           <number>6</number>
+          </property>
+          <property name="rightMargin">
+           <number>6</number>
+          </property>
+          <property name="bottomMargin">
            <number>6</number>
           </property>
           <item>
@@ -225,6 +252,23 @@ de camping nuevo</string>
            <widget class="QPushButton" name="pushButtonDorms">
             <property name="text">
              <string>Dormis</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonClients">
+            <property name="text">
+             <string>Clientes</string>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -301,6 +345,16 @@ de camping nuevo</string>
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="FrameClients" name="frameClients">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -308,8 +362,8 @@ de camping nuevo</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>545</width>
-     <height>25</height>
+     <width>659</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuArchivo">
@@ -416,9 +470,15 @@ de camping nuevo</string>
    <header>FrameDorms.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>FrameClients</class>
+   <extends>QFrame</extends>
+   <header>FrameClients.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <resources>
-  <include location="default.qrc"/>
+  <include location="../../res/default.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -549,6 +609,22 @@ de camping nuevo</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButtonClients</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showClients()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>215</x>
+     <y>375</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>329</x>
+     <y>221</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onOpenFile()</slot>
@@ -557,5 +633,6 @@ de camping nuevo</string>
   <slot>onAbout()</slot>
   <slot>showDorms()</slot>
   <slot>showTents()</slot>
+  <slot>showClients()</slot>
  </slots>
 </ui>

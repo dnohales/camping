@@ -29,7 +29,10 @@ SOURCES += src/main.cpp\
     src/Reservation.cpp \
     src/DialogReservation.cpp \
     src/DialogReservationSelector.cpp \
-    src/DialogPrintReservations.cpp
+    src/DialogPrintReservations.cpp \
+    src/FrameClients.cpp \
+    src/FrameReservations.cpp \
+    src/DialogClient.cpp
 
 HEADERS += src/MainWindow.h \
     src/FrameTents.h \
@@ -51,7 +54,10 @@ HEADERS += src/MainWindow.h \
     src/Reservation.h \
     src/DialogReservation.h \
     src/DialogReservationSelector.h \
-    src/DialogPrintReservations.h
+    src/DialogPrintReservations.h \
+    src/FrameClients.h \
+    src/FrameReservations.h \
+    src/DialogClient.h
 
 FORMS += src/ui/MainWindow.ui \
     src/ui/FrameTents.ui \
@@ -60,7 +66,9 @@ FORMS += src/ui/MainWindow.ui \
     src/ui/DialogReceiptEdit.ui \
     src/ui/DialogReservation.ui \
     src/ui/DialogReservationSelector.ui \
-    src/ui/DialogPrintReservations.ui
+    src/ui/DialogPrintReservations.ui \
+    src/ui/FrameClients.ui \
+    src/ui/DialogClient.ui
 
 RESOURCES += \
     res/default.qrc

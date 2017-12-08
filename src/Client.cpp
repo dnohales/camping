@@ -1,4 +1,5 @@
 #include "Client.h"
+#include "Reservation.h"
 #include <QFile>
 #include <QTextCodec>
 
@@ -17,6 +18,11 @@ void Client::validate()
 QString Client::getFullName() const
 {
 	return this->getName() + " " + this->getSurame();
+}
+
+ReservationCollection Client::getReservations() const
+{
+	return Reservation().findAll(SqlCriteria().addCondition("client_id = " + QString::number(this->getId())));
 }
 
 ClientCompleterModel::ClientCompleterModel(const ClientCollection &collection)

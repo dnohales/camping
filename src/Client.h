@@ -5,6 +5,7 @@
 #include <QAbstractListModel>
 
 class Client;
+class ReservationCollection;
 
 class ClientCollection : public QList<Client>
 {
@@ -30,6 +31,7 @@ public:
 	void validate();
 
 	QString getFullName() const;
+	ReservationCollection getReservations() const;
 
 	ACTIVE_RECORD_FIELD_STRING(getName, setName, "name")
 	ACTIVE_RECORD_FIELD_STRING(getSurame, setSurame, "surname")
