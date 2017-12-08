@@ -6,7 +6,9 @@ CREATE TABLE "client" (
     "email" TEXT,
     "tel" TEXT,
     "dni" TEXT,
-    "address" TEXT
+    "address" TEXT,
+    "create_time" TEXT,
+    "update_time" TEXT
 );
 CREATE TABLE "reservation" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
