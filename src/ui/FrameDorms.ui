@@ -65,7 +65,7 @@
          <string>Añadir reservación</string>
         </property>
         <property name="icon">
-         <iconset resource="default.qrc">
+         <iconset resource="../../res/default.qrc">
           <normaloff>:/imgs/add.svg</normaloff>:/imgs/add.svg</iconset>
         </property>
        </widget>
@@ -119,7 +119,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="default.qrc"/>
+  <include location="../../res/default.qrc"/>
  </resources>
  <connections>
   <connection>
