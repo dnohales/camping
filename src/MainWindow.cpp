@@ -259,8 +259,3 @@ void MainWindow::on_actionReceiptEdit_triggered()
 	DialogReceiptEdit dialog(this);
 	dialog.exec();
 }
-
-void MainWindow::on_actionPedir_soporte_triggered()
-{
-	QMessageBox::information(this, "Soporte", "Para pedir soporte puede enviar un e-mail a damiannohales@gmail.com.");
-}

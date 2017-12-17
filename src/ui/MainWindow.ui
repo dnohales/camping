@@ -387,8 +387,6 @@ de camping nuevo</string>
     <property name="title">
      <string>Ayuda</string>
     </property>
-    <addaction name="actionPedir_soporte"/>
-    <addaction name="separator"/>
     <addaction name="actionAcerca_de"/>
     <addaction name="actionAcerca_de_Qt"/>
    </widget>
@@ -552,8 +550,8 @@ de camping nuevo</string>
    <slot>onNewFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>424</x>
-     <y>245</y>
+     <x>444</x>
+     <y>220</y>
     </hint>
     <hint type="destinationlabel">
      <x>293</x>
@@ -568,8 +566,8 @@ de camping nuevo</string>
    <slot>onOpenFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>254</x>
-     <y>245</y>
+     <x>315</x>
+     <y>220</y>
     </hint>
     <hint type="destinationlabel">
      <x>126</x>
@@ -584,8 +582,8 @@ de camping nuevo</string>
    <slot>showTents()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>71</x>
-     <y>412</y>
+     <x>78</x>
+     <y>386</y>
     </hint>
     <hint type="destinationlabel">
      <x>549</x>
@@ -600,8 +598,8 @@ de camping nuevo</string>
    <slot>showDorms()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>149</x>
-     <y>409</y>
+     <x>162</x>
+     <y>386</y>
     </hint>
     <hint type="destinationlabel">
      <x>553</x>

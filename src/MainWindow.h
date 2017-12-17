@@ -43,10 +43,7 @@ private slots:
 	void on_actionAcerca_de_triggered();
 	void on_actionAcerca_de_Qt_triggered();
 	void on_actionPrintClients_triggered();
-
 	void on_actionReceiptEdit_triggered();
-
-	void on_actionPedir_soporte_triggered();
 
 private:
 	void openExistentFile(QString filename);
