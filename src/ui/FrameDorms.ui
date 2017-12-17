@@ -118,6 +118,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>table</tabstop>
+  <tabstop>buttonAdd</tabstop>
+  <tabstop>comboYear</tabstop>
+ </tabstops>
  <resources>
   <include location="../../res/default.qrc"/>
  </resources>

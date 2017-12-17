@@ -193,6 +193,12 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>list</tabstop>
+  <tabstop>buttonAdd</tabstop>
+  <tabstop>checkBoxDorms</tabstop>
+  <tabstop>comboReservationStatus</tabstop>
+ </tabstops>
  <resources>
   <include location="../../res/default.qrc"/>
  </resources>
