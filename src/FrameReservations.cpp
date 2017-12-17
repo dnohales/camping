@@ -21,8 +21,8 @@ SqlCriteria FrameReservations::baseCriteria(Location::Type findType)
 	criteria.setSelect("reservation.*");
 
 	if (findType != Location::ALL || !query.isEmpty()) {
-		criteria.setSelect(criteria.select() + ",location.type AS _location_type, location.name AS _location_name, client.name AS _client_name, client.surname AS _client_surname");
-		criteria.setJoin("JOIN location ON reservation.location_id = location.id, client ON reservation.client_id = client.id");
+		criteria.setSelect(criteria.select() + ", location.type AS _location_type, location.name AS _location_name");
+		criteria.setJoin("JOIN location ON reservation.location_id = location.id");
 		if (findType != Location::ALL) {
 			criteria.addCondition("_location_type = :loctype");
 			criteria.bindValue(":loctype", findType);
@@ -30,8 +30,8 @@ SqlCriteria FrameReservations::baseCriteria(Location::Type findType)
 	}
 
 	if (!query.isEmpty()) {
-		criteria.setSelect(criteria.select() + ",vehicle.patent AS _vehicle_patent, vehicle.model AS _vehicle_model");
-		criteria.setJoin(criteria.join() + " LEFT OUTER JOIN vehicle ON vehicle.reservationt_id = reservation.id");
+		criteria.setSelect(criteria.select() + ", client.name AS _client_name, client.surname AS _client_surname, vehicle.patent AS _vehicle_patent, vehicle.model AS _vehicle_model");
+		criteria.setJoin(criteria.join() + " JOIN client ON reservation.client_id = client.id LEFT OUTER JOIN vehicle ON vehicle.reservation_id = reservation.id");
 		criteria.setGroup("reservation.id");
 		criteria.addCondition("_client_name LIKE :query1 OR _client_surname LIKE :query2 OR (_client_surname||' '||_client_surname) LIKE :query3 OR _vehicle_patent LIKE :query4 OR _vehicle_model LIKE :query5 OR _location_name LIKE :query6");
 		criteria.bindValue(":query1", query);
