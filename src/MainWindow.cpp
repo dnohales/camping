@@ -155,6 +155,7 @@ void MainWindow::refreshInitializedState()
 	this->ui->frameNotInitialized->setHidden(ini);
 	this->ui->frameTents->setVisible(ini);
 	this->ui->frameDorms->setVisible(ini);
+	this->ui->frameClients->setVisible(ini);
 
 	if (ini) {
 		this->showTents();
@@ -165,6 +166,7 @@ void MainWindow::onFileOpened(QString filename)
 {
 	App()->config()->setLastFilename(filename);
 	this->setWindowTitle(App()->name() + " [" + QFileInfo(filename).fileName() + "]");
+	refreshInitializedState();
 	this->requestRefresh();
 }
 
