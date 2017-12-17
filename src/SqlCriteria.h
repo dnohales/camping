@@ -14,7 +14,7 @@ public:
 	QSqlQuery buildSelectQuery();
 	QString buildSelectQueryAsString();
 
-	SqlCriteria bindValue(const QString &placeholder, const QVariant &val);
+	SqlCriteria &bindValue(const QString &placeholder, const QVariant &val);
 
 	QString table() { return this->_table; }
 	QString where() { return this->_where; }

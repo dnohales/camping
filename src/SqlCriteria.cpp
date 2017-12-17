@@ -61,7 +61,7 @@ QSqlQuery SqlCriteria::buildSelectQuery()
 	return query;
 }
 
-SqlCriteria SqlCriteria::bindValue(const QString &placeholder, const QVariant &val)
+SqlCriteria &SqlCriteria::bindValue(const QString &placeholder, const QVariant &val)
 {
 	_binds[placeholder] = val;
 	return *this;
