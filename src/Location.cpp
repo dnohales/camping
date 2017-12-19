@@ -26,7 +26,7 @@ LocationCollection Location::findAllByType(Location::Type type)
 	return this->findAll(SqlCriteria()
 							 .addCondition("type = :type")
 							 .bindValue(":type", type)
-							 .setOrder("name ASC"));
+							 .setOrder("CAST(name AS INTEGER)"));
 }
 
 void Location::validate()
