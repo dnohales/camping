@@ -41,7 +41,7 @@ public:
 	ACTIVE_RECORD_FIELD(getDateOut, setDateOut, QDate, "out_time")
 	ACTIVE_RECORD_FIELD(getPeopleNum, setPeopleNum, int, "people_num")
 	ACTIVE_RECORD_FIELD(getTentNum, setTentNum, int, "tent_num")
-	ACTIVE_RECORD_FIELD(getBeck, setBeck, double, "beck")
+	ACTIVE_RECORD_FIELD_STRING(getBeck, setBeck, "beck")
 
 protected:
 	void init();

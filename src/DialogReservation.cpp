@@ -122,7 +122,7 @@ void DialogReservation::refreshWidgets()
 	this->ui->editLocation->setText(reservation->getLocation().getName());
 	this->ui->spinPeopleNum->setValue(reservation->getPeopleNum());
 	this->ui->spinTentNum->setValue(reservation->getTentNum());
-	this->ui->editBeck->setText(QString::number(reservation->getBeck()));
+	this->ui->editBeck->setText(reservation->getBeck());
 
 	ui->vehicles->setRowCount(0);
 
@@ -177,7 +177,7 @@ void DialogReservation::accept()
 		reservation->setDateOut(this->ui->editDateOut->date());
 		reservation->setPeopleNum(this->ui->spinPeopleNum->value());
 		reservation->setTentNum(this->ui->spinTentNum->value());
-		reservation->setBeck(this->ui->editBeck->text().toDouble());
+		reservation->setBeck(this->ui->editBeck->text());
 
 		location.validate();
 		completedClient.validate();

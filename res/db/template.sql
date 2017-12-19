@@ -18,7 +18,7 @@ CREATE TABLE "reservation" (
     "tent_num" INTEGER,
     "in_time" TEXT,
     "out_time" TEXT,
-    "beck" REAL,
+    "beck" TEXT,
     "create_time" TEXT,
     "update_time" TEXT,
     FOREIGN KEY (client_id) REFERENCES client(id),
