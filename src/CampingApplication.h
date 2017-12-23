@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QPrinter>
 #include <QSqlDatabase>
+#include <QWebEnginePage>
 
 class CampingConfig;
 
@@ -19,7 +20,6 @@ public:
 
 	CampingApplication(int &argc, char **argv, int = QT_VERSION);
 	CampingConfig *config();
-	QPrinter *printer();
 	void printHtml(QString html, QWidget *parent = 0);
 	void initNewDatabase(QString filename);
 	void initExistentDatabase(QString filename);
@@ -33,10 +33,12 @@ private:
 signals:
 	void initializedChanged();
 
-public slots:
+private slots:
+	void onPrintPageLoaded(bool ok);
 
 private:
-	QPrinter _printer;
+	QPrinter *_printer;
+	QWebEnginePage *_printPage;
 	CampingConfig _config;
 	bool _initialized;
 };

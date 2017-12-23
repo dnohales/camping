@@ -1,8 +1,9 @@
+#include <functional>
+
 #include "CampingApplication.h"
 #include "common.h"
 #include "main.h"
 #include <QPrintDialog>
-#include <QWebEngineView>
 
 CampingApplication::CampingApplication(int &argc, char **argv, int version)
 	: QApplication(argc, argv, version)
@@ -17,11 +18,6 @@ CampingApplication::CampingApplication(int &argc, char **argv, int version)
 CampingConfig *CampingApplication::config()
 {
 	return &this->_config;
-}
-
-QPrinter *CampingApplication::printer()
-{
-	return &this->_printer;
 }
 
 bool CampingApplication::isInitialized() const
@@ -155,12 +151,23 @@ void CampingApplication::execMulti(QSqlDatabase &db, QString &query)
 
 void CampingApplication::printHtml(QString html, QWidget *parent)
 {
-	QPrintDialog dialog(this->printer(), parent);
-	dialog.exec();
+	_printer = new QPrinter();
+	QScopedPointer<QPrintDialog> dialog(new QPrintDialog(_printer, parent));
+	if (dialog->exec() != QDialog::Accepted) {
+		delete _printer;
+		return;
+	}
+	_printPage = new QWebEnginePage(parent);
+	connect(_printPage, SIGNAL(loadFinished(bool)), SLOT(onPrintPageLoaded(bool)));
+	_printPage->setHtml(html);
+}
 
-	if (dialog.result() == QPrintDialog::Accepted) {
-		QWebEngineView webview(parent);
-		webview.setHtml(html);
-		webview.page()->print(this->printer(), [](bool) {});
+void CampingApplication::onPrintPageLoaded(bool ok)
+{
+	if (ok) {
+		_printPage->print(_printer, [this](bool) {
+			delete this->_printer;
+			delete this->_printPage;
+		});
 	}
 }
